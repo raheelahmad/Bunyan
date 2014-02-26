@@ -15,7 +15,11 @@
 		5950101018BD92FB003BDD13 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5950100F18BD92FB003BDD13 /* UIKit.framework */; };
 		5950101318BD92FB003BDD13 /* libBunyan.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 59500FFB18BD92FB003BDD13 /* libBunyan.a */; };
 		5950101918BD92FB003BDD13 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5950101718BD92FB003BDD13 /* InfoPlist.strings */; };
-		5950101B18BD92FB003BDD13 /* BunyanTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5950101A18BD92FB003BDD13 /* BunyanTests.m */; };
+		5950102518BD943C003BDD13 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5950102418BD943C003BDD13 /* CoreData.framework */; };
+		5950102818BD9459003BDD13 /* SKLManagedObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 5950102718BD9459003BDD13 /* SKLManagedObject.m */; };
+		5950102D18BD9465003BDD13 /* SKLCoreDataTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5950102918BD9465003BDD13 /* SKLCoreDataTests.m */; };
+		5950102E18BD9465003BDD13 /* SKLManagedObjectTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5950102C18BD9465003BDD13 /* SKLManagedObjectTests.m */; };
+		5950103118BD946D003BDD13 /* SKLTestPerson.m in Sources */ = {isa = PBXBuildFile; fileRef = 5950103018BD946D003BDD13 /* SKLTestPerson.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,7 +56,15 @@
 		5950100F18BD92FB003BDD13 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 		5950101618BD92FB003BDD13 /* BunyanTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "BunyanTests-Info.plist"; sourceTree = "<group>"; };
 		5950101818BD92FB003BDD13 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		5950101A18BD92FB003BDD13 /* BunyanTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BunyanTests.m; sourceTree = "<group>"; };
+		5950102418BD943C003BDD13 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		5950102618BD9459003BDD13 /* SKLManagedObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKLManagedObject.h; sourceTree = "<group>"; };
+		5950102718BD9459003BDD13 /* SKLManagedObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKLManagedObject.m; sourceTree = "<group>"; };
+		5950102918BD9465003BDD13 /* SKLCoreDataTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKLCoreDataTests.m; sourceTree = "<group>"; };
+		5950102A18BD9465003BDD13 /* SKLCoreDataTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKLCoreDataTests.h; sourceTree = "<group>"; };
+		5950102B18BD9465003BDD13 /* SKLManagedObjectTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKLManagedObjectTests.h; sourceTree = "<group>"; };
+		5950102C18BD9465003BDD13 /* SKLManagedObjectTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKLManagedObjectTests.m; sourceTree = "<group>"; };
+		5950102F18BD946D003BDD13 /* SKLTestPerson.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKLTestPerson.h; sourceTree = "<group>"; };
+		5950103018BD946D003BDD13 /* SKLTestPerson.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKLTestPerson.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +72,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5950102518BD943C003BDD13 /* CoreData.framework in Frameworks */,
 				59500FFF18BD92FB003BDD13 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -100,6 +113,7 @@
 		59500FFD18BD92FB003BDD13 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				5950102418BD943C003BDD13 /* CoreData.framework */,
 				59500FFE18BD92FB003BDD13 /* Foundation.framework */,
 				5950100C18BD92FB003BDD13 /* XCTest.framework */,
 				5950100F18BD92FB003BDD13 /* UIKit.framework */,
@@ -110,6 +124,8 @@
 		5950100018BD92FB003BDD13 /* Bunyan */ = {
 			isa = PBXGroup;
 			children = (
+				5950102618BD9459003BDD13 /* SKLManagedObject.h */,
+				5950102718BD9459003BDD13 /* SKLManagedObject.m */,
 				5950100318BD92FB003BDD13 /* Bunyan.h */,
 				5950100518BD92FB003BDD13 /* Bunyan.m */,
 				5950100118BD92FB003BDD13 /* Supporting Files */,
@@ -128,7 +144,12 @@
 		5950101418BD92FB003BDD13 /* BunyanTests */ = {
 			isa = PBXGroup;
 			children = (
-				5950101A18BD92FB003BDD13 /* BunyanTests.m */,
+				5950102918BD9465003BDD13 /* SKLCoreDataTests.m */,
+				5950102A18BD9465003BDD13 /* SKLCoreDataTests.h */,
+				5950102B18BD9465003BDD13 /* SKLManagedObjectTests.h */,
+				5950102C18BD9465003BDD13 /* SKLManagedObjectTests.m */,
+				5950102F18BD946D003BDD13 /* SKLTestPerson.h */,
+				5950103018BD946D003BDD13 /* SKLTestPerson.m */,
 				5950101518BD92FB003BDD13 /* Supporting Files */,
 			);
 			path = BunyanTests;
@@ -225,6 +246,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5950100618BD92FB003BDD13 /* Bunyan.m in Sources */,
+				5950102818BD9459003BDD13 /* SKLManagedObject.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -232,7 +254,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5950101B18BD92FB003BDD13 /* BunyanTests.m in Sources */,
+				5950102D18BD9465003BDD13 /* SKLCoreDataTests.m in Sources */,
+				5950102E18BD9465003BDD13 /* SKLManagedObjectTests.m in Sources */,
+				5950103118BD946D003BDD13 /* SKLTestPerson.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
