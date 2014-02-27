@@ -17,7 +17,12 @@
 }
 
 + (NSArray *)allInContext:(NSManagedObjectContext *)context {
+    return [self allInContext:context predicate:nil];
+}
+
++ (NSArray *)allInContext:(NSManagedObjectContext *)context predicate:(NSPredicate *)predicate {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([self class])];
+    request.predicate = predicate;
     NSError *error;
     NSArray *result = [context executeFetchRequest:request
                                              error:&error];
@@ -26,6 +31,7 @@
     }
 
     return result;
+    
 }
 
 @end

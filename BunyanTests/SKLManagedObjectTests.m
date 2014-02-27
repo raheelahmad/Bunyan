@@ -25,6 +25,17 @@
     XCTAssertEqual([all count], (NSUInteger)2, @"Should fetch same # of inserted objects");
 }
 
+- (void)testAllInContextWithPredicate {
+    SKLTestPerson *personWithName = [SKLTestPerson insertInContext:self.context];
+    personWithName.name = @"Aristotle";
+    SKLTestPerson *personWithoutName = [SKLTestPerson insertInContext:self.context];
+    NSPredicate *onlyNamePredicate = [NSPredicate predicateWithFormat:@"name != nil"];
+    NSArray *onlyWithName = [SKLTestPerson allInContext:self.context
+                                              predicate:onlyNamePredicate];
+    XCTAssertEqualObjects([onlyWithName firstObject], personWithName, @"all fetches with predicate");
+    XCTAssertEqual([onlyWithName count], (NSUInteger)1, @"all fetches with predicate");
+}
+
 #pragma mark Basic tests
 
 - (void)testPersonIsLoaded {
