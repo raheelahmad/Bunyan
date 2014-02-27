@@ -13,5 +13,6 @@
 + (instancetype)insertInContext:(NSManagedObjectContext *)context;
 + (NSArray *)allInContext:(NSManagedObjectContext *)context;
 + (NSArray *)allInContext:(NSManagedObjectContext *)context predicate:(NSPredicate *)predicate;
++ (instancetype)anyInContext:(NSManagedObjectContext *)context;
 
 @end

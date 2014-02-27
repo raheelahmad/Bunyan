@@ -34,4 +34,17 @@
     
 }
 
++ (instancetype)anyInContext:(NSManagedObjectContext *)context {
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([self class])];
+    request.fetchLimit = 1;
+    NSError *error;
+    NSArray *result = [context executeFetchRequest:request
+                                             error:&error];
+    if (!result) {
+        NSLog(@"Error fetching %@: %@", NSStringFromClass(self), error);
+    }
+    
+    return [result firstObject];
+}
+
 @end

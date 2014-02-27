@@ -36,6 +36,12 @@
     XCTAssertEqual([onlyWithName count], (NSUInteger)1, @"all fetches with predicate");
 }
 
+- (void)testAny {
+    [SKLTestPerson insertInContext:self.context];
+    SKLTestPerson *anyPerson = [SKLTestPerson anyInContext:self.context];
+    XCTAssertNotNil(anyPerson, @"Can fetch any object");
+}
+
 #pragma mark Basic tests
 
 - (void)testPersonIsLoaded {
