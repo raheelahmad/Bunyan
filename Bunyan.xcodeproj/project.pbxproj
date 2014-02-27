@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		59500FFF18BD92FB003BDD13 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59500FFE18BD92FB003BDD13 /* Foundation.framework */; };
 		5950100418BD92FB003BDD13 /* Bunyan.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5950100318BD92FB003BDD13 /* Bunyan.h */; };
-		5950100618BD92FB003BDD13 /* Bunyan.m in Sources */ = {isa = PBXBuildFile; fileRef = 5950100518BD92FB003BDD13 /* Bunyan.m */; };
 		5950100D18BD92FB003BDD13 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5950100C18BD92FB003BDD13 /* XCTest.framework */; };
 		5950100E18BD92FB003BDD13 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59500FFE18BD92FB003BDD13 /* Foundation.framework */; };
 		5950101018BD92FB003BDD13 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5950100F18BD92FB003BDD13 /* UIKit.framework */; };
@@ -50,7 +49,6 @@
 		59500FFE18BD92FB003BDD13 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		5950100218BD92FB003BDD13 /* Bunyan-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Bunyan-Prefix.pch"; sourceTree = "<group>"; };
 		5950100318BD92FB003BDD13 /* Bunyan.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Bunyan.h; sourceTree = "<group>"; };
-		5950100518BD92FB003BDD13 /* Bunyan.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Bunyan.m; sourceTree = "<group>"; };
 		5950100B18BD92FB003BDD13 /* BunyanTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BunyanTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5950100C18BD92FB003BDD13 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		5950100F18BD92FB003BDD13 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
@@ -127,7 +125,6 @@
 				5950102618BD9459003BDD13 /* SKLManagedObject.h */,
 				5950102718BD9459003BDD13 /* SKLManagedObject.m */,
 				5950100318BD92FB003BDD13 /* Bunyan.h */,
-				5950100518BD92FB003BDD13 /* Bunyan.m */,
 				5950100118BD92FB003BDD13 /* Supporting Files */,
 			);
 			path = Bunyan;
@@ -245,7 +242,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5950100618BD92FB003BDD13 /* Bunyan.m in Sources */,
 				5950102818BD9459003BDD13 /* SKLManagedObject.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -433,6 +429,7 @@
 				5950102018BD92FB003BDD13 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		5950102118BD92FB003BDD13 /* Build configuration list for PBXNativeTarget "BunyanTests" */ = {
 			isa = XCConfigurationList;
@@ -441,6 +438,7 @@
 				5950102318BD92FB003BDD13 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

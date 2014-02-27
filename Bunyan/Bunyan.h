@@ -6,8 +6,5 @@
 //  Copyright (c) 2014 Sakun Labs. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import "SKLManagedObject.h"
 
-@interface Bunyan : NSObject
-
-@end
