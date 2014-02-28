@@ -19,6 +19,8 @@
 		5950102D18BD9465003BDD13 /* SKLCoreDataTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5950102918BD9465003BDD13 /* SKLCoreDataTests.m */; };
 		5950102E18BD9465003BDD13 /* SKLManagedObjectTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5950102C18BD9465003BDD13 /* SKLManagedObjectTests.m */; };
 		5950103118BD946D003BDD13 /* SKLTestPerson.m in Sources */ = {isa = PBXBuildFile; fileRef = 5950103018BD946D003BDD13 /* SKLTestPerson.m */; };
+		59ECBC4418BEF9BC006800B4 /* SKLAPIClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 59ECBC4318BEF9BC006800B4 /* SKLAPIClient.m */; };
+		59ECBC4918BEFB1B006800B4 /* SKLAPIClientTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 59ECBC4818BEFB1B006800B4 /* SKLAPIClientTests.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,6 +65,9 @@
 		5950102C18BD9465003BDD13 /* SKLManagedObjectTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKLManagedObjectTests.m; sourceTree = "<group>"; };
 		5950102F18BD946D003BDD13 /* SKLTestPerson.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKLTestPerson.h; sourceTree = "<group>"; };
 		5950103018BD946D003BDD13 /* SKLTestPerson.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKLTestPerson.m; sourceTree = "<group>"; };
+		59ECBC4218BEF9BC006800B4 /* SKLAPIClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKLAPIClient.h; sourceTree = "<group>"; };
+		59ECBC4318BEF9BC006800B4 /* SKLAPIClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKLAPIClient.m; sourceTree = "<group>"; };
+		59ECBC4818BEFB1B006800B4 /* SKLAPIClientTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKLAPIClientTests.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -122,9 +127,9 @@
 		5950100018BD92FB003BDD13 /* Bunyan */ = {
 			isa = PBXGroup;
 			children = (
-				5950102618BD9459003BDD13 /* SKLManagedObject.h */,
-				5950102718BD9459003BDD13 /* SKLManagedObject.m */,
 				5950100318BD92FB003BDD13 /* Bunyan.h */,
+				59ECBC4018BEF98C006800B4 /* Models */,
+				59ECBC4118BEF99E006800B4 /* Network */,
 				5950100118BD92FB003BDD13 /* Supporting Files */,
 			);
 			path = Bunyan;
@@ -141,12 +146,8 @@
 		5950101418BD92FB003BDD13 /* BunyanTests */ = {
 			isa = PBXGroup;
 			children = (
-				5950102918BD9465003BDD13 /* SKLCoreDataTests.m */,
-				5950102A18BD9465003BDD13 /* SKLCoreDataTests.h */,
-				5950102B18BD9465003BDD13 /* SKLManagedObjectTests.h */,
-				5950102C18BD9465003BDD13 /* SKLManagedObjectTests.m */,
-				5950102F18BD946D003BDD13 /* SKLTestPerson.h */,
-				5950103018BD946D003BDD13 /* SKLTestPerson.m */,
+				59ECBC4718BEFB05006800B4 /* Networking Tests */,
+				59ECBC4518BEFAEF006800B4 /* Model Tests */,
 				5950101518BD92FB003BDD13 /* Supporting Files */,
 			);
 			path = BunyanTests;
@@ -159,6 +160,53 @@
 				5950101718BD92FB003BDD13 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		59ECBC4018BEF98C006800B4 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				5950102618BD9459003BDD13 /* SKLManagedObject.h */,
+				5950102718BD9459003BDD13 /* SKLManagedObject.m */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
+		59ECBC4118BEF99E006800B4 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				59ECBC4218BEF9BC006800B4 /* SKLAPIClient.h */,
+				59ECBC4318BEF9BC006800B4 /* SKLAPIClient.m */,
+			);
+			name = Network;
+			sourceTree = "<group>";
+		};
+		59ECBC4518BEFAEF006800B4 /* Model Tests */ = {
+			isa = PBXGroup;
+			children = (
+				59ECBC4618BEFAFC006800B4 /* Helpers */,
+				5950102918BD9465003BDD13 /* SKLCoreDataTests.m */,
+				5950102A18BD9465003BDD13 /* SKLCoreDataTests.h */,
+				5950102B18BD9465003BDD13 /* SKLManagedObjectTests.h */,
+				5950102C18BD9465003BDD13 /* SKLManagedObjectTests.m */,
+			);
+			name = "Model Tests";
+			sourceTree = "<group>";
+		};
+		59ECBC4618BEFAFC006800B4 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				5950102F18BD946D003BDD13 /* SKLTestPerson.h */,
+				5950103018BD946D003BDD13 /* SKLTestPerson.m */,
+			);
+			name = Helpers;
+			sourceTree = "<group>";
+		};
+		59ECBC4718BEFB05006800B4 /* Networking Tests */ = {
+			isa = PBXGroup;
+			children = (
+				59ECBC4818BEFB1B006800B4 /* SKLAPIClientTests.m */,
+			);
+			name = "Networking Tests";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -242,6 +290,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				59ECBC4418BEF9BC006800B4 /* SKLAPIClient.m in Sources */,
 				5950102818BD9459003BDD13 /* SKLManagedObject.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -250,6 +299,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				59ECBC4918BEFB1B006800B4 /* SKLAPIClientTests.m in Sources */,
 				5950102D18BD9465003BDD13 /* SKLCoreDataTests.m in Sources */,
 				5950102E18BD9465003BDD13 /* SKLManagedObjectTests.m in Sources */,
 				5950103118BD946D003BDD13 /* SKLTestPerson.m in Sources */,
