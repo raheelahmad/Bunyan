@@ -50,30 +50,31 @@ NSString *const SKLOriginalNetworkingResponseStringKey = @"SKLOriginalNetworking
 #pragma mark Making requests
 
 - (void)makeRequest:(NSURLRequest *)request completion:(SKLAPIResponseBlock)completion {
-	[self.session dataTaskWithRequest:request
-					completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-                        NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
-                        if (error) {
-                            error = [NSError errorWithDomain:SKLAPIErrorDomain code:NSURLSessionErrorCode userInfo:@{ SKLOriginalNetworkingErrorKey : error }];
-                            completion(error, nil);
-                        }
-                        if (httpResponse.statusCode == 400) {
-                            error = [NSError errorWithDomain:SKLAPIErrorDomain code:BadRequestCode userInfo:nil];
-                        }
-						if (![self isJSONResponse:httpResponse]) {
-                            NSString *responseString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-                            NSDictionary *userInfo = responseString ? @{ SKLOriginalNetworkingResponseStringKey : responseString} : nil;
-							error = [NSError errorWithDomain:SKLAPIErrorDomain code:NonJSONErrorCode userInfo:userInfo];
-						}
-                        
-                        if (error) {
-                            completion(error, nil);
-                            return;
-                        }
-                        
-                        id responseObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
-                        completion(nil, responseObject);
-					}];
+	NSURLSessionDataTask *task = [self.session dataTaskWithRequest:request
+                                                 completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+                                                     NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
+                                                     if (error) {
+                                                         error = [NSError errorWithDomain:SKLAPIErrorDomain code:NSURLSessionErrorCode userInfo:@{ SKLOriginalNetworkingErrorKey : error }];
+                                                         completion(error, nil);
+                                                     }
+                                                     if (httpResponse.statusCode == 400) {
+                                                         error = [NSError errorWithDomain:SKLAPIErrorDomain code:BadRequestCode userInfo:nil];
+                                                     }
+                                                     if (![self isJSONResponse:httpResponse]) {
+                                                         NSString *responseString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+                                                         NSDictionary *userInfo = responseString ? @{ SKLOriginalNetworkingResponseStringKey : responseString} : nil;
+                                                         error = [NSError errorWithDomain:SKLAPIErrorDomain code:NonJSONErrorCode userInfo:userInfo];
+                                                     }
+                                                     
+                                                     if (error) {
+                                                         completion(error, nil);
+                                                         return;
+                                                     }
+                                                     
+                                                     id responseObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
+                                                     completion(nil, responseObject);
+                                                 }];
+    [task resume];
 }
 
 - (BOOL)isJSONResponse:(NSHTTPURLResponse *)response {
@@ -81,7 +82,7 @@ NSString *const SKLOriginalNetworkingResponseStringKey = @"SKLOriginalNetworking
 	if (!contentType) {
 		contentType = response.allHeaderFields[@"content-type"];
 	}
-	return [contentType isEqualToString:@"application/json"];
+	return [contentType rangeOfString:@"application/json"].location != NSNotFound;
 }
 
 #pragma mark Handling response
