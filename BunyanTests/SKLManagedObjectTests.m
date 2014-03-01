@@ -28,7 +28,7 @@
 - (void)testAllInContextWithPredicate {
     SKLTestPerson *personWithName = [SKLTestPerson insertInContext:self.context];
     personWithName.name = @"Aristotle";
-    SKLTestPerson *personWithoutName = [SKLTestPerson insertInContext:self.context];
+    [SKLTestPerson insertInContext:self.context];
     NSPredicate *onlyNamePredicate = [NSPredicate predicateWithFormat:@"name != nil"];
     NSArray *onlyWithName = [SKLTestPerson allInContext:self.context
                                               predicate:onlyNamePredicate];

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		592C93C318C0468400198C5D /* SKLMockURLSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 592C93C218C0468400198C5D /* SKLMockURLSession.m */; };
+		592C93C618C0469500198C5D /* SKLTestableAPIClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 592C93C518C0469500198C5D /* SKLTestableAPIClient.m */; };
 		59500FFF18BD92FB003BDD13 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59500FFE18BD92FB003BDD13 /* Foundation.framework */; };
 		5950100418BD92FB003BDD13 /* Bunyan.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5950100318BD92FB003BDD13 /* Bunyan.h */; };
 		5950100D18BD92FB003BDD13 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5950100C18BD92FB003BDD13 /* XCTest.framework */; };
@@ -47,6 +49,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		592C93C118C0468400198C5D /* SKLMockURLSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKLMockURLSession.h; sourceTree = "<group>"; };
+		592C93C218C0468400198C5D /* SKLMockURLSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKLMockURLSession.m; sourceTree = "<group>"; };
+		592C93C418C0469500198C5D /* SKLTestableAPIClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKLTestableAPIClient.h; sourceTree = "<group>"; };
+		592C93C518C0469500198C5D /* SKLTestableAPIClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKLTestableAPIClient.m; sourceTree = "<group>"; };
 		59500FFB18BD92FB003BDD13 /* libBunyan.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libBunyan.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		59500FFE18BD92FB003BDD13 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		5950100218BD92FB003BDD13 /* Bunyan-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Bunyan-Prefix.pch"; sourceTree = "<group>"; };
@@ -94,6 +100,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		592C93C018C0465F00198C5D /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				592C93C118C0468400198C5D /* SKLMockURLSession.h */,
+				592C93C218C0468400198C5D /* SKLMockURLSession.m */,
+				592C93C418C0469500198C5D /* SKLTestableAPIClient.h */,
+				592C93C518C0469500198C5D /* SKLTestableAPIClient.m */,
+			);
+			name = Helpers;
+			sourceTree = "<group>";
+		};
 		59500FF218BD92FB003BDD13 = {
 			isa = PBXGroup;
 			children = (
@@ -146,6 +163,7 @@
 		5950101418BD92FB003BDD13 /* BunyanTests */ = {
 			isa = PBXGroup;
 			children = (
+				592C93C018C0465F00198C5D /* Helpers */,
 				59ECBC4718BEFB05006800B4 /* Networking Tests */,
 				59ECBC4518BEFAEF006800B4 /* Model Tests */,
 				5950101518BD92FB003BDD13 /* Supporting Files */,
@@ -299,9 +317,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				592C93C318C0468400198C5D /* SKLMockURLSession.m in Sources */,
 				59ECBC4918BEFB1B006800B4 /* SKLAPIClientTests.m in Sources */,
 				5950102D18BD9465003BDD13 /* SKLCoreDataTests.m in Sources */,
 				5950102E18BD9465003BDD13 /* SKLManagedObjectTests.m in Sources */,
+				592C93C618C0469500198C5D /* SKLTestableAPIClient.m in Sources */,
 				5950103118BD946D003BDD13 /* SKLTestPerson.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

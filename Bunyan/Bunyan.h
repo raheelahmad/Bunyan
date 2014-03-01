@@ -7,4 +7,5 @@
 //
 
 #import "SKLManagedObject.h"
+#import "SKLAPIClient.h"
 
