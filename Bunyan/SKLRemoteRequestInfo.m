@@ -1,11 +1,13 @@
 //
-//  Bunyan.h
+//  SKLRemoteRequestInfo.m
 //  Bunyan
 //
-//  Created by Raheel Ahmad on 2/25/14.
+//  Created by Raheel Ahmad on 3/1/14.
 //  Copyright (c) 2014 Sakun Labs. All rights reserved.
 //
 
-#import "SKLManagedObject.h"
-#import "SKLAPIClient.h"
 #import "SKLRemoteRequestInfo.h"
+
+@implementation SKLRemoteRequestInfo
+
+@end

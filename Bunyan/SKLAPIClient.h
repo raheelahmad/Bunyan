@@ -20,7 +20,11 @@ extern NSString *const SKLOriginalNetworkingResponseStringKey;
 
 @interface SKLAPIClient : NSObject
 
-+ (instancetype)apiClientWithBaseURL:(NSString *)baseURL;
+
+- (id)initWithBaseURL:(NSString *)baseURL;
+
++ (void)setDefaultClientBaseURL:(NSString *)baseURL;
++ (instancetype)defaultClient;
 
 - (NSURLRequest *)requestWithMethod:(NSString *)method endPoint:(NSString *)endPoint;
 

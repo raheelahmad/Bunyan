@@ -7,8 +7,31 @@
 //
 
 #import "SKLManagedObject.h"
+#import "SKLAPIClient.h"
+#import "SKLRemoteRequestInfo.h"
 
 @implementation SKLManagedObject
+
+#pragma mark Remote Fetch
+
++ (void)fetch {
+	SKLRemoteRequestInfo *info = [self remoteFetchInfo];
+	SKLAPIClient *apiClient = [self apiClient];
+	NSURLRequest *request = [apiClient requestWithMethod:@"GET" endPoint:info.path];
+	[apiClient makeRequest:request completion:^(NSError *error, id responseObject) {
+		NSLog(@"Fetched for %@: %@", NSStringFromClass([self class]), responseObject);
+	}];
+}
+
++ (SKLRemoteRequestInfo *)remoteFetchInfo {
+	return nil;
+}
+
++ (SKLAPIClient *)apiClient {
+	return [SKLAPIClient defaultClient];
+}
+
+#pragma mark Core Data helpers
 
 + (instancetype)insertInContext:(NSManagedObjectContext *)context {
     id item =  [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([self class])

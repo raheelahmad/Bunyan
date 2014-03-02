@@ -23,8 +23,17 @@ NSString *const SKLOriginalNetworkingResponseStringKey = @"SKLOriginalNetworking
 
 #pragma mark Initialization
 
-+ (instancetype)apiClientWithBaseURL:(NSString *)baseURL {
-	return [[self alloc] initWithBaseURL:baseURL];
++ (void)setDefaultClientBaseURL:(NSString *)baseURL {
+	[SKLAPIClient defaultClient].baseAPIURL = baseURL;
+}
+
++ (instancetype)defaultClient {
+	static SKLAPIClient *_defaultClient = nil;
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
+		_defaultClient = [[SKLAPIClient alloc] initWithBaseURL:nil];
+	});
+	return _defaultClient;
 }
 
 - (id)initWithBaseURL:(NSString *)baseURL {

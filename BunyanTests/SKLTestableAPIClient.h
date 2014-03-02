@@ -8,8 +8,10 @@
 
 #import "SKLAPIClient.h"
 
+@class SKLMockURLSession;
+
 @interface SKLTestableAPIClient : SKLAPIClient
 
-@property (nonatomic) id mockSession;
+@property (nonatomic) SKLMockURLSession *mockSession;
 
 @end

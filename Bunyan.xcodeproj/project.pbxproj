@@ -21,6 +21,8 @@
 		5950102D18BD9465003BDD13 /* SKLCoreDataTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5950102918BD9465003BDD13 /* SKLCoreDataTests.m */; };
 		5950102E18BD9465003BDD13 /* SKLManagedObjectTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5950102C18BD9465003BDD13 /* SKLManagedObjectTests.m */; };
 		5950103118BD946D003BDD13 /* SKLTestPerson.m in Sources */ = {isa = PBXBuildFile; fileRef = 5950103018BD946D003BDD13 /* SKLTestPerson.m */; };
+		59559A0C18C306060043EAF0 /* SKLFetcherTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 59559A0B18C306060043EAF0 /* SKLFetcherTests.m */; };
+		59AB453118C26AF500252EA5 /* SKLRemoteRequestInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 59AB453018C26AF500252EA5 /* SKLRemoteRequestInfo.m */; };
 		59ECBC4418BEF9BC006800B4 /* SKLAPIClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 59ECBC4318BEF9BC006800B4 /* SKLAPIClient.m */; };
 		59ECBC4918BEFB1B006800B4 /* SKLAPIClientTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 59ECBC4818BEFB1B006800B4 /* SKLAPIClientTests.m */; };
 /* End PBXBuildFile section */
@@ -71,6 +73,9 @@
 		5950102C18BD9465003BDD13 /* SKLManagedObjectTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKLManagedObjectTests.m; sourceTree = "<group>"; };
 		5950102F18BD946D003BDD13 /* SKLTestPerson.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKLTestPerson.h; sourceTree = "<group>"; };
 		5950103018BD946D003BDD13 /* SKLTestPerson.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKLTestPerson.m; sourceTree = "<group>"; };
+		59559A0B18C306060043EAF0 /* SKLFetcherTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKLFetcherTests.m; sourceTree = "<group>"; };
+		59AB452F18C26AF500252EA5 /* SKLRemoteRequestInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKLRemoteRequestInfo.h; sourceTree = "<group>"; };
+		59AB453018C26AF500252EA5 /* SKLRemoteRequestInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKLRemoteRequestInfo.m; sourceTree = "<group>"; };
 		59ECBC4218BEF9BC006800B4 /* SKLAPIClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKLAPIClient.h; sourceTree = "<group>"; };
 		59ECBC4318BEF9BC006800B4 /* SKLAPIClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKLAPIClient.m; sourceTree = "<group>"; };
 		59ECBC4818BEFB1B006800B4 /* SKLAPIClientTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKLAPIClientTests.m; sourceTree = "<group>"; };
@@ -185,6 +190,8 @@
 			children = (
 				5950102618BD9459003BDD13 /* SKLManagedObject.h */,
 				5950102718BD9459003BDD13 /* SKLManagedObject.m */,
+				59AB452F18C26AF500252EA5 /* SKLRemoteRequestInfo.h */,
+				59AB453018C26AF500252EA5 /* SKLRemoteRequestInfo.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -206,6 +213,7 @@
 				5950102A18BD9465003BDD13 /* SKLCoreDataTests.h */,
 				5950102B18BD9465003BDD13 /* SKLManagedObjectTests.h */,
 				5950102C18BD9465003BDD13 /* SKLManagedObjectTests.m */,
+				59559A0B18C306060043EAF0 /* SKLFetcherTests.m */,
 			);
 			name = "Model Tests";
 			sourceTree = "<group>";
@@ -309,6 +317,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				59ECBC4418BEF9BC006800B4 /* SKLAPIClient.m in Sources */,
+				59AB453118C26AF500252EA5 /* SKLRemoteRequestInfo.m in Sources */,
 				5950102818BD9459003BDD13 /* SKLManagedObject.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -317,6 +326,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				59559A0C18C306060043EAF0 /* SKLFetcherTests.m in Sources */,
 				592C93C318C0468400198C5D /* SKLMockURLSession.m in Sources */,
 				59ECBC4918BEFB1B006800B4 /* SKLAPIClientTests.m in Sources */,
 				5950102D18BD9465003BDD13 /* SKLCoreDataTests.m in Sources */,

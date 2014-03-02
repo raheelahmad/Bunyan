@@ -82,7 +82,7 @@
 }
 
 - (void)setUp {
-    self.apiClient = [SKLTestableAPIClient apiClientWithBaseURL:@"http://www.sakunlabs.com/api"];
+    self.apiClient = [[SKLTestableAPIClient alloc] initWithBaseURL:@"http://www.sakunlabs.com/api"];
 	self.mockSession = [[SKLMockURLSession alloc] init];
 	self.apiClient.mockSession = self.mockSession;
     [super setUp];
