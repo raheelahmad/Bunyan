@@ -13,4 +13,8 @@
 @dynamic name;
 @dynamic age;
 
++ (NSArray *)sortDescriptors {
+    return @[ [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES] ];
+}
+
 @end

@@ -12,9 +12,11 @@ extern NSString *const SKLModelNameKey;
 extern NSString *const SKLAttrNameKey;
 extern NSString *const SKLAttrTypeKey;
 
+@class SKLTestableManagedObjectContext;
+
 @interface SKLCoreDataTests : XCTestCase
 
-@property (nonatomic) NSManagedObjectContext *context;
+@property (nonatomic) SKLTestableManagedObjectContext *context;
 
 /**
  * Default implementation loads the project model.

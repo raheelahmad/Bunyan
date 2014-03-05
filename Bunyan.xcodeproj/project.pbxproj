@@ -22,7 +22,11 @@
 		5950102E18BD9465003BDD13 /* SKLManagedObjectTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5950102C18BD9465003BDD13 /* SKLManagedObjectTests.m */; };
 		5950103118BD946D003BDD13 /* SKLTestPerson.m in Sources */ = {isa = PBXBuildFile; fileRef = 5950103018BD946D003BDD13 /* SKLTestPerson.m */; };
 		59559A0C18C306060043EAF0 /* SKLFetcherTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 59559A0B18C306060043EAF0 /* SKLFetcherTests.m */; };
+		59559A1618C4076E0043EAF0 /* SKLPersistenceStack.m in Sources */ = {isa = PBXBuildFile; fileRef = 59559A1518C4076E0043EAF0 /* SKLPersistenceStack.m */; };
+		59559A1918C4373A0043EAF0 /* NSManagedObjectContext+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 59559A1818C4373A0043EAF0 /* NSManagedObjectContext+Additions.m */; };
+		59559A1C18C438FE0043EAF0 /* SKLTestableManagedObjectContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 59559A1B18C438FE0043EAF0 /* SKLTestableManagedObjectContext.m */; };
 		59AB453118C26AF500252EA5 /* SKLRemoteRequestInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 59AB453018C26AF500252EA5 /* SKLRemoteRequestInfo.m */; };
+		59D1D14518C78BC900189BAC /* SKLManagedDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 59D1D14418C78BC900189BAC /* SKLManagedDataSource.m */; };
 		59ECBC4418BEF9BC006800B4 /* SKLAPIClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 59ECBC4318BEF9BC006800B4 /* SKLAPIClient.m */; };
 		59ECBC4918BEFB1B006800B4 /* SKLAPIClientTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 59ECBC4818BEFB1B006800B4 /* SKLAPIClientTests.m */; };
 /* End PBXBuildFile section */
@@ -74,8 +78,16 @@
 		5950102F18BD946D003BDD13 /* SKLTestPerson.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKLTestPerson.h; sourceTree = "<group>"; };
 		5950103018BD946D003BDD13 /* SKLTestPerson.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKLTestPerson.m; sourceTree = "<group>"; };
 		59559A0B18C306060043EAF0 /* SKLFetcherTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKLFetcherTests.m; sourceTree = "<group>"; };
+		59559A1418C4076E0043EAF0 /* SKLPersistenceStack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKLPersistenceStack.h; sourceTree = "<group>"; };
+		59559A1518C4076E0043EAF0 /* SKLPersistenceStack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKLPersistenceStack.m; sourceTree = "<group>"; };
+		59559A1718C4373A0043EAF0 /* NSManagedObjectContext+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObjectContext+Additions.h"; sourceTree = "<group>"; };
+		59559A1818C4373A0043EAF0 /* NSManagedObjectContext+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObjectContext+Additions.m"; sourceTree = "<group>"; };
+		59559A1A18C438FE0043EAF0 /* SKLTestableManagedObjectContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKLTestableManagedObjectContext.h; sourceTree = "<group>"; };
+		59559A1B18C438FE0043EAF0 /* SKLTestableManagedObjectContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKLTestableManagedObjectContext.m; sourceTree = "<group>"; };
 		59AB452F18C26AF500252EA5 /* SKLRemoteRequestInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKLRemoteRequestInfo.h; sourceTree = "<group>"; };
 		59AB453018C26AF500252EA5 /* SKLRemoteRequestInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKLRemoteRequestInfo.m; sourceTree = "<group>"; };
+		59D1D14318C78BC900189BAC /* SKLManagedDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKLManagedDataSource.h; sourceTree = "<group>"; };
+		59D1D14418C78BC900189BAC /* SKLManagedDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKLManagedDataSource.m; sourceTree = "<group>"; };
 		59ECBC4218BEF9BC006800B4 /* SKLAPIClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKLAPIClient.h; sourceTree = "<group>"; };
 		59ECBC4318BEF9BC006800B4 /* SKLAPIClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKLAPIClient.m; sourceTree = "<group>"; };
 		59ECBC4818BEFB1B006800B4 /* SKLAPIClientTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKLAPIClientTests.m; sourceTree = "<group>"; };
@@ -149,6 +161,7 @@
 		5950100018BD92FB003BDD13 /* Bunyan */ = {
 			isa = PBXGroup;
 			children = (
+				59D1D14218C78B9100189BAC /* Controllers */,
 				5950100318BD92FB003BDD13 /* Bunyan.h */,
 				59ECBC4018BEF98C006800B4 /* Models */,
 				59ECBC4118BEF99E006800B4 /* Network */,
@@ -185,6 +198,15 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		59D1D14218C78B9100189BAC /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				59D1D14318C78BC900189BAC /* SKLManagedDataSource.h */,
+				59D1D14418C78BC900189BAC /* SKLManagedDataSource.m */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
 		59ECBC4018BEF98C006800B4 /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -192,6 +214,10 @@
 				5950102718BD9459003BDD13 /* SKLManagedObject.m */,
 				59AB452F18C26AF500252EA5 /* SKLRemoteRequestInfo.h */,
 				59AB453018C26AF500252EA5 /* SKLRemoteRequestInfo.m */,
+				59559A1418C4076E0043EAF0 /* SKLPersistenceStack.h */,
+				59559A1518C4076E0043EAF0 /* SKLPersistenceStack.m */,
+				59559A1718C4373A0043EAF0 /* NSManagedObjectContext+Additions.h */,
+				59559A1818C4373A0043EAF0 /* NSManagedObjectContext+Additions.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -223,6 +249,8 @@
 			children = (
 				5950102F18BD946D003BDD13 /* SKLTestPerson.h */,
 				5950103018BD946D003BDD13 /* SKLTestPerson.m */,
+				59559A1A18C438FE0043EAF0 /* SKLTestableManagedObjectContext.h */,
+				59559A1B18C438FE0043EAF0 /* SKLTestableManagedObjectContext.m */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -317,8 +345,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				59ECBC4418BEF9BC006800B4 /* SKLAPIClient.m in Sources */,
+				59559A1918C4373A0043EAF0 /* NSManagedObjectContext+Additions.m in Sources */,
+				59559A1618C4076E0043EAF0 /* SKLPersistenceStack.m in Sources */,
 				59AB453118C26AF500252EA5 /* SKLRemoteRequestInfo.m in Sources */,
 				5950102818BD9459003BDD13 /* SKLManagedObject.m in Sources */,
+				59D1D14518C78BC900189BAC /* SKLManagedDataSource.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -327,6 +358,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				59559A0C18C306060043EAF0 /* SKLFetcherTests.m in Sources */,
+				59559A1C18C438FE0043EAF0 /* SKLTestableManagedObjectContext.m in Sources */,
 				592C93C318C0468400198C5D /* SKLMockURLSession.m in Sources */,
 				59ECBC4918BEFB1B006800B4 /* SKLAPIClientTests.m in Sources */,
 				5950102D18BD9465003BDD13 /* SKLCoreDataTests.m in Sources */,
@@ -468,6 +500,13 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = "BunyanTests/BunyanTests-Info.plist";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-framework",
+					XCTest,
+					"-all_load",
+					"-ObjC",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = xctest;
 			};
@@ -485,6 +524,13 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Bunyan/Bunyan-Prefix.pch";
 				INFOPLIST_FILE = "BunyanTests/BunyanTests-Info.plist";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-framework",
+					XCTest,
+					"-all_load",
+					"-ObjC",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = xctest;
 			};

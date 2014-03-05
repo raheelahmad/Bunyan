@@ -6,6 +6,7 @@
 //
 
 #import "SKLManagedObjectTests.h"
+#import "SKLTestableManagedObjectContext.h"
 #import "SKLTestPerson.h"
 
 @implementation SKLManagedObjectTests
@@ -41,6 +42,18 @@
     SKLTestPerson *anyPerson = [SKLTestPerson anyInContext:self.context];
     XCTAssertNotNil(anyPerson, @"Can fetch any object");
 }
+
+- (void)testController {
+	NSFetchedResultsController *controller = [SKLTestPerson controllerInContext:self.context];
+	NSFetchRequest *request = controller.fetchRequest;
+	XCTAssertNotNil(request, @"Controller should have a request");
+	XCTAssertEqualObjects(request.entityName, @"SKLTestPerson", @"Controller should have MO's entity");
+	XCTAssertNil(request.predicate, @"Controller should not have a predicate");
+	XCTAssertNotNil(request.sortDescriptors, @"Controller should have sort descriptors");
+	XCTAssertEqualObjects(controller.managedObjectContext, self.context, @"Controller should not have the supplied context");
+}
+
+
 
 #pragma mark Basic tests
 

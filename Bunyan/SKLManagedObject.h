@@ -16,10 +16,19 @@
 + (NSArray *)allInContext:(NSManagedObjectContext *)context;
 + (NSArray *)allInContext:(NSManagedObjectContext *)context predicate:(NSPredicate *)predicate;
 + (instancetype)anyInContext:(NSManagedObjectContext *)context;
++ (NSFetchedResultsController *)controllerInContext:(NSManagedObjectContext *)context;
+
++ (NSManagedObjectContext *)mainContext;
++ (NSManagedObjectContext *)importContext;
 
 // Remote fetches
 + (void)fetch;
-+ (SKLRemoteRequestInfo *)remoteFetchInfo;
 + (SKLAPIClient *)apiClient;
++ (void)updateWithRemoteFetchResponse:(NSArray *)response;
+
++ (SKLRemoteRequestInfo *)remoteFetchInfo;
++ (NSDictionary *)localToRemoteKeyMapping;
++ (id)uniquingKey;
++ (NSArray *)sortDescriptors;
 
 @end

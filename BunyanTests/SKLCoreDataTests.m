@@ -7,6 +7,7 @@
 //
 
 #import "SKLCoreDataTests.h"
+#import "SKLTestableManagedObjectContext.h"
 
 NSString *const SKLModelNameKey = @"SKLModelNameKey";
 NSString *const SKLAttrNameKey = @"SKLAttrNameKey";
@@ -118,7 +119,7 @@ void addRelationships(NSEntityDescription *source, NSEntityDescription *destinat
                                                 configuration:nil
                                                           URL:nil
                                                       options:nil error:NULL];
-    self.context = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
+    self.context = [[SKLTestableManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
     self.context.persistentStoreCoordinator = self.coordinator;
 }
 
