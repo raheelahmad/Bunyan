@@ -49,7 +49,11 @@
 			[localObject updateWithRemoteObject:remoteObject];
 		}
 		
-		[context save];
+        NSError *error;
+        BOOL saved = [context save:&error];
+        if (!saved) {
+            NSLog(@"Error saving: %@", error);
+        }
 	}];
 }
 

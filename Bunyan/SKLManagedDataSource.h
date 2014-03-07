@@ -6,10 +6,21 @@
 //  Copyright (c) 2014 Sakun Labs. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
-@interface SKLManagedDataSource : NSObject
+@protocol SKLDataSourceDelegate;
 
-- (id)initWithResultsController:(NSFetchedResultsController *)controller;
+@interface SKLManagedDataSource : NSObject<UITableViewDataSource>
+
+@property (nonatomic) id<SKLDataSourceDelegate> delegate;
+
+- (id)initWithModelClass:(Class)modelClass cellCalss:(Class)cellClass;
+- (void)setupTableView:(UITableView *)tableView;
+
+@end
+
+@protocol SKLDataSourceDelegate <NSObject>
+
+- (void)configureCell:(UITableViewCell *)cell withObject:(id)object;
 
 @end

@@ -27,6 +27,7 @@
 		59559A1C18C438FE0043EAF0 /* SKLTestableManagedObjectContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 59559A1B18C438FE0043EAF0 /* SKLTestableManagedObjectContext.m */; };
 		59AB453118C26AF500252EA5 /* SKLRemoteRequestInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 59AB453018C26AF500252EA5 /* SKLRemoteRequestInfo.m */; };
 		59D1D14518C78BC900189BAC /* SKLManagedDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 59D1D14418C78BC900189BAC /* SKLManagedDataSource.m */; };
+		59D1D14818C83FAD00189BAC /* SKLManagedDataSourceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 59D1D14718C83FAD00189BAC /* SKLManagedDataSourceTests.m */; };
 		59ECBC4418BEF9BC006800B4 /* SKLAPIClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 59ECBC4318BEF9BC006800B4 /* SKLAPIClient.m */; };
 		59ECBC4918BEFB1B006800B4 /* SKLAPIClientTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 59ECBC4818BEFB1B006800B4 /* SKLAPIClientTests.m */; };
 /* End PBXBuildFile section */
@@ -88,6 +89,7 @@
 		59AB453018C26AF500252EA5 /* SKLRemoteRequestInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKLRemoteRequestInfo.m; sourceTree = "<group>"; };
 		59D1D14318C78BC900189BAC /* SKLManagedDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKLManagedDataSource.h; sourceTree = "<group>"; };
 		59D1D14418C78BC900189BAC /* SKLManagedDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKLManagedDataSource.m; sourceTree = "<group>"; };
+		59D1D14718C83FAD00189BAC /* SKLManagedDataSourceTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKLManagedDataSourceTests.m; sourceTree = "<group>"; };
 		59ECBC4218BEF9BC006800B4 /* SKLAPIClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKLAPIClient.h; sourceTree = "<group>"; };
 		59ECBC4318BEF9BC006800B4 /* SKLAPIClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKLAPIClient.m; sourceTree = "<group>"; };
 		59ECBC4818BEFB1B006800B4 /* SKLAPIClientTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKLAPIClientTests.m; sourceTree = "<group>"; };
@@ -181,6 +183,7 @@
 		5950101418BD92FB003BDD13 /* BunyanTests */ = {
 			isa = PBXGroup;
 			children = (
+				59D1D14618C83F9800189BAC /* Controller Tests */,
 				592C93C018C0465F00198C5D /* Helpers */,
 				59ECBC4718BEFB05006800B4 /* Networking Tests */,
 				59ECBC4518BEFAEF006800B4 /* Model Tests */,
@@ -205,6 +208,14 @@
 				59D1D14418C78BC900189BAC /* SKLManagedDataSource.m */,
 			);
 			name = Controllers;
+			sourceTree = "<group>";
+		};
+		59D1D14618C83F9800189BAC /* Controller Tests */ = {
+			isa = PBXGroup;
+			children = (
+				59D1D14718C83FAD00189BAC /* SKLManagedDataSourceTests.m */,
+			);
+			name = "Controller Tests";
 			sourceTree = "<group>";
 		};
 		59ECBC4018BEF98C006800B4 /* Models */ = {
@@ -362,6 +373,7 @@
 				592C93C318C0468400198C5D /* SKLMockURLSession.m in Sources */,
 				59ECBC4918BEFB1B006800B4 /* SKLAPIClientTests.m in Sources */,
 				5950102D18BD9465003BDD13 /* SKLCoreDataTests.m in Sources */,
+				59D1D14818C83FAD00189BAC /* SKLManagedDataSourceTests.m in Sources */,
 				5950102E18BD9465003BDD13 /* SKLManagedObjectTests.m in Sources */,
 				592C93C618C0469500198C5D /* SKLTestableAPIClient.m in Sources */,
 				5950103118BD946D003BDD13 /* SKLTestPerson.m in Sources */,
@@ -424,6 +436,10 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-all_load",
+				);
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -455,6 +471,10 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-all_load",
+				);
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -466,7 +486,10 @@
 				DSTROOT = /tmp/Bunyan.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Bunyan/Bunyan-Prefix.pch";
-				OTHER_LDFLAGS = "-ObjC";
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-all_load",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 			};
@@ -478,7 +501,10 @@
 				DSTROOT = /tmp/Bunyan.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Bunyan/Bunyan-Prefix.pch";
-				OTHER_LDFLAGS = "-ObjC";
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-all_load",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 			};
