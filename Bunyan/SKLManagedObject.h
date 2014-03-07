@@ -25,6 +25,7 @@
 + (void)fetch;
 + (SKLAPIClient *)apiClient;
 + (void)updateWithRemoteFetchResponse:(NSArray *)response;
+- (id)localValueForKey:(NSString *)localKey RemoteValue:(id)remoteValue;
 
 + (SKLRemoteRequestInfo *)remoteFetchInfo;
 + (NSDictionary *)localToRemoteKeyMapping;

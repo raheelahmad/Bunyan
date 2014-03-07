@@ -61,14 +61,19 @@
 	NSDictionary *mapping = [[self class] localToRemoteKeyMapping];
 	[mapping enumerateKeysAndObjectsUsingBlock:^(id localKey, id remoteKey, BOOL *stop) {
 		id remoteValue = remoteObject[remoteKey];
+		id newLocalValue = [self localValueForKey:localKey RemoteValue:remoteValue];
 		id localValue = [self valueForKey:localKey];
-		BOOL remoteValuePresent = remoteValue != nil;
-		BOOL localNotSameAsRemote = ![localValue isEqual:remoteValue];
+		BOOL remoteValuePresent = newLocalValue != nil;
+		BOOL localNotSameAsRemote = ![localValue isEqual:newLocalValue];
 		if (remoteValuePresent && localNotSameAsRemote) {
-			[self setValue:remoteValue
+			[self setValue:newLocalValue
 					forKey:localKey];
 		}
 	}];
+}
+
+- (id)localValueForKey:(NSString *)localKey RemoteValue:(id)remoteValue {
+	return remoteValue;
 }
 
 #pragma mark Fetch Helpers

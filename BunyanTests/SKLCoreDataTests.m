@@ -41,6 +41,9 @@ NSString *const SKLAttrTypeKey = @"SKLAttrTypeKey";
 		} else if ([type isEqualToString:@"int"]) {
 			attr.attributeType = NSInteger32AttributeType;
 			attr.attributeValueClassName = NSStringFromClass([NSNumber class]);
+		} else if ([type isEqualToString:@"date"]) {
+			attr.attributeType = NSDateAttributeType;
+			attr.attributeValueClassName = NSStringFromClass([NSDate class]);
 		}
 		[properties addObject:attr];
 	}

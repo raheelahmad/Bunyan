@@ -79,7 +79,6 @@
 #pragma mark Initialization
 
 - (void)setupTableView:(UITableView *)tableView {
-    [tableView registerClass:self.cellClass forCellReuseIdentifier:NSStringFromClass(self.cellClass)];
     tableView.dataSource = self;
     self.tableView = tableView;
     
