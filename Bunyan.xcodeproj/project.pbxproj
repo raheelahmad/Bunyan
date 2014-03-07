@@ -25,6 +25,7 @@
 		59559A1618C4076E0043EAF0 /* SKLPersistenceStack.m in Sources */ = {isa = PBXBuildFile; fileRef = 59559A1518C4076E0043EAF0 /* SKLPersistenceStack.m */; };
 		59559A1918C4373A0043EAF0 /* NSManagedObjectContext+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 59559A1818C4373A0043EAF0 /* NSManagedObjectContext+Additions.m */; };
 		59559A1C18C438FE0043EAF0 /* SKLTestableManagedObjectContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 59559A1B18C438FE0043EAF0 /* SKLTestableManagedObjectContext.m */; };
+		59585CA718C984AA002D4C92 /* SKLTestableManagedDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 59585CA618C984AA002D4C92 /* SKLTestableManagedDataSource.m */; };
 		59AB453118C26AF500252EA5 /* SKLRemoteRequestInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 59AB453018C26AF500252EA5 /* SKLRemoteRequestInfo.m */; };
 		59D1D14518C78BC900189BAC /* SKLManagedDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 59D1D14418C78BC900189BAC /* SKLManagedDataSource.m */; };
 		59D1D14818C83FAD00189BAC /* SKLManagedDataSourceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 59D1D14718C83FAD00189BAC /* SKLManagedDataSourceTests.m */; };
@@ -85,6 +86,8 @@
 		59559A1818C4373A0043EAF0 /* NSManagedObjectContext+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObjectContext+Additions.m"; sourceTree = "<group>"; };
 		59559A1A18C438FE0043EAF0 /* SKLTestableManagedObjectContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKLTestableManagedObjectContext.h; sourceTree = "<group>"; };
 		59559A1B18C438FE0043EAF0 /* SKLTestableManagedObjectContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKLTestableManagedObjectContext.m; sourceTree = "<group>"; };
+		59585CA518C984AA002D4C92 /* SKLTestableManagedDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKLTestableManagedDataSource.h; sourceTree = "<group>"; };
+		59585CA618C984AA002D4C92 /* SKLTestableManagedDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKLTestableManagedDataSource.m; sourceTree = "<group>"; };
 		59AB452F18C26AF500252EA5 /* SKLRemoteRequestInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKLRemoteRequestInfo.h; sourceTree = "<group>"; };
 		59AB453018C26AF500252EA5 /* SKLRemoteRequestInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKLRemoteRequestInfo.m; sourceTree = "<group>"; };
 		59D1D14318C78BC900189BAC /* SKLManagedDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKLManagedDataSource.h; sourceTree = "<group>"; };
@@ -126,6 +129,8 @@
 				592C93C218C0468400198C5D /* SKLMockURLSession.m */,
 				592C93C418C0469500198C5D /* SKLTestableAPIClient.h */,
 				592C93C518C0469500198C5D /* SKLTestableAPIClient.m */,
+				59585CA518C984AA002D4C92 /* SKLTestableManagedDataSource.h */,
+				59585CA618C984AA002D4C92 /* SKLTestableManagedDataSource.m */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -373,6 +378,7 @@
 				592C93C318C0468400198C5D /* SKLMockURLSession.m in Sources */,
 				59ECBC4918BEFB1B006800B4 /* SKLAPIClientTests.m in Sources */,
 				5950102D18BD9465003BDD13 /* SKLCoreDataTests.m in Sources */,
+				59585CA718C984AA002D4C92 /* SKLTestableManagedDataSource.m in Sources */,
 				59D1D14818C83FAD00189BAC /* SKLManagedDataSourceTests.m in Sources */,
 				5950102E18BD9465003BDD13 /* SKLManagedObjectTests.m in Sources */,
 				592C93C618C0469500198C5D /* SKLTestableAPIClient.m in Sources */,

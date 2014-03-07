@@ -171,8 +171,6 @@ NSError *error;
 }
 
 - (void)tearDown {
-	apiClient = nil;
-	responseObject = nil;
 	error = nil;
 	
     [super tearDown];
