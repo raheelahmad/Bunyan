@@ -83,31 +83,30 @@
 					forKey:localKey];
 		}
 	} else if (relationship) {
-		Class destination = NSClassFromString(relationship.destinationEntity.managedObjectClassName);
+		Class destinationClass = NSClassFromString(relationship.destinationEntity.managedObjectClassName);
+		// common block to insert/update a destination class object
+		SKLManagedObject *(^DestinationObjectForRemote)(NSDictionary *) = ^(NSDictionary *remoteObject) {
+			SKLManagedObject *destinationObject = [destinationClass localObjectForRemoteObject:remoteObject];
+			if (!destinationObject) {
+				destinationObject = [destinationClass insertInContext:self.managedObjectContext];
+			}
+			[destinationObject updateWithRemoteObject:remoteObject];
+			return destinationObject;
+		};
+		
 		if (relationship.isToMany) {
 			NSAssert([formattedRemoteValue isKindOfClass:[NSArray class]], @"Relationship %@ in %@ is to-many and should be remote updated with an array", localKey, NSStringFromClass(self.class));
 			
 			NSMutableSet *destinationLocalObjects = [NSMutableSet set];
 			for (NSDictionary *remoteObject in formattedRemoteValue) {
-#warning DRY
-				SKLManagedObject *destinationObject = [destination localObjectForRemoteObject:remoteObject];
-				if (!destinationObject) {
-					destinationObject = [destination insertInContext:self.managedObjectContext];
-				}
-				[destinationObject updateWithRemoteObject:remoteObject];
-				[destinationLocalObjects addObject:destinationObject];
+				[destinationLocalObjects addObject:DestinationObjectForRemote(remoteObject)];
 			}
 			[self setValue:destinationLocalObjects
 					forKey:localKey];
 		} else {
 			NSAssert([formattedRemoteValue isKindOfClass:[NSDictionary class]], @"Relationship %@ in %@ is to-one and should be remote updated with a dictionary", localKey, NSStringFromClass(self.class));
 			
-			SKLManagedObject *destinationObject = [destination localObjectForRemoteObject:formattedRemoteValue];
-			if (!destinationObject) {
-				destinationObject = [destination insertInContext:self.managedObjectContext];
-			}
-			[destinationObject updateWithRemoteObject:formattedRemoteValue];
-			[self setValue:destinationObject
+			[self setValue:DestinationObjectForRemote(formattedRemoteValue)
 					forKey:localKey];
 		}
 	}

@@ -25,12 +25,15 @@
 @end
 
 @interface SKLFakeSectionInfo : NSObject<NSFetchedResultsSectionInfo>
-@property (nonatomic) NSArray *objects;
+@property (nonatomic) NSArray *allObjects;
 @end
 
 @implementation SKLFakeSectionInfo
-@synthesize objects;
-- (NSUInteger)numberOfObjects { return [objects count]; }
+@synthesize allObjects;
+- (NSUInteger)numberOfObjects { return [self.allObjects count]; }
+- (NSArray *)objects { return self.allObjects; }
+- (NSString *)name { return nil; }
+- (NSString *)indexTitle { return nil; }
 @end
 
 // ---
@@ -64,9 +67,9 @@
     
 	self.resultsController = [[SKLFakeResultsController alloc] init];
     SKLFakeSectionInfo *section1 = [[SKLFakeSectionInfo alloc] init];
-    section1.objects = @[ @"Socrates", @"Ibn Sina" ];
+    section1.allObjects = @[ @"Socrates", @"Ibn Sina" ];
     SKLFakeSectionInfo *section2 = [[SKLFakeSectionInfo alloc] init];
-    section2.objects = @[ @"Augustine", @"Mosheh ben Maimon", @"Descartes" ];
+    section2.allObjects = @[ @"Augustine", @"Mosheh ben Maimon", @"Descartes" ];
     self.resultsController.sections = @[ section1, section2 ];
     
     self.dataSource.mockResultsController = self.resultsController;
