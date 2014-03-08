@@ -61,15 +61,57 @@
 	NSDictionary *mapping = [[self class] localToRemoteKeyMapping];
 	[mapping enumerateKeysAndObjectsUsingBlock:^(id localKey, id remoteKey, BOOL *stop) {
 		id remoteValue = remoteObject[remoteKey];
-		id newLocalValue = [self localValueForKey:localKey RemoteValue:remoteValue];
-		id localValue = [self valueForKey:localKey];
-		BOOL remoteValuePresent = newLocalValue != nil;
-		BOOL localNotSameAsRemote = ![localValue isEqual:newLocalValue];
-		if (remoteValuePresent && localNotSameAsRemote) {
-			[self setValue:newLocalValue
-					forKey:localKey];
+		if (remoteValue) {
+			[self updateValueForLocalKey:localKey remoteValue:remoteValue];
 		}
 	}];
+}
+
+- (void)updateValueForLocalKey:(NSString *)localKey remoteValue:(id)remoteValue {
+	id localValue = [self valueForKey:localKey];
+	id formattedRemoteValue = [self localValueForKey:localKey RemoteValue:remoteValue];
+	
+	NSAttributeDescription *attribute = [self.entity attributesByName][localKey];
+	NSRelationshipDescription *relationship = [self.entity relationshipsByName][localKey];
+	NSAssert(attribute || relationship, @"%@ is neither an attribute nor a relationship for %@'s entity", localKey, NSStringFromClass(self.class));
+	
+	if (attribute) {
+		BOOL remoteValuePresent = formattedRemoteValue != nil;
+		BOOL localNotSameAsRemote = ![localValue isEqual:formattedRemoteValue];
+		if (remoteValuePresent && localNotSameAsRemote) {
+			[self setValue:formattedRemoteValue
+					forKey:localKey];
+		}
+	} else if (relationship) {
+		Class destination = NSClassFromString(relationship.destinationEntity.managedObjectClassName);
+		if (relationship.isToMany) {
+			NSAssert([formattedRemoteValue isKindOfClass:[NSArray class]], @"Relationship %@ in %@ is to-many and should be remote updated with an array", localKey, NSStringFromClass(self.class));
+			
+			NSMutableSet *destinationLocalObjects = [NSMutableSet set];
+			for (NSDictionary *remoteObject in formattedRemoteValue) {
+#warning DRY
+				SKLManagedObject *destinationObject = [destination localObjectForRemoteObject:remoteObject];
+				if (!destinationObject) {
+					destinationObject = [destination insertInContext:self.managedObjectContext];
+				}
+				[destinationObject updateWithRemoteObject:remoteObject];
+				[destinationLocalObjects addObject:destinationObject];
+			}
+			[self setValue:destinationLocalObjects
+					forKey:localKey];
+		} else {
+			NSAssert([formattedRemoteValue isKindOfClass:[NSDictionary class]], @"Relationship %@ in %@ is to-one and should be remote updated with a dictionary", localKey, NSStringFromClass(self.class));
+			
+			SKLManagedObject *destinationObject = [destination localObjectForRemoteObject:formattedRemoteValue];
+			if (!destinationObject) {
+				destinationObject = [destination insertInContext:self.managedObjectContext];
+			}
+			[destinationObject updateWithRemoteObject:formattedRemoteValue];
+			[self setValue:destinationObject
+					forKey:localKey];
+		}
+	}
+	
 }
 
 - (id)localValueForKey:(NSString *)localKey RemoteValue:(id)remoteValue {
@@ -135,6 +177,11 @@
 
     return result;
     
+}
+
++ (instancetype)oneWith:(id)value for:(NSString *)key inContext:(NSManagedObjectContext *)context {
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", key, value];
+	return [[self allInContext:context predicate:predicate] firstObject];
 }
 
 + (instancetype)anyInContext:(NSManagedObjectContext *)context {

@@ -43,6 +43,14 @@
     XCTAssertNotNil(anyPerson, @"Can fetch any object");
 }
 
+- (void)testOneWith {
+	SKLTestPerson *person = [SKLTestPerson insertInContext:self.context];
+	person.name = @"Maimonedes";
+	[SKLTestPerson insertInContext:self.context];
+	SKLTestPerson *oneWithName = [SKLTestPerson oneWith:@"Maimonedes" for:@"name" inContext:self.context];
+	XCTAssertEqualObjects(oneWithName.name, @"Maimonedes", @"Should fetch oneWith:key:");
+}
+
 - (void)testController {
 	NSFetchedResultsController *controller = [SKLTestPerson controllerInContext:self.context];
 	NSFetchRequest *request = controller.fetchRequest;

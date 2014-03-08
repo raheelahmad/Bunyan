@@ -22,6 +22,8 @@ BOOL shouldMockUpdateWithRemoteResponse;
 id responseObject;
 NSError *error;
 
+@class SKLFakeOpus;
+
 // ----
 
 @interface SKLFakePerson : SKLManagedObject
@@ -29,11 +31,13 @@ NSError *error;
 @property (nonatomic) NSString *location;
 @property (nonatomic) NSDate *birthdate;
 @property (nonatomic) NSNumber *remoteId;
+@property (nonatomic) SKLFakeOpus *magnumOpus;
+@property (nonatomic) NSSet *opuses;
 @end
 
 @implementation SKLFakePerson
 
-@dynamic name, location, remoteId;
+@dynamic name, location, birthdate, remoteId, magnumOpus, opuses;
 
 + (SKLRemoteRequestInfo *)remoteFetchInfo {
 	SKLRemoteRequestInfo *info = [[SKLRemoteRequestInfo alloc] init];
@@ -59,6 +63,8 @@ NSError *error;
 			 @"name" : @"name",
 			 @"location" : @"location",
 			 @"birthdate" : @"date",
+			 @"magnumOpus" : @"magnum",
+			 @"opuses" : @"otherOpuses",
 			 };
 }
 
@@ -83,10 +89,39 @@ NSError *error;
 
 @end
 
+@interface SKLFakeOpus : SKLManagedObject
+
+@property (nonatomic) NSNumber *remoteId;
+@property (nonatomic) NSString *name;
+@property (nonatomic) NSNumber *pageCount;
+@property (nonatomic) SKLFakePerson *magnumOwner;
+@property (nonatomic) SKLFakePerson *owner;
+
+@end
+
+@implementation SKLFakeOpus
+
+@dynamic name, pageCount, remoteId, magnumOwner, owner;
+
++ (NSDictionary *)localToRemoteKeyMapping {
+	return @{
+			 @"name" : @"name",
+			 @"remoteId" : @"id",
+			 @"pageCount" : @"pages"
+			 };
+}
+
++ (id)uniquingKey { return @"remoteId"; }
+
+@end
+
 
 // ----
 
 @interface SKLFetcherTests : SKLCoreDataTests
+
+@property (nonatomic) SKLTestableAPIClient *apiClient;
+@property (nonatomic) SKLMockURLSession *mockSession;
 
 @end
 
@@ -124,6 +159,10 @@ NSError *error;
 	dc.year = 2010; dc.month = 02; dc.day = 06; dc.hour = 11; dc.minute = 36; dc.second = 49;
 	NSDate *farabiBirthDate = [[NSCalendar currentCalendar] dateFromComponents:dc];
 	[self checkForPersonWithId:@120 hasName:@"Al Farabi" location:@"Persia" birthdate:farabiBirthDate];
+    
+    SKLFakePerson *plato = [[SKLFakePerson allInContext:self.context
+											  predicate:[NSPredicate predicateWithFormat:@"remoteId  = %@", @126]] firstObject];
+    XCTAssertEqualObjects(plato.name, @"Plato", @"");
 }
 
 - (void)testFetchResponseUpdatesExistingLocalObject {
@@ -141,6 +180,12 @@ NSError *error;
 	XCTAssertEqualObjects(platoLater, platoEarlier, @"Update should match the existing object");
 	
 	XCTAssertEqualObjects(platoEarlier.name, @"Plato", @"Update should match the existing object");
+	
+	SKLFakeOpus *magnumOpus = platoLater.magnumOpus;
+	XCTAssertEqualObjects(magnumOpus.remoteId, @211, @"Update should update a to-one relationship");
+	
+	NSArray *otherOpuses = [platoLater.opuses allObjects];
+	XCTAssertEqual([otherOpuses count], (NSUInteger)2, @"Update should update a to-many relationship");
 }
 
 - (void)checkForPersonWithId:(NSNumber *)remoteId
@@ -160,8 +205,20 @@ NSError *error;
 	
     NSDictionary *jsonResponseHeaderDict = @{ @"Content-Type" : @"application/json" };
 	NSArray *personFetchResponse = @[
-									 @{ @"id" : @126, @"name" : @"Plato", @"location" : @"Greece", @"date" : @"2012-08-26T19:06:43Z" },
-									 @{ @"id" : @120, @"name" : @"Al Farabi", @"location" : @"Persia", @"date" : @"2010-02-06T11:36:49Z"  },
+									 @{ @"id" : @120, @"name" : @"Al Farabi", @"location" : @"Persia", @"date" : @"2010-02-06T11:36:49Z" },
+									 @{ @"id" : @126, @"name" : @"Plato", @"location" : @"Greece", @"date" : @"2012-08-26T19:06:43Z",
+										@"magnum" : @{
+												@"id" : @211, @"name" : @"The Republic", @"pages" : @443
+												},
+										@"otherOpuses" : @[
+                                                @{
+													@"id" : @214, @"name" : @"Dramas", @"pages" : @204
+													},
+                                                @{
+													@"id" : @204, @"name" : @"Interlooction", @"pages" : @123
+													}
+												]
+                                        },
 									 ];
 	NSData *responseData = [NSJSONSerialization dataWithJSONObject:personFetchResponse options:0 error:nil];
 	NSHTTPURLResponse *response = [[NSHTTPURLResponse alloc] initWithURL:[NSURL URLWithString:@""]
@@ -173,15 +230,25 @@ NSError *error;
 
 - (NSManagedObjectModel *)loadCustomModel {
 	NSEntityDescription *personEntity = [self entityWithName:NSStringFromClass([SKLFakePerson class])
-									   attributes:@[
-													@{ SKLAttrNameKey : @"name", SKLAttrTypeKey : @"string" },
-													@{ SKLAttrNameKey : @"location", SKLAttrTypeKey : @"string" },
-													@{ SKLAttrNameKey : @"remoteId", SKLAttrTypeKey : @"int" },
-													@{ SKLAttrNameKey : @"birthdate", SKLAttrTypeKey : @"date" }
-													]
-									];
+												  attributes:@[
+															   @{ SKLAttrNameKey : @"name", SKLAttrTypeKey : @"string" },
+															   @{ SKLAttrNameKey : @"location", SKLAttrTypeKey : @"string" },
+															   @{ SKLAttrNameKey : @"remoteId", SKLAttrTypeKey : @"int" },
+															   @{ SKLAttrNameKey : @"birthdate", SKLAttrTypeKey : @"date" }
+															   ]
+										 ];
+	NSEntityDescription *opusEntity = [self entityWithName:NSStringFromClass([SKLFakeOpus class])
+												attributes:@[
+															 @{ SKLAttrNameKey : @"name", SKLAttrTypeKey : @"string" },
+															 @{ SKLAttrNameKey : @"remoteId", SKLAttrTypeKey : @"int" },
+															 @{ SKLAttrNameKey : @"pageCount", SKLAttrTypeKey : @"int" }
+															 ]
+									   ];
+	addRelationships(personEntity, opusEntity, @"magnumOpus", @"magnumOwner", NO, NO);
+	addRelationships(personEntity, opusEntity, @"opuses", @"owner", YES, NO);
+	
     NSManagedObjectModel *model = [[NSManagedObjectModel alloc] init];
-    model.entities = @[ personEntity ];
+    model.entities = @[ personEntity, opusEntity ];
     return model;
 }
 
@@ -191,14 +258,17 @@ NSError *error;
 	
 	shouldMockUpdateWithRemoteResponse = NO;
 	context = self.context;
-	apiClient = [[SKLTestableAPIClient alloc] initWithBaseURL:@"http://sakunlabs.com"];
-	apiClient.mockSession = [[SKLMockURLSession alloc] init];
+	self.apiClient = [[SKLTestableAPIClient alloc] initWithBaseURL:@"http://sakunlabs.com"];
+	self.apiClient.mockSession = [[SKLMockURLSession alloc] init];
+	
+	apiClient = self.apiClient;
 }
 
 - (void)tearDown {
 	error = nil;
+	self.context = nil;
 	
-    [super tearDown];
+	[super tearDown];
 }
 
 @end
