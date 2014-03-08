@@ -11,7 +11,7 @@
 @implementation SKLTestableManagedObjectContext
 
 - (void)performBlock:(void (^)())block {
-	if (self.shouldSaveAsyncAsSync) {
+	if (self.shouldPerformBlockAsSync) {
 		[self performBlockAndWait:block];
 	} else {
 		[super performBlock:block];

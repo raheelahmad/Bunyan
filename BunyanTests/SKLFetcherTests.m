@@ -261,7 +261,7 @@ NSError *error;
 }
 
 - (void)makePersonFetchResponse {
-	self.context.shouldSaveAsyncAsSync = YES;
+	self.context.shouldPerformBlockAsSync = YES;
 	[SKLFakePerson fetch];
 	
     NSDictionary *jsonResponseHeaderDict = @{ @"Content-Type" : @"application/json" };
@@ -290,7 +290,7 @@ NSError *error;
 }
 
 - (void)makePersonRefreshResponse:(SKLFakePerson *)person {
-	self.context.shouldSaveAsyncAsSync = YES;
+	self.context.shouldPerformBlockAsSync = YES;
 	[person refresh];
 	
     NSDictionary *jsonResponseHeaderDict = @{ @"Content-Type" : @"application/json" };
