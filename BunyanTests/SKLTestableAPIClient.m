@@ -7,6 +7,7 @@
 //
 
 #import "SKLTestableAPIClient.h"
+#import "SKLMockURLSession.h"
 
 @interface SKLAPIClient ()
 
@@ -18,6 +19,12 @@
 
 - (id)session {
 	return self.mockSession ? : [super session];
+}
+
+- (NSString *)lastRequestPath {
+	NSURLRequest *requestMade = self.mockSession.lastRequest;
+	NSString *path = [[NSURLComponents componentsWithURL:requestMade.URL resolvingAgainstBaseURL:NO] path];
+	return path;
 }
 
 @end

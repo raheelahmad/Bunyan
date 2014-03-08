@@ -14,4 +14,6 @@
 
 @property (nonatomic) SKLMockURLSession *mockSession;
 
+- (NSString *)lastRequestPath;
+
 @end

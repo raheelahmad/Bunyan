@@ -10,6 +10,7 @@
 
 @interface SKLTestableManagedObjectContext : NSManagedObjectContext
 
+#warning Rename to performBlock
 @property (nonatomic) BOOL shouldSaveAsyncAsSync;
 
 @end

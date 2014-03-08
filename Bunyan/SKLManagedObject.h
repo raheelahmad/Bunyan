@@ -22,7 +22,8 @@
 + (NSManagedObjectContext *)mainContext;
 + (NSManagedObjectContext *)importContext;
 
-// Remote fetches
+// -- Remote fetch
+
 + (void)fetch;
 + (SKLAPIClient *)apiClient;
 + (void)updateWithRemoteFetchResponse:(NSArray *)response;
@@ -32,5 +33,12 @@
 + (NSDictionary *)localToRemoteKeyMapping;
 + (id)uniquingKey;
 + (NSArray *)sortDescriptors;
+
+// -- Remote refresh
+
+- (void)refresh;
+- (void)refreshWithRemoteResponse:(NSDictionary *)response;
+
+- (SKLRemoteRequestInfo *)remoteRefreshInfo;
 
 @end

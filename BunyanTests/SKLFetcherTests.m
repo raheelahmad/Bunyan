@@ -49,11 +49,26 @@ NSError *error;
 	return apiClient;
 }
 
+- (SKLRemoteRequestInfo *)remoteRefreshInfo {
+	SKLRemoteRequestInfo *info = [[SKLRemoteRequestInfo alloc] init];
+	info.path = [NSString stringWithFormat:@"/get/persons/%@", self.remoteId];
+	
+	return info;
+}
+
 + (void)updateWithRemoteFetchResponse:(NSArray *)response {
 	if (shouldMockUpdateWithRemoteResponse) {
 		responseObject = response;
 	} else {
 		[super updateWithRemoteFetchResponse:response];
+	}
+}
+
+- (void)refreshWithRemoteResponse:(NSDictionary *)response {
+	if (shouldMockUpdateWithRemoteResponse) {
+		responseObject = response;
+	} else {
+		[super refreshWithRemoteResponse:response];
 	}
 }
 
@@ -80,6 +95,10 @@ NSError *error;
 }
 
 + (NSManagedObjectContext *)importContext {
+	return context;
+}
+
+- (NSManagedObjectContext *)managedObjectContext {
 	return context;
 }
 
@@ -127,14 +146,54 @@ NSError *error;
 
 @implementation SKLFetcherTests
 
-- (void)testFetchMakesCorrectEndpointAPIRequest {
-	[SKLFakePerson fetch];
-	NSURLRequest *requestMade = apiClient.mockSession.lastRequest;
-	NSString *path = [[NSURLComponents componentsWithURL:requestMade.URL resolvingAgainstBaseURL:NO] path];
-	XCTAssertEqualObjects(path, @"/get/persons", @"Fetch should be made with model request info path");
+#pragma mark - Refresh Tests
+
+- (void)testRefreshMakesCorrectEndpointAPIRequest {
+	SKLFakePerson *socrates = [SKLFakePerson insertInContext:self.context];
+	socrates.remoteId = @212;
+	
+	[self makePersonRefreshResponse:socrates];
+	
+	XCTAssertEqualObjects(apiClient.lastRequestPath, @"/get/persons/212", @"Refresh should be made with object's request info path");
 }
 
-- (void)testFetchResponseUpdatesModel {
+- (void)testRefreshResponseIsCalled {
+	SKLFakePerson *socrates = [SKLFakePerson insertInContext:self.context];
+	socrates.remoteId = @212;
+	
+	shouldMockUpdateWithRemoteResponse = YES;
+	
+	[self makePersonRefreshResponse:socrates];
+	
+	XCTAssertNotNil(responseObject, @"Fetch response should call the model on completion");
+}
+
+- (void)testRefreshResponseUpdatesLocalObjects {
+	SKLFakePerson *socrates = [SKLFakePerson insertInContext:self.context];
+	socrates.remoteId = @210;
+	
+	[self makePersonRefreshResponse:socrates];
+	
+	NSDateComponents *dc = [[NSDateComponents alloc] init];
+	dc.year = 2012; dc.month = 8; dc.day = 26; dc.hour = 19; dc.minute = 6; dc.second = 43;
+	NSDate *socratesBirthDate = [[NSCalendar currentCalendar] dateFromComponents:dc];
+	
+	[self checkForPersonWithId:@210 hasName:@"Socrates" location:@"Greece" birthdate:socratesBirthDate];
+	
+	SKLFakeOpus *magnum = socrates.magnumOpus;
+	XCTAssertEqualObjects(magnum.name, @"The Republic", @"Refresh should update local object");
+	XCTAssertEqualObjects(magnum.pageCount, @443, @"Refresh should update local object");
+}
+
+
+#pragma mark - Fetch Tests
+
+- (void)testFetchMakesCorrectEndpointAPIRequest {
+	[SKLFakePerson fetch];
+	XCTAssertEqualObjects(apiClient.lastRequestPath, @"/get/persons", @"Fetch should be made with model request info path");
+}
+
+- (void)testFetchResponseIsCalled {
 	shouldMockUpdateWithRemoteResponse = YES;
 	[self makePersonFetchResponse];
 	XCTAssertNotNil(responseObject, @"Fetch response should call the model");
@@ -188,6 +247,8 @@ NSError *error;
 	XCTAssertEqual([otherOpuses count], (NSUInteger)2, @"Update should update a to-many relationship");
 }
 
+#pragma mark - Helpers
+
 - (void)checkForPersonWithId:(NSNumber *)remoteId
 					 hasName:(NSString *)name
 					location:(NSString *)location
@@ -227,6 +288,35 @@ NSError *error;
 															headerFields:jsonResponseHeaderDict];
 	apiClient.mockSession.lastCompletionHandler(responseData, response, nil);
 }
+
+- (void)makePersonRefreshResponse:(SKLFakePerson *)person {
+	self.context.shouldSaveAsyncAsSync = YES;
+	[person refresh];
+	
+    NSDictionary *jsonResponseHeaderDict = @{ @"Content-Type" : @"application/json" };
+	NSDictionary *personRefreshResponse = @{ @"id" : person.remoteId, @"name" : @"Socrates", @"location" : @"Greece", @"date" : @"2012-08-26T19:06:43Z",
+										@"magnum" : @{
+												@"id" : @211, @"name" : @"The Republic", @"pages" : @443
+												},
+										@"otherOpuses" : @[
+                                                @{
+													@"id" : @214, @"name" : @"Dramas", @"pages" : @204
+													},
+                                                @{
+													@"id" : @204, @"name" : @"Interlooction", @"pages" : @123
+													}
+												]
+                                        };
+	NSData *responseData = [NSJSONSerialization dataWithJSONObject:personRefreshResponse options:0 error:nil];
+	NSHTTPURLResponse *response = [[NSHTTPURLResponse alloc] initWithURL:[NSURL URLWithString:@""]
+															  statusCode:200
+															 HTTPVersion:@"1.1"
+															headerFields:jsonResponseHeaderDict];
+	apiClient.mockSession.lastCompletionHandler(responseData, response, nil);
+}
+
+
+#pragma mark - Setup
 
 - (NSManagedObjectModel *)loadCustomModel {
 	NSEntityDescription *personEntity = [self entityWithName:NSStringFromClass([SKLFakePerson class])

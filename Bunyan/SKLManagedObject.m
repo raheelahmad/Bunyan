@@ -21,7 +21,11 @@
 	SKLAPIClient *apiClient = [self apiClient];
 	NSURLRequest *request = [apiClient requestWithMethod:@"GET" endPoint:info.path];
 	[apiClient makeRequest:request completion:^(NSError *error, id responseObject) {
-		[self updateWithRemoteFetchResponse:responseObject];
+		if (error) {
+			NSLog(@"Error fetching %@: %@", NSStringFromClass(self), error);
+		} else {
+			[self updateWithRemoteFetchResponse:responseObject];
+		}
 	}];
 }
 
@@ -31,6 +35,33 @@
 
 + (SKLAPIClient *)apiClient {
 	return [SKLAPIClient defaultClient];
+}
+
+#pragma mark Remote Refresh
+
+- (void)refresh {
+	SKLRemoteRequestInfo *info = [self remoteRefreshInfo];
+	SKLAPIClient *apiClient = [[self class] apiClient];
+	NSURLRequest *request = [apiClient requestWithMethod:@"GET" endPoint:info.path];
+	[apiClient makeRequest:request
+				completion:^(NSError *error, id responseObject) {
+					if (error) {
+						NSLog(@"Error refreshing %@: %@", self, error);
+					} else {
+						[self refreshWithRemoteResponse:responseObject];
+					}
+				}];
+}
+
+- (SKLRemoteRequestInfo *)remoteRefreshInfo {
+	return nil;
+}
+
+- (void)refreshWithRemoteResponse:(NSDictionary *)response {
+	NSManagedObjectContext *context = self.managedObjectContext;
+	[context performBlock:^{
+		[self updateWithRemoteObject:response];
+	}];
 }
 
 #pragma mark Fetch Response Update
