@@ -49,11 +49,35 @@ NSString *const SKLOriginalNetworkingResponseStringKey = @"SKLOriginalNetworking
 #pragma mark Composing requests
 
 - (NSURLRequest *)requestWithMethod:(NSString *)method endPoint:(NSString *)endPoint {
+	return [self requestWithMethod:method
+						  endPoint:endPoint
+							params:nil];
+}
+
+- (NSURLRequest *)requestWithMethod:(NSString *)method endPoint:(NSString *)endPoint params:(NSDictionary *)params {
 	NSString *urlString = [NSString stringWithFormat:@"%@%@", self.baseAPIURL, endPoint];
+	if ([params count]) {
+		urlString = [urlString stringByAppendingFormat:@"%@?%@", urlString, [self paramsAsQueryString:params]];
+	}
 	NSURL *url = [NSURL URLWithString:urlString];
 	NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
 	
 	return request;
+}
+
+- (NSString *)paramsAsQueryString:(NSDictionary *)params {
+    NSMutableArray *paramsArray = [NSMutableArray array];
+    [params enumerateKeysAndObjectsUsingBlock:^(id key, id value, BOOL *stop) {
+        if ([value isKindOfClass:[NSArray class]]) {
+            for (NSString *subValue in value) {
+                [paramsArray addObject:[NSString stringWithFormat:@"%@[]=%@", key, subValue]];
+            }
+        } else {
+            [paramsArray addObject:[NSString stringWithFormat:@"%@=%@", key, value]];
+        }
+    }];
+    NSString *paramsString = [paramsArray componentsJoinedByString:@"&"];
+    return [paramsString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 }
 
 #pragma mark Making requests

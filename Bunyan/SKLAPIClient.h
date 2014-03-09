@@ -26,7 +26,11 @@ extern NSString *const SKLOriginalNetworkingResponseStringKey;
 + (void)setDefaultClientBaseURL:(NSString *)baseURL;
 + (instancetype)defaultClient;
 
-- (NSURLRequest *)requestWithMethod:(NSString *)method endPoint:(NSString *)endPoint;
+- (NSURLRequest *)requestWithMethod:(NSString *)method
+						   endPoint:(NSString *)endPoint;
+- (NSURLRequest *)requestWithMethod:(NSString *)method
+						   endPoint:(NSString *)endPoint
+							 params:(NSDictionary *)params;
 
 - (void)makeRequest:(NSURLRequest *)request completion:(SKLAPIResponseBlock)completion;
 

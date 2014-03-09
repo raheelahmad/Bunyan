@@ -38,6 +38,35 @@
 	XCTAssertEqualObjects(madeRequest.HTTPMethod, request.HTTPMethod, @"Correct HTTP method should be used");
 }
 
+- (void)testRequestIsMadeWithParams {
+	NSDictionary *params = @{
+							 @"token" : @"my_t0k3n",
+							 @"id" : @102,
+							 @"traits" : @[ @12, @2, @23 ]
+							 };
+	NSURLRequest *request = [self.apiClient requestWithMethod:@"GET" endPoint:@"/go/here/please" params:params];
+	NSURLComponents *components = [NSURLComponents componentsWithURL:request.URL
+											 resolvingAgainstBaseURL:NO];
+	NSArray *paramComps = [components.query componentsSeparatedByString:@"&"];
+	NSMutableDictionary *requestParams = [NSMutableDictionary dictionary];
+	NSMutableArray *arrayParamValues = [NSMutableArray array];
+	for (NSString *paramString in paramComps) {
+		NSArray *comps = [paramString componentsSeparatedByString:@"="];
+		requestParams[comps[0]] = comps[1];
+		// if it is the array, then we want to collect all the elements
+		if ([comps[0] isEqualToString:@"traits[]"]) {
+			[arrayParamValues addObject:comps[1]];
+		}
+	}
+	
+	XCTAssertEqualObjects(requestParams[@"token"], @"my_t0k3n", @"Correct query params must be sent");
+	XCTAssertEqualObjects(requestParams[@"id"], @"102", @"Correct query params must be sent");
+	XCTAssertTrue([arrayParamValues containsObject:@"12"], @"Correct query params must be sent");
+	XCTAssertTrue([arrayParamValues containsObject:@"2"], @"Correct query params must be sent");
+	XCTAssertTrue([arrayParamValues containsObject:@"23"], @"Correct query params must be sent");
+}
+
+
 - (void)testResponseHandling {
 	NSURLRequest *request = [self.apiClient requestWithMethod:@"GET" endPoint:@"/go/here/please"];
 	__block id received;

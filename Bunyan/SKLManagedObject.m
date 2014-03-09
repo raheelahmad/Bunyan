@@ -117,7 +117,7 @@
 	NSAssert(attribute || relationship, @"%@ is neither an attribute nor a relationship for %@'s entity", localKey, NSStringFromClass(self.class));
 	
 	if (attribute) {
-		BOOL remoteValuePresent = formattedRemoteValue != nil;
+		BOOL remoteValuePresent = formattedRemoteValue != nil && formattedRemoteValue != [NSNull null];
 		BOOL localNotSameAsRemote = ![localValue isEqual:formattedRemoteValue];
 		if (remoteValuePresent && localNotSameAsRemote) {
 			[self setValue:formattedRemoteValue
