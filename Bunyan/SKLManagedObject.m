@@ -58,9 +58,19 @@
 }
 
 - (void)refreshWithRemoteResponse:(NSDictionary *)response {
-	NSManagedObjectContext *context = self.managedObjectContext;
+	// We should update in the background
+	NSManagedObjectID *objectId = self.objectID;
+	NSManagedObjectContext *context = [[self class] importContext];
 	[context performBlock:^{
-		[self updateWithRemoteObject:response];
+		SKLManagedObject *importCtxObject = (SKLManagedObject *)[context objectWithID:objectId];
+		[importCtxObject updateWithRemoteObject:response];
+		if ([context hasChanges]) {
+			NSError *error;
+			BOOL saved = [context save:&error];
+			if (!saved) {
+				NSLog(@"Error saving: %@", error);
+			}
+		}
 	}];
 }
 
