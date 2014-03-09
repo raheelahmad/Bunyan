@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @protocol SKLDataSourceDelegate;
+@class SKLManagedObject;
 
 @interface SKLManagedDataSource : NSObject<UITableViewDataSource>
 
@@ -16,6 +17,8 @@
 
 - (id)initWithModelClass:(Class)modelClass cellCalss:(Class)cellClass;
 - (void)setupTableView:(UITableView *)tableView;
+
+- (SKLManagedObject *)objectAtIndexPath:(NSIndexPath *)indexPath;
 
 @end
 

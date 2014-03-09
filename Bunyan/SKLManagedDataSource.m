@@ -20,6 +20,12 @@
 
 @implementation SKLManagedDataSource
 
+#pragma mark Public Helpers
+
+- (id)objectAtIndexPath:(NSIndexPath *)indexPath {
+	return [self.controller objectAtIndexPath:indexPath];
+}
+
 #pragma mark Data Source
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
