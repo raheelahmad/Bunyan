@@ -15,8 +15,21 @@ typedef NS_ENUM(NSInteger, ResponseErrorCode) {
     NSURLSessionErrorCode,
 };
 
+typedef NS_ENUM(NSInteger, HTTPBodySerializer) {
+	NOSerializer,
+	JSONSerializer,
+	URLFormSerializer,
+};
+
+typedef NS_ENUM(NSInteger, ExpectHTTPResponse) {
+	ExpectAnyString,
+	ExpectJSONResponse,
+};
+
 extern NSString *const SKLOriginalNetworkingErrorKey;
 extern NSString *const SKLOriginalNetworkingResponseStringKey;
+
+@class SKLAPIRequest;
 
 @interface SKLAPIClient : NSObject
 
@@ -27,11 +40,20 @@ extern NSString *const SKLOriginalNetworkingResponseStringKey;
 + (instancetype)defaultClient;
 
 - (NSURLRequest *)requestWithMethod:(NSString *)method
+						 serializer:(HTTPBodySerializer)serializer
+						   endPoint:(NSString *)endPoint
+							 params:(NSDictionary *)params;
+
+- (NSURLRequest *)requestWithMethod:(NSString *)method
 						   endPoint:(NSString *)endPoint;
+
 - (NSURLRequest *)requestWithMethod:(NSString *)method
 						   endPoint:(NSString *)endPoint
 							 params:(NSDictionary *)params;
 
+- (NSString *)paramsAsQueryString:(NSDictionary *)params;
+
 - (void)makeRequest:(NSURLRequest *)request completion:(SKLAPIResponseBlock)completion;
+- (void)makeRequest:(NSURLRequest *)request expect:(ExpectHTTPResponse)expectation completion:(SKLAPIResponseBlock)completion;
 
 @end

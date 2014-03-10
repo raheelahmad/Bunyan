@@ -66,12 +66,24 @@
 	XCTAssertTrue([arrayParamValues containsObject:@"23"], @"Correct query params must be sent");
 }
 
+- (void)testPostRequest {
+	NSDictionary *params = @{
+							 @"token" : @"my_t0k3n",
+							 @"id" : @102,
+							 @"traits" : @[ @12, @2, @23 ]
+							 };
+	NSURLRequest *request = [self.apiClient requestWithMethod:@"POST" endPoint:@"/go/here/please" params:params];
+	NSString *paramSent = [[NSString alloc] initWithData:request.HTTPBody encoding:NSUTF8StringEncoding];
+	XCTAssertEqualObjects(paramSent, @"token=my_t0k3n&id=102&traits%5B%5D=12&traits%5B%5D=2&traits%5B%5D=23", @"Should POST params correctly");
+	NSLog(@"Params %@", paramSent);
+}
 
 - (void)testResponseHandling {
-	NSURLRequest *request = [self.apiClient requestWithMethod:@"GET" endPoint:@"/go/here/please"];
+	NSURLRequest *request = [self.apiClient requestWithMethod:@"GET" serializer:JSONSerializer endPoint:@"/go/here/please" params:nil];
 	__block id received;
     __block NSError *receivedError;
 	[self.apiClient makeRequest:request
+						 expect:ExpectJSONResponse
 					 completion:^(NSError *error, id responseObject) {
 						 received = responseObject;
                          receivedError = error;

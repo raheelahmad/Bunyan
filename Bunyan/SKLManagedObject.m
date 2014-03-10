@@ -19,8 +19,8 @@
 + (void)fetch {
 	SKLRemoteRequestInfo *info = [self remoteFetchInfo];
 	SKLAPIClient *apiClient = [self apiClient];
-	NSURLRequest *request = [apiClient requestWithMethod:@"GET" endPoint:info.path];
-	[apiClient makeRequest:request completion:^(NSError *error, id responseObject) {
+	NSURLRequest *request = [apiClient requestWithMethod:@"GET" serializer:JSONSerializer endPoint:info.path params:nil];
+	[apiClient makeRequest:request expect:ExpectJSONResponse completion:^(NSError *error, id responseObject) {
 		if (error) {
 			NSLog(@"Error fetching %@: %@", NSStringFromClass(self), error);
 		} else {
@@ -42,8 +42,9 @@
 - (void)refresh {
 	SKLRemoteRequestInfo *info = [self remoteRefreshInfo];
 	SKLAPIClient *apiClient = [[self class] apiClient];
-	NSURLRequest *request = [apiClient requestWithMethod:@"GET" endPoint:info.path];
+	NSURLRequest *request = [apiClient requestWithMethod:@"GET" serializer:JSONSerializer endPoint:info.path params:nil];
 	[apiClient makeRequest:request
+					expect:ExpectJSONResponse
 				completion:^(NSError *error, id responseObject) {
 					if (error) {
 						NSLog(@"Error refreshing %@: %@", self, error);
