@@ -7,6 +7,7 @@
 //
 
 #import "SKLAPIClient.h"
+#import "SKLAPIRequest.h"
 
 @interface SKLAPIClient ()
 
@@ -48,57 +49,6 @@ NSString *const SKLOriginalNetworkingResponseStringKey = @"SKLOriginalNetworking
 
 #pragma mark Composing requests
 
-- (NSURLRequest *)requestWithMethod:(NSString *)method endPoint:(NSString *)endPoint {
-	return [self requestWithMethod:method
-						  endPoint:endPoint
-							params:nil];
-}
-
-- (NSURLRequest *)requestWithMethod:(NSString *)method endPoint:(NSString *)endPoint params:(NSDictionary *)params {
-	return [self requestWithMethod:method
-						serializer:NOSerializer
-						  endPoint:endPoint
-							params:params];
-}
-
-- (NSURLRequest *)requestWithMethod:(NSString *)method
-						 serializer:(HTTPBodySerializer)serializer
-						   endPoint:(NSString *)endPoint
-							 params:(NSDictionary *)params {
-	NSString *urlString = [self URLWithEndpoint:endPoint];
-    BOOL isPOSTRequest = [method isEqualToString:@"POST"] || [method isEqualToString:@"PUT"];
-    BOOL isGETRequest = [method isEqualToString:@"GET"];
-    NSParameterAssert(isGETRequest || isPOSTRequest);
-	if ([params count]) {
-		if (isGETRequest) {
-			urlString = [urlString stringByAppendingFormat:@"%@?%@", urlString, [self paramsAsQueryString:params]];
-		}
-	}
-	NSURL *url = [NSURL URLWithString:urlString];
-	NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
-	
-	if (isPOSTRequest && [params count]) {
-		if (serializer == JSONSerializer) {
-            [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-			NSError *error;
-			request.HTTPBody = [NSJSONSerialization dataWithJSONObject:params
-															   options:0 error:&error];
-			if (!request.HTTPBody) {
-				NSLog(@"Error constructing HTTP body: %@", error);
-				request = nil;
-			}
-		} else {
-			// for now not everything except JSON serialized, is assumed
-			[request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
-			request.HTTPBody = [[self paramsAsQueryString:params] dataUsingEncoding:NSUTF8StringEncoding];
-		}
-	}
-	
-	request.HTTPMethod = method;
-	
-	return request;
-}
-
 - (NSString *)URLWithEndpoint:(NSString *)path {
     NSParameterAssert([path length]);
     NSString *URLString = path;
@@ -126,14 +76,45 @@ NSString *const SKLOriginalNetworkingResponseStringKey = @"SKLOriginalNetworking
 
 #pragma mark Making requests
 
-- (void)makeRequest:(NSURLRequest *)request completion:(SKLAPIResponseBlock)completion {
-	[self makeRequest:request
-			   expect:ExpectAnyString
-		   completion:completion];
-}
-
-- (void)makeRequest:(NSURLRequest *)request expect:(ExpectHTTPResponse)expectation completion:(SKLAPIResponseBlock)completion {
-	NSURLSessionDataTask *task = [self.session dataTaskWithRequest:request
+- (void)makeRequest:(SKLAPIRequest *)request completion:(SKLAPIResponseBlock)completion {
+	NSString *endPoint = request.endPoint;
+	NSString *method = request.method;
+	NSDictionary *params = request.params;
+	
+	NSString *urlString = [self URLWithEndpoint:endPoint];
+    BOOL isPOSTRequest = [method isEqualToString:@"POST"] || [method isEqualToString:@"PUT"];
+    BOOL isGETRequest = [method isEqualToString:@"GET"];
+    NSParameterAssert(isGETRequest || isPOSTRequest);
+	if ([params count]) {
+		if (isGETRequest) {
+			urlString = [urlString stringByAppendingFormat:@"%@?%@", urlString, [self paramsAsQueryString:params]];
+		}
+	}
+	
+	NSURL *url = [NSURL URLWithString:urlString];
+	
+	NSMutableURLRequest *urlRequest = [NSMutableURLRequest requestWithURL:url];
+	
+	if (isPOSTRequest && [params count]) {
+		if (request.paramsEncoding == SKLJSONParamsEncoding) {
+            [urlRequest setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+			NSError *error;
+			urlRequest.HTTPBody = [NSJSONSerialization dataWithJSONObject:params
+															   options:0 error:&error];
+			if (!urlRequest.HTTPBody) {
+				NSLog(@"Error constructing HTTP body: %@", error);
+				request = nil;
+			}
+		} else {
+			// for now not everything except JSON serialized, is assumed
+			[urlRequest setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+			urlRequest.HTTPBody = [[self paramsAsQueryString:params] dataUsingEncoding:NSUTF8StringEncoding];
+		}
+	}
+	
+	urlRequest.HTTPMethod = method;
+	
+	NSURLSessionDataTask *task = [self.session dataTaskWithRequest:urlRequest
                                                  completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
                                                      NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
                                                      if (error) {
@@ -148,7 +129,7 @@ NSString *const SKLOriginalNetworkingResponseStringKey = @"SKLOriginalNetworking
 													 NSString *responseString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 													 responseObject = responseString;
 													 
-                                                     if (expectation == ExpectJSONResponse) {
+                                                     if (request.responseParsing == SKLJSONResponseParsing) {
 														 if (![self isJSONResponse:httpResponse]) {
 															 NSDictionary *userInfo = responseString ? @{ SKLOriginalNetworkingResponseStringKey : responseString} : nil;
 															 error = [NSError errorWithDomain:SKLAPIErrorDomain code:NonJSONErrorCode userInfo:userInfo];

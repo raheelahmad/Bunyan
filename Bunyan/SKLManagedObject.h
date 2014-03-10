@@ -8,7 +8,7 @@
 
 #import <CoreData/CoreData.h>
 
-@class SKLRemoteRequestInfo, SKLAPIClient;
+@class SKLAPIRequest, SKLAPIClient;
 
 @interface SKLManagedObject : NSManagedObject
 
@@ -29,7 +29,7 @@
 + (void)updateWithRemoteFetchResponse:(NSArray *)response;
 - (id)localValueForKey:(NSString *)localKey RemoteValue:(id)remoteValue;
 
-+ (SKLRemoteRequestInfo *)remoteFetchInfo;
++ (SKLAPIRequest *)remoteFetchInfo;
 + (NSDictionary *)localToRemoteKeyMapping;
 + (id)uniquingKey;
 + (NSArray *)sortDescriptors;
@@ -39,6 +39,6 @@
 - (void)refresh;
 - (void)refreshWithRemoteResponse:(NSDictionary *)response;
 
-- (SKLRemoteRequestInfo *)remoteRefreshInfo;
+- (SKLAPIRequest *)remoteRefreshInfo;
 
 @end

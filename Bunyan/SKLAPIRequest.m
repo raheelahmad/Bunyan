@@ -8,24 +8,20 @@
 
 #import "SKLAPIRequest.h"
 
-@interface SKLAPIRequest ()
-
-@property (nonatomic) NSMutableURLRequest *urlRequest;
-
-@end
-
 @implementation SKLAPIRequest
 
-+ (instancetype)requestWithURL:(NSURL *)URL {
++ (instancetype)with:(NSString *)endPoint
+			  method:(NSString *)method
+			  params:(NSDictionary *)params {
 	SKLAPIRequest *request = [[self alloc] init];
-	request.urlRequest = [NSMutableURLRequest requestWithURL:URL];
+	request.endPoint = endPoint;
+	request.method = method;
+	request.params = params;
+    
+    request.paramsEncoding = SKLFormURLParamsEncoding;
+    request.responseParsing = SKLJSONResponseParsing;
+    
 	return request;
-}
-
-#pragma mark Accessors
-
-- (NSURL *)URL {
-	return self.urlRequest.URL;
 }
 
 @end

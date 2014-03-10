@@ -7,8 +7,8 @@
 //
 
 #import "SKLManagedObject.h"
+#import "SKLAPIRequest.h"
 #import "SKLAPIClient.h"
-#import "SKLRemoteRequestInfo.h"
 #import "SKLPersistenceStack.h"
 #import "NSManagedObjectContext+Additions.h"
 
@@ -17,10 +17,10 @@
 #pragma mark Remote Fetch
 
 + (void)fetch {
-	SKLRemoteRequestInfo *info = [self remoteFetchInfo];
 	SKLAPIClient *apiClient = [self apiClient];
-	NSURLRequest *request = [apiClient requestWithMethod:@"GET" serializer:JSONSerializer endPoint:info.path params:nil];
-	[apiClient makeRequest:request expect:ExpectJSONResponse completion:^(NSError *error, id responseObject) {
+    SKLAPIRequest *request = [self remoteFetchInfo];
+    request.responseParsing = SKLJSONResponseParsing;
+	[apiClient makeRequest:request completion:^(NSError *error, id responseObject) {
 		if (error) {
 			NSLog(@"Error fetching %@: %@", NSStringFromClass(self), error);
 		} else {
@@ -29,7 +29,7 @@
 	}];
 }
 
-+ (SKLRemoteRequestInfo *)remoteFetchInfo {
++ (SKLAPIRequest *)remoteFetchInfo {
 	return nil;
 }
 
@@ -40,11 +40,9 @@
 #pragma mark Remote Refresh
 
 - (void)refresh {
-	SKLRemoteRequestInfo *info = [self remoteRefreshInfo];
+	SKLAPIRequest *request = [self remoteRefreshInfo];
 	SKLAPIClient *apiClient = [[self class] apiClient];
-	NSURLRequest *request = [apiClient requestWithMethod:@"GET" serializer:JSONSerializer endPoint:info.path params:nil];
 	[apiClient makeRequest:request
-					expect:ExpectJSONResponse
 				completion:^(NSError *error, id responseObject) {
 					if (error) {
 						NSLog(@"Error refreshing %@: %@", self, error);
@@ -54,7 +52,7 @@
 				}];
 }
 
-- (SKLRemoteRequestInfo *)remoteRefreshInfo {
+- (SKLAPIRequest *)remoteRefreshInfo {
 	return nil;
 }
 

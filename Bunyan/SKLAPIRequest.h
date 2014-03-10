@@ -21,11 +21,21 @@ typedef NS_ENUM(NSInteger, SKLResponseParsing) {
 
 @interface SKLAPIRequest : NSObject
 
-@property (nonatomic, readonly) NSURL *URL;
+@property (nonatomic) NSString *endPoint;
+@property (nonatomic) NSString *method;
+@property (nonatomic) NSDictionary *params;
 
+// Options
 @property (nonatomic) SKLParamsEncoding paramsEncoding;
 @property (nonatomic) SKLResponseParsing responseParsing;
 
-+ (instancetype)requestWithURL:(NSURL *)URL;
+// Constructors
+
+// DEFAULTS:
+// Params encoding: form-url encoding
+// Response parsing: JSON
++ (instancetype)with:(NSString *)endPoint
+			  method:(NSString *)method
+			  params:(NSDictionary *)params;
 
 @end

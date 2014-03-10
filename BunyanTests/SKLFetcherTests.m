@@ -10,7 +10,7 @@
 #import "SKLTestableAPIClient.h"
 #import "SKLManagedObject.h"
 #import "SKLTestableManagedObjectContext.h"
-#import "SKLRemoteRequestInfo.h"
+#import "SKLAPIRequest.h"
 #import "SKLMockURLSession.h"
 
 // Dependency injected objects
@@ -39,21 +39,17 @@ NSError *error;
 
 @dynamic name, location, birthdate, remoteId, magnumOpus, opuses;
 
-+ (SKLRemoteRequestInfo *)remoteFetchInfo {
-	SKLRemoteRequestInfo *info = [[SKLRemoteRequestInfo alloc] init];
-	info.path = @"/get/persons";
-	return info;
++ (SKLAPIRequest *)remoteFetchInfo {
+    return [SKLAPIRequest with:@"/get/persons" method:@"GET" params:nil];
 }
 
 + (SKLAPIClient *)apiClient {
 	return apiClient;
 }
 
-- (SKLRemoteRequestInfo *)remoteRefreshInfo {
-	SKLRemoteRequestInfo *info = [[SKLRemoteRequestInfo alloc] init];
-	info.path = [NSString stringWithFormat:@"/get/persons/%@", self.remoteId];
-	
-	return info;
+- (SKLAPIRequest *)remoteRefreshInfo {
+    NSString *endpoint = [NSString stringWithFormat:@"/get/persons/%@", self.remoteId];
+	return [SKLAPIRequest with:endpoint method:@"GET" params:nil];
 }
 
 + (void)updateWithRemoteFetchResponse:(NSArray *)response {

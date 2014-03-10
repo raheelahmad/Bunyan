@@ -15,12 +15,6 @@
 
 @implementation SKLAPIRequestTests
 
-- (void)testAPIRequestURL {
-	NSURL *someURL = [NSURL URLWithString:@"http://sakunlabs.com/go/here/please"];
-	SKLAPIRequest *apiRequest = [SKLAPIRequest requestWithURL:someURL];
-	XCTAssertEqualObjects(apiRequest.URL, someURL, @"Initial URL should be the same as accessed later");
-}
-
 - (void)setUp {
     [super setUp];
     // Put setup code here; it will be run once, before the first test case.
