@@ -12,6 +12,7 @@
 typedef NS_ENUM(NSInteger, SKLParamsEncoding) {
 	SKLFormURLParamsEncoding, // transform to query params, encode as data, and set Content-Type:x-www-form-urlencoded
 	SKLJSONParamsEncoding, // transform to JSON, encode as data, and set Content-Type:x-www-form-urlencoded
+	SKLQueryParamsEncoding, // use query params in URL (no body)
 };
 
 typedef NS_ENUM(NSInteger, SKLResponseParsing) {
@@ -28,6 +29,9 @@ typedef NS_ENUM(NSInteger, SKLResponseParsing) {
 // Options
 @property (nonatomic) SKLParamsEncoding paramsEncoding;
 @property (nonatomic) SKLResponseParsing responseParsing;
+
+// In case a different content-type header is desired from the one used for encoding
+@property (nonatomic) NSString *contentType;
 
 // Constructors
 

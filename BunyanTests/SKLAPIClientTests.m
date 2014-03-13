@@ -18,17 +18,6 @@
 
 @implementation SKLAPIClientTests
 
-#warning Replace with helper method test
-/**
-- (void)testBaseURLUsage {
-	NSURLRequest *request = [self.apiClient requestWithMethod:@"GET" endPoint:@"/go/here/please"];
-	NSURLComponents *components = [NSURLComponents componentsWithURL:request.URL resolvingAgainstBaseURL:NO];
-	
-	XCTAssertEqualObjects(components.host, @"www.sakunlabs.com", @"Should use base URL");
-	XCTAssertEqualObjects(components.path, @"/api/go/here/please", @"Should use base URL");
-}
- **/
-
 - (void)testCorrectRequestIsMade {
 	SKLAPIRequest *request = [SKLAPIRequest with:@"/go/here/please" method:@"GET" params:nil];
 	[self.apiClient makeRequest:request completion:nil];
@@ -37,7 +26,7 @@
 	XCTAssertEqualObjects(madeRequest.HTTPMethod, @"GET", @"Correct HTTP method should be used");
 }
 
-- (void)testRequestIsMadeWithParams {
+- (void)testGETRequestIsMadeWithParams {
 	NSDictionary *params = @{
 							 @"token" : @"my_t0k3n",
 							 @"id" : @102,
@@ -66,6 +55,94 @@
 	XCTAssertTrue([arrayParamValues containsObject:@"2"], @"Correct query params must be sent");
 	XCTAssertTrue([arrayParamValues containsObject:@"23"], @"Correct query params must be sent");
 }
+
+- (void)testPOSTRequestIsMadeWithParams {
+	NSDictionary *params = @{
+							 @"token" : @"my_t0k3n",
+							 @"id" : @102,
+							 @"traits" : @[ @12, @2, @23 ]
+							 };
+    SKLAPIRequest *request = [SKLAPIRequest with:@"/go/here/please" method:@"POST" params:params];
+    [self.apiClient makeRequest:request completion:nil];
+    NSURLRequest *madeRequest = self.mockSession.lastRequest;
+    
+	NSString *httpBodyString = [[NSString alloc] initWithData:madeRequest.HTTPBody encoding:NSUTF8StringEncoding];
+	httpBodyString = [httpBodyString stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+	XCTAssertEqualObjects(httpBodyString, @"token=my_t0k3n&id=102&traits[]=12&traits[]=2&traits[]=23", @"URL Form encoding is used for params");
+	XCTAssertEqualObjects(madeRequest.allHTTPHeaderFields[@"Content-Type"], @"application/x-www-form-urlencoded", @"application/x-www-form-urlencoded must be the Content-Type");
+}
+
+- (void)testPOSTRequestCanBeMadeWithQueryParams {
+	NSDictionary *params = @{
+							 @"token" : @"my_t0k3n",
+							 @"id" : @102,
+							 @"traits" : @[ @12, @2, @23 ]
+							 };
+    SKLAPIRequest *request = [SKLAPIRequest with:@"/go/here/please" method:@"POST" params:params];
+	request.paramsEncoding = SKLQueryParamsEncoding;
+    [self.apiClient makeRequest:request completion:nil];
+    NSURLRequest *madeRequest = self.mockSession.lastRequest;
+	NSURLComponents *components = [NSURLComponents componentsWithURL:madeRequest.URL
+											 resolvingAgainstBaseURL:NO];
+	NSArray *paramComps = [components.query componentsSeparatedByString:@"&"];
+	NSMutableDictionary *requestParams = [NSMutableDictionary dictionary];
+	NSMutableArray *arrayParamValues = [NSMutableArray array];
+	for (NSString *paramString in paramComps) {
+		NSArray *comps = [paramString componentsSeparatedByString:@"="];
+		requestParams[comps[0]] = comps[1];
+		// if it is the array, then we want to collect all the elements
+		if ([comps[0] isEqualToString:@"traits[]"]) {
+			[arrayParamValues addObject:comps[1]];
+		}
+	}
+	
+	XCTAssertEqualObjects(requestParams[@"token"], @"my_t0k3n", @"Correct query params must be sent");
+	XCTAssertEqualObjects(requestParams[@"id"], @"102", @"Correct query params must be sent");
+	XCTAssertTrue([arrayParamValues containsObject:@"12"], @"Correct query params must be sent");
+	XCTAssertTrue([arrayParamValues containsObject:@"2"], @"Correct query params must be sent");
+	XCTAssertTrue([arrayParamValues containsObject:@"23"], @"Correct query params must be sent");
+}
+- (void)testJSONEncoding {
+	NSDictionary *params = @{
+							 @"token" : @"my_t0k3n",
+							 @"id" : @102,
+							 @"traits" : @[ @12, @2, @23 ]
+							 };
+    SKLAPIRequest *request = [SKLAPIRequest with:@"/go/here/please" method:@"POST" params:params];
+    request.paramsEncoding = SKLJSONParamsEncoding;
+    [self.apiClient makeRequest:request completion:nil];
+    NSURLRequest *madeRequest = self.mockSession.lastRequest;
+    
+    NSError *error;
+    NSDictionary *sentParams = [NSJSONSerialization JSONObjectWithData:madeRequest.HTTPBody options:0 error:&error];
+    XCTAssertNil(error, @"JSON encoding is used for params");
+    XCTAssertEqualObjects(sentParams, params, @"JSON encoding is used for params");
+}
+
+/**
+ * This one is for APIs that expect encoding of params in one kind,
+ * but expect the Content-Type header to be of another.
+ * E.g., Github's API requires params be encoded as JSON, but Content-Type: application/x-www-form-urlencoded
+ */
+- (void)testCanSetAnyContentType {
+	NSDictionary *params = @{
+							 @"token" : @"my_t0k3n",
+							 @"id" : @102,
+							 @"traits" : @[ @12, @2, @23 ]
+							 };
+    SKLAPIRequest *request = [SKLAPIRequest with:@"/go/here/please" method:@"POST" params:params];
+    request.paramsEncoding = SKLJSONParamsEncoding;
+	request.contentType = @"application/x-www-form-urlencoded";
+    [self.apiClient makeRequest:request completion:nil];
+    NSURLRequest *madeRequest = self.mockSession.lastRequest;
+    
+    NSError *error;
+    NSDictionary *sentParams = [NSJSONSerialization JSONObjectWithData:madeRequest.HTTPBody options:0 error:&error];
+    XCTAssertNil(error, @"JSON encoding is used for params");
+    XCTAssertEqualObjects(sentParams, params, @"JSON encoding is used for params");
+    XCTAssertEqualObjects(madeRequest.allHTTPHeaderFields[@"Content-Type"], @"application/x-www-form-urlencoded", @"Content-Type should be set to the one provided");
+}
+
 
 - (void)testPostRequest {
 	NSDictionary *params = @{
@@ -120,6 +197,16 @@
     XCTAssertNil(received, @"For 400, response object should be nil");
     XCTAssertNotNil(receivedError, @"For 400, response error should be non-nil");
     XCTAssertEqual(receivedError.code, (NSInteger)BadRequestCode, @"For 400, should receive the correct error code");
+	
+    // test on 404
+    response = [[NSHTTPURLResponse alloc] initWithURL:[NSURL URLWithString:@"http://www.sakunlabs.com/go/here/please"]
+                                           statusCode:404
+                                          HTTPVersion:@"1.1"
+                                         headerFields:jsonResponseHeaderDict];
+    self.mockSession.lastCompletionHandler(responseData, response, nil);
+    XCTAssertNil(received, @"For 404, response object should be nil");
+    XCTAssertNotNil(receivedError, @"For 404, response error should be non-nil");
+    XCTAssertEqual(receivedError.code, (NSInteger)NotFoundCode, @"For 404, should receive the correct error code");
     
     // test on non json
 	NSString *someHTMLString = @"<html><body>Live graciously and kindly.</body></html>";

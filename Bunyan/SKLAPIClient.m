@@ -85,9 +85,13 @@ NSString *const SKLOriginalNetworkingResponseStringKey = @"SKLOriginalNetworking
     BOOL isPOSTRequest = [method isEqualToString:@"POST"] || [method isEqualToString:@"PUT"];
     BOOL isGETRequest = [method isEqualToString:@"GET"];
     NSParameterAssert(isGETRequest || isPOSTRequest);
+	
+	BOOL paramsSet = NO;
+	
 	if ([params count]) {
-		if (isGETRequest) {
-			urlString = [urlString stringByAppendingFormat:@"%@?%@", urlString, [self paramsAsQueryString:params]];
+		if (isGETRequest || request.paramsEncoding == SKLQueryParamsEncoding) {
+			urlString = [urlString stringByAppendingFormat:@"?%@", [self paramsAsQueryString:params]];
+			paramsSet = YES;
 		}
 	}
 	
@@ -95,7 +99,7 @@ NSString *const SKLOriginalNetworkingResponseStringKey = @"SKLOriginalNetworking
 	
 	NSMutableURLRequest *urlRequest = [NSMutableURLRequest requestWithURL:url];
 	
-	if (isPOSTRequest && [params count]) {
+	if (isPOSTRequest && [params count] && !paramsSet) {
 		if (request.paramsEncoding == SKLJSONParamsEncoding) {
             [urlRequest setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
 			NSError *error;
@@ -106,10 +110,13 @@ NSString *const SKLOriginalNetworkingResponseStringKey = @"SKLOriginalNetworking
 				request = nil;
 			}
 		} else {
-			// for now not everything except JSON serialized, is assumed
 			[urlRequest setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
 			urlRequest.HTTPBody = [[self paramsAsQueryString:params] dataUsingEncoding:NSUTF8StringEncoding];
 		}
+	}
+	
+	if (request.contentType) {
+		[urlRequest setValue:request.contentType forHTTPHeaderField:@"Content-Type"];
 	}
 	
 	urlRequest.HTTPMethod = method;
@@ -130,12 +137,7 @@ NSString *const SKLOriginalNetworkingResponseStringKey = @"SKLOriginalNetworking
 													 responseObject = responseString;
 													 
                                                      if (request.responseParsing == SKLJSONResponseParsing) {
-														 if (![self isJSONResponse:httpResponse]) {
-															 NSDictionary *userInfo = responseString ? @{ SKLOriginalNetworkingResponseStringKey : responseString} : nil;
-															 error = [NSError errorWithDomain:SKLAPIErrorDomain code:NonJSONErrorCode userInfo:userInfo];
-														 } else {
-															 responseObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
-														 }
+														 responseObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
                                                      }
                                                      
                                                      if (error) {
@@ -147,14 +149,6 @@ NSString *const SKLOriginalNetworkingResponseStringKey = @"SKLOriginalNetworking
                                                      completion(nil, responseObject);
                                                  }];
     [task resume];
-}
-
-- (BOOL)isJSONResponse:(NSHTTPURLResponse *)response {
-	NSString *contentType = response.allHeaderFields[@"Content-Type"];
-	if (!contentType) {
-		contentType = response.allHeaderFields[@"content-type"];
-	}
-	return [contentType rangeOfString:@"application/json"].location != NSNotFound;
 }
 
 #pragma mark Handling response
