@@ -131,6 +131,9 @@ NSString *const SKLOriginalNetworkingResponseStringKey = @"SKLOriginalNetworking
                                                      if (httpResponse.statusCode == 400) {
                                                          error = [NSError errorWithDomain:SKLAPIErrorDomain code:BadRequestCode userInfo:nil];
                                                      }
+                                                     if (httpResponse.statusCode == 404) {
+                                                         error = [NSError errorWithDomain:SKLAPIErrorDomain code:NotFoundCode userInfo:nil];
+                                                     }
 													 
 													 id responseObject;
 													 NSString *responseString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
