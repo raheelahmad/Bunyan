@@ -140,7 +140,17 @@ NSString *const SKLOriginalNetworkingResponseStringKey = @"SKLOriginalNetworking
 													 responseObject = responseString;
 													 
                                                      if (request.responseParsing == SKLJSONResponseParsing) {
-														 responseObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
+														 id parsedObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
+                                                         if (!parsedObject) {
+                                                             error = [NSError errorWithDomain:SKLAPIErrorDomain
+                                                                                         code:NonJSONErrorCode
+                                                                                     userInfo:@{
+                                                                                                SKLOriginalNetworkingErrorKey : error,
+                                                                                                SKLOriginalNetworkingResponseStringKey : responseString
+                                                                                                }];
+                                                         } else {
+                                                             responseObject = parsedObject;
+                                                         }
                                                      }
                                                      
                                                      if (error) {
@@ -152,16 +162,6 @@ NSString *const SKLOriginalNetworkingResponseStringKey = @"SKLOriginalNetworking
                                                      completion(nil, responseObject);
                                                  }];
     [task resume];
-}
-
-#pragma mark Handling response
-
-- (void)handleResponse:(NSHTTPURLResponse *)response
-				  data:(NSData *)data
-				 error:(NSError *)error
-			   request:(NSURLRequest *)request
-			completion:(SKLAPIResponseBlock)completion {
-	
 }
 
 @end
