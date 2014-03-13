@@ -28,6 +28,8 @@
 		59559A1C18C438FE0043EAF0 /* SKLTestableManagedObjectContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 59559A1B18C438FE0043EAF0 /* SKLTestableManagedObjectContext.m */; };
 		59585CA718C984AA002D4C92 /* SKLTestableManagedDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 59585CA618C984AA002D4C92 /* SKLTestableManagedDataSource.m */; };
 		595F462A18CD5BAA00C93E1A /* SKLAPIRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 595F462918CD5BAA00C93E1A /* SKLAPIRequest.m */; };
+		59BAEDF318D173AD0064DE23 /* NSString+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 59BAEDF218D173AD0064DE23 /* NSString+Additions.m */; };
+		59BAEDF618D174030064DE23 /* SKLStringCategoryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 59BAEDF518D174030064DE23 /* SKLStringCategoryTests.m */; };
 		59D1D14518C78BC900189BAC /* SKLManagedDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 59D1D14418C78BC900189BAC /* SKLManagedDataSource.m */; };
 		59D1D14818C83FAD00189BAC /* SKLManagedDataSourceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 59D1D14718C83FAD00189BAC /* SKLManagedDataSourceTests.m */; };
 		59ECBC4418BEF9BC006800B4 /* SKLAPIClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 59ECBC4318BEF9BC006800B4 /* SKLAPIClient.m */; };
@@ -92,6 +94,9 @@
 		59585CA618C984AA002D4C92 /* SKLTestableManagedDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKLTestableManagedDataSource.m; sourceTree = "<group>"; };
 		595F462818CD5BAA00C93E1A /* SKLAPIRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKLAPIRequest.h; sourceTree = "<group>"; };
 		595F462918CD5BAA00C93E1A /* SKLAPIRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKLAPIRequest.m; sourceTree = "<group>"; };
+		59BAEDF118D173AD0064DE23 /* NSString+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Additions.h"; sourceTree = "<group>"; };
+		59BAEDF218D173AD0064DE23 /* NSString+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Additions.m"; sourceTree = "<group>"; };
+		59BAEDF518D174030064DE23 /* SKLStringCategoryTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKLStringCategoryTests.m; sourceTree = "<group>"; };
 		59D1D14318C78BC900189BAC /* SKLManagedDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKLManagedDataSource.h; sourceTree = "<group>"; };
 		59D1D14418C78BC900189BAC /* SKLManagedDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKLManagedDataSource.m; sourceTree = "<group>"; };
 		59D1D14718C83FAD00189BAC /* SKLManagedDataSourceTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKLManagedDataSourceTests.m; sourceTree = "<group>"; };
@@ -170,6 +175,7 @@
 		5950100018BD92FB003BDD13 /* Bunyan */ = {
 			isa = PBXGroup;
 			children = (
+				59BAEDEA18D172FD0064DE23 /* Categories */,
 				59D1D14218C78B9100189BAC /* Controllers */,
 				5950100318BD92FB003BDD13 /* Bunyan.h */,
 				59ECBC4018BEF98C006800B4 /* Models */,
@@ -190,6 +196,7 @@
 		5950101418BD92FB003BDD13 /* BunyanTests */ = {
 			isa = PBXGroup;
 			children = (
+				59BAEDF418D173DC0064DE23 /* Categories Tests */,
 				59D1D14618C83F9800189BAC /* Controller Tests */,
 				592C93C018C0465F00198C5D /* Helpers */,
 				59ECBC4718BEFB05006800B4 /* Networking Tests */,
@@ -206,6 +213,23 @@
 				5950101718BD92FB003BDD13 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		59BAEDEA18D172FD0064DE23 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				59BAEDF118D173AD0064DE23 /* NSString+Additions.h */,
+				59BAEDF218D173AD0064DE23 /* NSString+Additions.m */,
+			);
+			name = Categories;
+			sourceTree = "<group>";
+		};
+		59BAEDF418D173DC0064DE23 /* Categories Tests */ = {
+			isa = PBXGroup;
+			children = (
+				59BAEDF518D174030064DE23 /* SKLStringCategoryTests.m */,
+			);
+			name = "Categories Tests";
 			sourceTree = "<group>";
 		};
 		59D1D14218C78B9100189BAC /* Controllers */ = {
@@ -364,6 +388,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				59ECBC4418BEF9BC006800B4 /* SKLAPIClient.m in Sources */,
+				59BAEDF318D173AD0064DE23 /* NSString+Additions.m in Sources */,
 				59559A1918C4373A0043EAF0 /* NSManagedObjectContext+Additions.m in Sources */,
 				59559A1618C4076E0043EAF0 /* SKLPersistenceStack.m in Sources */,
 				595F462A18CD5BAA00C93E1A /* SKLAPIRequest.m in Sources */,
@@ -385,6 +410,7 @@
 				59284BEF18CD664E00C39393 /* SKLAPIRequestTests.m in Sources */,
 				59D1D14818C83FAD00189BAC /* SKLManagedDataSourceTests.m in Sources */,
 				5950102E18BD9465003BDD13 /* SKLManagedObjectTests.m in Sources */,
+				59BAEDF618D174030064DE23 /* SKLStringCategoryTests.m in Sources */,
 				592C93C618C0469500198C5D /* SKLTestableAPIClient.m in Sources */,
 				5950103118BD946D003BDD13 /* SKLTestPerson.m in Sources */,
 			);
