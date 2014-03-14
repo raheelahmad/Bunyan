@@ -32,6 +32,7 @@
 + (SKLAPIRequest *)remoteFetchInfo;
 + (NSDictionary *)localToRemoteKeyMapping;
 + (id)uniquingKey;
++ (instancetype)localObjectForRemoteObject:(NSDictionary *)remoteObject;
 + (NSArray *)sortDescriptors;
 
 // -- Remote refresh

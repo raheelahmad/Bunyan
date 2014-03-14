@@ -42,6 +42,9 @@
 - (void)refresh {
 	SKLAPIRequest *request = [self remoteRefreshInfo];
 	SKLAPIClient *apiClient = [[self class] apiClient];
+	if (!request) {
+		return;
+	}
 	[apiClient makeRequest:request
 				completion:^(NSError *error, id responseObject) {
 					if (error) {
@@ -114,6 +117,10 @@
 	NSAttributeDescription *attribute = [self.entity attributesByName][localKey];
 	NSRelationshipDescription *relationship = [self.entity relationshipsByName][localKey];
 	NSAssert(attribute || relationship, @"%@ is neither an attribute nor a relationship for %@'s entity", localKey, NSStringFromClass(self.class));
+	
+	if (!formattedRemoteValue || formattedRemoteValue == [NSNull null]) {
+		return;
+	}
 	
 	if (attribute) {
 		BOOL remoteValuePresent = formattedRemoteValue != nil && formattedRemoteValue != [NSNull null];
