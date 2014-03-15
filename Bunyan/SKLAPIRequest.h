@@ -34,6 +34,7 @@ typedef NS_ENUM(NSInteger, SKLResponseParsing) {
 @property (nonatomic) NSString *contentType;
 
 // The response should be wrapped in this key before passing it to the model
+#warning Add test for remoteWrappingKey
 @property (nonatomic) NSString *responseWrappingKey;
 
 // Constructors

@@ -16,7 +16,7 @@
 
 #pragma mark Remote Fetch
 
-+ (void)fetch {
++ (void)fetchFromRemote {
 	SKLAPIClient *apiClient = [self apiClient];
     SKLAPIRequest *request = [self remoteFetchInfo];
     request.responseParsing = SKLJSONResponseParsing;
@@ -39,8 +39,12 @@
 
 #pragma mark Remote Refresh
 
-- (void)refresh {
+- (void)refreshFromRemote {
 	SKLAPIRequest *request = [self remoteRefreshInfo];
+	[self refreshFromRemoteWithInfo:request];
+}
+
+- (void)refreshFromRemoteWithInfo:(SKLAPIRequest *)request {
 	SKLAPIClient *apiClient = [[self class] apiClient];
 	if (!request) {
 		return;
@@ -245,7 +249,9 @@
 
 + (NSFetchedResultsController *)controllerInContext:(NSManagedObjectContext *)context {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([self class])];
-    request.sortDescriptors = [self sortDescriptors];
+	NSArray *sortDescriptors = [self sortDescriptors];
+	NSAssert([sortDescriptors count], @"%@ should implement sortDescriptors if it needs to implement controller methods", NSStringFromClass(self));
+    request.sortDescriptors = sortDescriptors;
 	NSFetchedResultsController *controller = [[NSFetchedResultsController alloc] initWithFetchRequest:request
 																				 managedObjectContext:context
 																				   sectionNameKeyPath:nil

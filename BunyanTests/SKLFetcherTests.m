@@ -185,7 +185,7 @@ NSError *error;
 #pragma mark - Fetch Tests
 
 - (void)testFetchMakesCorrectEndpointAPIRequest {
-	[SKLFakePerson fetch];
+	[SKLFakePerson fetchFromRemote];
 	XCTAssertEqualObjects(apiClient.lastRequestPath, @"/get/persons", @"Fetch should be made with model request info path");
 }
 
@@ -258,7 +258,7 @@ NSError *error;
 
 - (void)makePersonFetchResponse {
 	self.context.shouldPerformBlockAsSync = YES;
-	[SKLFakePerson fetch];
+	[SKLFakePerson fetchFromRemote];
 	
     NSDictionary *jsonResponseHeaderDict = @{ @"Content-Type" : @"application/json" };
 	NSArray *personFetchResponse = @[
@@ -287,7 +287,7 @@ NSError *error;
 
 - (void)makePersonRefreshResponse:(SKLFakePerson *)person {
 	self.context.shouldPerformBlockAsSync = YES;
-	[person refresh];
+	[person refreshFromRemote];
 	
     NSDictionary *jsonResponseHeaderDict = @{ @"Content-Type" : @"application/json" };
 	NSDictionary *personRefreshResponse = @{ @"id" : person.remoteId, @"name" : @"Socrates", @"location" : @"Greece", @"date" : @"2012-08-26T19:06:43Z",

@@ -24,7 +24,7 @@
 
 // -- Remote fetch
 
-+ (void)fetch;
++ (void)fetchFromRemote;
 + (SKLAPIClient *)apiClient;
 + (void)updateWithRemoteFetchResponse:(NSArray *)response;
 - (id)localValueForKey:(NSString *)localKey RemoteValue:(id)remoteValue;
@@ -37,7 +37,8 @@
 
 // -- Remote refresh
 
-- (void)refresh;
+- (void)refreshFromRemote;
+- (void)refreshFromRemoteWithInfo:(SKLAPIRequest *)request;
 - (void)refreshWithRemoteResponse:(NSDictionary *)response;
 
 - (SKLAPIRequest *)remoteRefreshInfo;
