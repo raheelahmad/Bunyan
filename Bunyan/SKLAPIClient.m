@@ -25,7 +25,7 @@ NSString *const SKLOriginalNetworkingResponseStringKey = @"SKLOriginalNetworking
 #pragma mark Initialization
 
 + (void)setDefaultClientBaseURL:(NSString *)baseURL {
-	[SKLAPIClient defaultClient].baseAPIURL = baseURL;
+	[[self defaultClient] setBaseAPIURL:baseURL];
 }
 
 + (instancetype)defaultClient {
@@ -158,6 +158,11 @@ NSString *const SKLOriginalNetworkingResponseStringKey = @"SKLOriginalNetworking
                                                          return;
                                                      }
                                                      
+													 NSString *wrappingKey = request.responseWrappingKey;
+													 if (responseObject && wrappingKey) {
+														 responseObject = [NSDictionary dictionaryWithObject:responseObject
+																									  forKey:wrappingKey];
+													 }
 													 
                                                      completion(nil, responseObject);
                                                  }];

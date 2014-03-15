@@ -33,6 +33,9 @@ typedef NS_ENUM(NSInteger, SKLResponseParsing) {
 // In case a different content-type header is desired from the one used for encoding
 @property (nonatomic) NSString *contentType;
 
+// The response should be wrapped in this key before passing it to the model
+@property (nonatomic) NSString *responseWrappingKey;
+
 // Constructors
 
 // DEFAULTS:
