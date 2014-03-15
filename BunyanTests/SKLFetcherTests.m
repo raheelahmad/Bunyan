@@ -195,6 +195,33 @@ NSError *error;
 	XCTAssertNotNil(responseObject, @"Fetch response should call the model");
 }
 
+/**
+ * A separate test from the rest:
+ * Given that the APIRequest includes a wrappingKey then the whole remote response object
+ * is wrapped in a dictionary with that key
+ * E.g., the array below will be wrapped up in the key "disciples" before being passed to the completion
+ */
+- (void)testFetchResponseIsWrappedInProvidedKey {
+	SKLAPIRequest *request = [SKLAPIRequest with:@"/please/go/here" method:@"GET" params:nil];
+	request.responseWrappingKey = @"disciples";
+	
+	NSArray *disciplesResponse = @[
+								   @{ @"name" : @"Tutoles" },
+								   @{ @"name" : @"Boramius" },
+								   ];
+	NSError *error;
+	NSData *responseData = [NSJSONSerialization dataWithJSONObject:disciplesResponse
+														   options:0 error:&error];
+	
+	[apiClient makeRequest:request
+				completion:^(NSError *error, id remoteResponse) {
+		NSArray *wrappedResponse = [remoteResponse valueForKey:@"disciples"];
+		XCTAssertEqualObjects(disciplesResponse, wrappedResponse, @"");
+	}];
+	apiClient.mockSession.lastCompletionHandler(responseData, [self OKResponse], nil);
+}
+
+
 - (void)testFetchResponseCreatesLocalObjects {
 	[self makePersonFetchResponse];
 	
@@ -260,7 +287,6 @@ NSError *error;
 	self.context.shouldPerformBlockAsSync = YES;
 	[SKLFakePerson fetchFromRemote];
 	
-    NSDictionary *jsonResponseHeaderDict = @{ @"Content-Type" : @"application/json" };
 	NSArray *personFetchResponse = @[
 									 @{ @"id" : @120, @"name" : @"Al Farabi", @"location" : @"Persia", @"date" : @"2010-02-06T11:36:49Z" },
 									 @{ @"id" : @126, @"name" : @"Plato", @"location" : @"Greece", @"date" : @"2012-08-26T19:06:43Z",
@@ -278,11 +304,16 @@ NSError *error;
                                         },
 									 ];
 	NSData *responseData = [NSJSONSerialization dataWithJSONObject:personFetchResponse options:0 error:nil];
+	apiClient.mockSession.lastCompletionHandler(responseData, [self OKResponse], nil);
+}
+
+- (NSHTTPURLResponse *)OKResponse {
+    NSDictionary *jsonResponseHeaderDict = @{ @"Content-Type" : @"application/json" };
 	NSHTTPURLResponse *response = [[NSHTTPURLResponse alloc] initWithURL:[NSURL URLWithString:@""]
 															  statusCode:200
 															 HTTPVersion:@"1.1"
 															headerFields:jsonResponseHeaderDict];
-	apiClient.mockSession.lastCompletionHandler(responseData, response, nil);
+	return response;
 }
 
 - (void)makePersonRefreshResponse:(SKLFakePerson *)person {
