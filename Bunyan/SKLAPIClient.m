@@ -119,32 +119,30 @@ NSString *const SKLOriginalNetworkingResponseStringKey = @"SKLOriginalNetworking
     BOOL isGETRequest = [method isEqualToString:@"GET"];
     NSParameterAssert(isGETRequest || isPOSTRequest);
 	
-	BOOL paramsSet = NO;
-	
 	if ([params count]) {
-		if (isGETRequest || request.paramsEncoding == SKLQueryParamsEncoding) {
-			urlString = [urlString stringByAppendingFormat:@"?%@", [self paramsAsQueryString:params]];
-			paramsSet = YES;
-		}
+		urlString = [urlString stringByAppendingFormat:@"?%@", [self paramsAsQueryString:params]];
 	}
 	
 	NSURL *url = [NSURL URLWithString:urlString];
 	
 	NSMutableURLRequest *urlRequest = [NSMutableURLRequest requestWithURL:url];
 	
-	if (isPOSTRequest && [params count] && !paramsSet) {
-		if (request.paramsEncoding == SKLJSONParamsEncoding) {
+	NSDictionary *body = request.body;
+	if (isPOSTRequest && [body count]) {
+		if (request.bodyEncoding == SKLJSONBodyEncoding) {
             [urlRequest setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
 			NSError *error;
-			urlRequest.HTTPBody = [NSJSONSerialization dataWithJSONObject:params
+			urlRequest.HTTPBody = [NSJSONSerialization dataWithJSONObject:body
 																  options:0 error:&error];
 			if (!urlRequest.HTTPBody) {
 				NSLog(@"Error constructing HTTP body: %@", error);
-				request = nil;
+				urlRequest = nil;
 			}
-		} else {
+		} else if (request.bodyEncoding == SKLFormURLBodyEncoding) {
 			[urlRequest setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
-			urlRequest.HTTPBody = [[self paramsAsQueryString:params] dataUsingEncoding:NSUTF8StringEncoding];
+			urlRequest.HTTPBody = [[self paramsAsQueryString:body] dataUsingEncoding:NSUTF8StringEncoding];
+		} else {
+			NSAssert(@"Unrecognized body encoding set", nil);
 		}
 	}
 	
@@ -155,6 +153,12 @@ NSString *const SKLOriginalNetworkingResponseStringKey = @"SKLOriginalNetworking
 	urlRequest.HTTPMethod = method;
 	
 	self.currentRequest = request;
+	
+	if (!urlRequest) {
+		NSLog(@"Could not send request: %@", request);
+		[self cleanupCurrentRequest];
+		return;
+	}
 	
 	NSLog(@">>> %@ %@", urlRequest.HTTPMethod, urlRequest.URL);
 	if (urlRequest.HTTPBody) {

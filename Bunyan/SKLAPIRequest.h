@@ -9,10 +9,9 @@
 #import "SKLAPIClient.h"
 
 // the encoding used for a POST (rather, any non-GET) request's body
-typedef NS_ENUM(NSInteger, SKLParamsEncoding) {
-	SKLFormURLParamsEncoding, // transform to query params, encode as data, and set Content-Type:x-www-form-urlencoded
-	SKLJSONParamsEncoding, // transform to JSON, encode as data, and set Content-Type:x-www-form-urlencoded
-	SKLQueryParamsEncoding, // use query params in URL (no body)
+typedef NS_ENUM(NSInteger, SKLBodyEncoding) {
+	SKLFormURLBodyEncoding, // transform to query params, encode as data, and set Content-Type:x-www-form-urlencoded
+	SKLJSONBodyEncoding, // transform to JSON, encode as data, and set Content-Type:x-www-form-urlencoded
 };
 
 typedef NS_ENUM(NSInteger, SKLResponseParsing) {
@@ -25,9 +24,10 @@ typedef NS_ENUM(NSInteger, SKLResponseParsing) {
 @property (nonatomic) NSString *endPoint;
 @property (nonatomic) NSString *method;
 @property (nonatomic) NSDictionary *params;
+@property (nonatomic) NSDictionary *body;
 
 // Options
-@property (nonatomic) SKLParamsEncoding paramsEncoding;
+@property (nonatomic) SKLBodyEncoding bodyEncoding;
 @property (nonatomic) SKLResponseParsing responseParsing;
 
 // In case a different content-type header is desired from the one used for encoding
@@ -45,6 +45,7 @@ typedef NS_ENUM(NSInteger, SKLResponseParsing) {
 // Response parsing: JSON
 + (instancetype)with:(NSString *)endPoint
 			  method:(NSString *)method
-			  params:(NSDictionary *)params;
+			  params:(NSDictionary *)params
+				body:(NSDictionary *)body;
 
 @end

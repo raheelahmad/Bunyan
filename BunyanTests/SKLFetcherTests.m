@@ -40,7 +40,7 @@ NSError *error;
 @dynamic name, location, birthdate, remoteId, magnumOpus, opuses;
 
 + (SKLAPIRequest *)remoteFetchInfo {
-    return [SKLAPIRequest with:@"/get/persons" method:@"GET" params:nil];
+    return [SKLAPIRequest with:@"/get/persons" method:@"GET" params:nil body:nil];
 }
 
 + (SKLAPIClient *)apiClient {
@@ -49,7 +49,7 @@ NSError *error;
 
 - (SKLAPIRequest *)remoteRefreshInfo {
     NSString *endpoint = [NSString stringWithFormat:@"/get/persons/%@", self.remoteId];
-	return [SKLAPIRequest with:endpoint method:@"GET" params:nil];
+	return [SKLAPIRequest with:endpoint method:@"GET" params:nil body:nil];
 }
 
 + (void)updateWithRemoteFetchResponse:(NSArray *)response {
@@ -202,7 +202,7 @@ NSError *error;
  * E.g., the array below will be wrapped up in the key "disciples" before being passed to the completion
  */
 - (void)testFetchResponseIsWrappedInProvidedKey {
-	SKLAPIRequest *request = [SKLAPIRequest with:@"/please/go/here" method:@"GET" params:nil];
+	SKLAPIRequest *request = [SKLAPIRequest with:@"/please/go/here" method:@"GET" params:nil body:nil];
 	request.responseWrappingKey = @"disciples";
 	
 	NSArray *disciplesResponse = @[

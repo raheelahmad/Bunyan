@@ -19,7 +19,7 @@
 @implementation SKLAPIClientTests
 
 - (void)testCorrectRequestIsMade {
-	SKLAPIRequest *request = [SKLAPIRequest with:@"/go/here/please" method:@"GET" params:nil];
+	SKLAPIRequest *request = [SKLAPIRequest with:@"/go/here/please" method:@"GET" params:nil body:nil];
 	[self.apiClient makeRequest:request];
 	NSURLRequest *madeRequest = self.mockSession.lastRequest;
 	XCTAssertEqualObjects(madeRequest.URL, [NSURL URLWithString:@"http://www.sakunlabs.com/api/go/here/please"], @"Correct URL should be used");
@@ -32,7 +32,7 @@
 							 @"id" : @102,
 							 @"traits" : @[ @12, @2, @23 ]
 							 };
-    SKLAPIRequest *request = [SKLAPIRequest with:@"/go/here/please" method:@"GET" params:params];
+    SKLAPIRequest *request = [SKLAPIRequest with:@"/go/here/please" method:@"GET" params:params body:nil];
     [self.apiClient makeRequest:request];
     NSURLRequest *madeRequest = self.mockSession.lastRequest;
 	NSURLComponents *components = [NSURLComponents componentsWithURL:madeRequest.URL
@@ -56,13 +56,13 @@
 	XCTAssertTrue([arrayParamValues containsObject:@"23"], @"Correct query params must be sent");
 }
 
-- (void)testPOSTRequestIsMadeWithParams {
-	NSDictionary *params = @{
+- (void)testPOSTRequestIsMadeWithBody {
+	NSDictionary *body = @{
 							 @"token" : @"my_t0k3n",
 							 @"id" : @102,
 							 @"traits" : @[ @12, @2, @23 ]
 							 };
-    SKLAPIRequest *request = [SKLAPIRequest with:@"/go/here/please" method:@"POST" params:params];
+    SKLAPIRequest *request = [SKLAPIRequest with:@"/go/here/please" method:@"POST" params:nil body:body];
     [self.apiClient makeRequest:request];
     NSURLRequest *madeRequest = self.mockSession.lastRequest;
     
@@ -78,8 +78,7 @@
 							 @"id" : @102,
 							 @"traits" : @[ @12, @2, @23 ]
 							 };
-    SKLAPIRequest *request = [SKLAPIRequest with:@"/go/here/please" method:@"POST" params:params];
-	request.paramsEncoding = SKLQueryParamsEncoding;
+    SKLAPIRequest *request = [SKLAPIRequest with:@"/go/here/please" method:@"POST" params:params body:nil];
     [self.apiClient makeRequest:request];
     NSURLRequest *madeRequest = self.mockSession.lastRequest;
 	NSURLComponents *components = [NSURLComponents componentsWithURL:madeRequest.URL
@@ -103,20 +102,20 @@
 	XCTAssertTrue([arrayParamValues containsObject:@"23"], @"Correct query params must be sent");
 }
 - (void)testJSONEncoding {
-	NSDictionary *params = @{
+	NSDictionary *body = @{
 							 @"token" : @"my_t0k3n",
 							 @"id" : @102,
 							 @"traits" : @[ @12, @2, @23 ]
 							 };
-    SKLAPIRequest *request = [SKLAPIRequest with:@"/go/here/please" method:@"POST" params:params];
-    request.paramsEncoding = SKLJSONParamsEncoding;
+    SKLAPIRequest *request = [SKLAPIRequest with:@"/go/here/please" method:@"POST" params:nil body:body];
+    request.bodyEncoding = SKLJSONBodyEncoding;
     [self.apiClient makeRequest:request];
     NSURLRequest *madeRequest = self.mockSession.lastRequest;
     
     NSError *error;
     NSDictionary *sentParams = [NSJSONSerialization JSONObjectWithData:madeRequest.HTTPBody options:0 error:&error];
     XCTAssertNil(error, @"JSON encoding is used for params");
-    XCTAssertEqualObjects(sentParams, params, @"JSON encoding is used for params");
+    XCTAssertEqualObjects(sentParams, body, @"JSON encoding is used for params");
 }
 
 /**
@@ -125,43 +124,43 @@
  * E.g., Github's API requires params be encoded as JSON, but Content-Type: application/x-www-form-urlencoded
  */
 - (void)testCanSetAnyContentType {
-	NSDictionary *params = @{
+	NSDictionary *body = @{
 							 @"token" : @"my_t0k3n",
 							 @"id" : @102,
 							 @"traits" : @[ @12, @2, @23 ]
 							 };
-    SKLAPIRequest *request = [SKLAPIRequest with:@"/go/here/please" method:@"POST" params:params];
-    request.paramsEncoding = SKLJSONParamsEncoding;
+    SKLAPIRequest *request = [SKLAPIRequest with:@"/go/here/please" method:@"POST" params:nil body:body];
+    request.bodyEncoding = SKLJSONBodyEncoding;
 	request.contentType = @"application/x-www-form-urlencoded";
     [self.apiClient makeRequest:request];
     NSURLRequest *madeRequest = self.mockSession.lastRequest;
     
     NSError *error;
-    NSDictionary *sentParams = [NSJSONSerialization JSONObjectWithData:madeRequest.HTTPBody options:0 error:&error];
+    NSDictionary *sendBody = [NSJSONSerialization JSONObjectWithData:madeRequest.HTTPBody options:0 error:&error];
     XCTAssertNil(error, @"JSON encoding is used for params");
-    XCTAssertEqualObjects(sentParams, params, @"JSON encoding is used for params");
+    XCTAssertEqualObjects(sendBody, body, @"JSON encoding is used for params");
     XCTAssertEqualObjects(madeRequest.allHTTPHeaderFields[@"Content-Type"], @"application/x-www-form-urlencoded", @"Content-Type should be set to the one provided");
 }
 
 
 - (void)testPostRequest {
-	NSDictionary *params = @{
+	NSDictionary *body = @{
 							 @"token" : @"my_t0k3n",
 							 @"id" : @102,
 							 @"traits" : @[ @12, @2, @23 ]
 							 };
-    SKLAPIRequest *request = [SKLAPIRequest with:@"/go/here/please" method:@"POST" params:params];
+    SKLAPIRequest *request = [SKLAPIRequest with:@"/go/here/please" method:@"POST" params:nil body:body];
     [self.apiClient makeRequest:request];
     
     NSURLRequest *madeRequest = self.mockSession.lastRequest;
 	NSString *paramSent = [[NSString alloc] initWithData:madeRequest.HTTPBody encoding:NSUTF8StringEncoding];
-	XCTAssertEqualObjects(paramSent, @"token=my_t0k3n&id=102&traits%5B%5D=12&traits%5B%5D=2&traits%5B%5D=23", @"Should POST params correctly");
-	NSLog(@"Params %@", paramSent);
+	paramSent = [paramSent stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+	XCTAssertEqualObjects(paramSent, @"token=my_t0k3n&id=102&traits[]=12&traits[]=2&traits[]=23", @"Should POST params correctly");
 }
 
 - (void)testRequestsAreSentSerially {
-	SKLAPIRequest *request1 = [SKLAPIRequest with:@"/go/here/please" method:@"GET" params:nil];
-	SKLAPIRequest *request2 = [SKLAPIRequest with:@"/go/there/please" method:@"GET" params:nil];
+	SKLAPIRequest *request1 = [SKLAPIRequest with:@"/go/here/please" method:@"GET" params:nil body:nil];
+	SKLAPIRequest *request2 = [SKLAPIRequest with:@"/go/there/please" method:@"GET" params:nil body:nil];
 	
 	[self.apiClient makeRequest:request1];
 	XCTAssertEqual([self.apiClient.pendingRequests count], (NSUInteger)1, @"Pending requests count should be correct");
@@ -177,8 +176,7 @@
 
 
 - (void)testResponseHandling {
-    SKLAPIRequest *request = [SKLAPIRequest with:@"/go/here/please" method:@"GET" params:nil];
-    request.paramsEncoding = SKLJSONParamsEncoding;
+    SKLAPIRequest *request = [SKLAPIRequest with:@"/go/here/please" method:@"GET" params:nil body:nil];
     request.responseParsing = SKLJSONResponseParsing;
 	__block id received;
     __block NSError *receivedError;

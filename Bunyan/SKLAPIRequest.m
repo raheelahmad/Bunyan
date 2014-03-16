@@ -12,13 +12,15 @@
 
 + (instancetype)with:(NSString *)endPoint
 			  method:(NSString *)method
-			  params:(NSDictionary *)params {
+			  params:(NSDictionary *)params
+				body:(NSDictionary *)body {
 	SKLAPIRequest *request = [[self alloc] init];
 	request.endPoint = endPoint;
 	request.method = method;
 	request.params = params;
+	request.body = body;
     
-    request.paramsEncoding = SKLFormURLParamsEncoding;
+    request.bodyEncoding = SKLFormURLBodyEncoding;
     request.responseParsing = SKLJSONResponseParsing;
     
 	return request;
