@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Sakun Labs. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import "SKLAPIClient.h"
 
 // the encoding used for a POST (rather, any non-GET) request's body
 typedef NS_ENUM(NSInteger, SKLParamsEncoding) {
@@ -35,6 +35,8 @@ typedef NS_ENUM(NSInteger, SKLResponseParsing) {
 
 // The response should be wrapped in this key before passing it to the model
 @property (nonatomic) NSString *responseWrappingKey;
+
+@property (nonatomic, copy) SKLAPIResponseBlock completionBlock;
 
 // Constructors
 

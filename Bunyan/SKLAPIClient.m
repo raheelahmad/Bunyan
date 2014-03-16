@@ -13,6 +13,8 @@
 
 @property (nonatomic) NSString *baseAPIURL;
 @property (nonatomic) NSURLSession *session;
+@property (nonatomic) NSMutableArray *pendingRequests;
+@property (nonatomic) SKLAPIRequest *currentRequest;
 
 @end
 
@@ -37,12 +39,17 @@ NSString *const SKLOriginalNetworkingResponseStringKey = @"SKLOriginalNetworking
 	return _defaultClient;
 }
 
+- (id)init {
+	return [self initWithBaseURL:nil];
+}
+
 - (id)initWithBaseURL:(NSString *)baseURL {
 	self = [super init];
 	if (self) {
 		self.baseAPIURL = baseURL;
 		NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
 		self.session = [NSURLSession sessionWithConfiguration:configuration];
+		self.pendingRequests = [NSMutableArray array];
 	}
 	return self;
 }
@@ -76,7 +83,33 @@ NSString *const SKLOriginalNetworkingResponseStringKey = @"SKLOriginalNetworking
 
 #pragma mark Making requests
 
-- (void)makeRequest:(SKLAPIRequest *)request completion:(SKLAPIResponseBlock)completion {
+- (void)makeRequest:(SKLAPIRequest *)request {
+	[self.pendingRequests addObject:request];
+	
+	if ([self.pendingRequests count] == 1) {
+		// only 1 request left, let's make it now
+		[self makeNextRequest];
+	}
+}
+
+- (void)makeNextRequest {
+	if ([self.pendingRequests count] == 0) {
+		return;
+	}
+	
+	SKLAPIRequest *firstRequest = self.pendingRequests[0];
+	[self _makeRequest:firstRequest];
+}
+
+- (void)cleanupCurrentRequest {
+	if (self.currentRequest) {
+		[self.pendingRequests removeObject:self.currentRequest];
+		self.currentRequest = nil;
+	}
+	[self makeNextRequest];
+}
+
+- (void)_makeRequest:(SKLAPIRequest *)request {
 	NSString *endPoint = request.endPoint;
 	NSString *method = request.method;
 	NSDictionary *params = request.params;
@@ -104,7 +137,7 @@ NSString *const SKLOriginalNetworkingResponseStringKey = @"SKLOriginalNetworking
             [urlRequest setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
 			NSError *error;
 			urlRequest.HTTPBody = [NSJSONSerialization dataWithJSONObject:params
-															   options:0 error:&error];
+																  options:0 error:&error];
 			if (!urlRequest.HTTPBody) {
 				NSLog(@"Error constructing HTTP body: %@", error);
 				request = nil;
@@ -121,12 +154,22 @@ NSString *const SKLOriginalNetworkingResponseStringKey = @"SKLOriginalNetworking
 	
 	urlRequest.HTTPMethod = method;
 	
+	self.currentRequest = request;
+	
+	NSLog(@">>> %@ %@", urlRequest.HTTPMethod, urlRequest.URL);
+	if (urlRequest.HTTPBody) {
+		NSLog(@"\t\t\t>>>body size %ld bytes", [urlRequest.HTTPBody length]);
+	}
+	
 	NSURLSessionDataTask *task = [self.session dataTaskWithRequest:urlRequest
                                                  completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+													 
                                                      NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
+													 SKLAPIResponseBlock completion = request.completionBlock;
+													 NSLog(@"<<< %ld %@", httpResponse.statusCode, httpResponse.URL);
                                                      if (error) {
                                                          error = [NSError errorWithDomain:SKLAPIErrorDomain code:NSURLSessionErrorCode userInfo:@{ SKLOriginalNetworkingErrorKey : error }];
-                                                         completion(error, nil);
+														 NSLog(@"\t\t\t<<< %@", error);
                                                      }
                                                      if (httpResponse.statusCode == 400) {
                                                          error = [NSError errorWithDomain:SKLAPIErrorDomain code:BadRequestCode userInfo:nil];
@@ -154,17 +197,21 @@ NSString *const SKLOriginalNetworkingResponseStringKey = @"SKLOriginalNetworking
                                                      }
                                                      
                                                      if (error) {
+														 NSLog(@"\t\t\t%@", error);
                                                          completion(error, nil);
-                                                         return;
-                                                     }
-                                                     
-													 NSString *wrappingKey = request.responseWrappingKey;
-													 if (responseObject && wrappingKey) {
-														 responseObject = [NSDictionary dictionaryWithObject:responseObject
-																									  forKey:wrappingKey];
+                                                     } else {
+														 
+														 NSString *wrappingKey = request.responseWrappingKey;
+														 if (responseObject && wrappingKey) {
+															 responseObject = [NSDictionary dictionaryWithObject:responseObject
+																										  forKey:wrappingKey];
+														 }
+														 completion(nil, responseObject);
 													 }
 													 
-                                                     completion(nil, responseObject);
+													 dispatch_async(dispatch_get_main_queue(), ^{
+														 [self cleanupCurrentRequest];
+													 });
                                                  }];
     [task resume];
 }

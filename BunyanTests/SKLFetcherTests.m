@@ -213,11 +213,11 @@ NSError *error;
 	NSData *responseData = [NSJSONSerialization dataWithJSONObject:disciplesResponse
 														   options:0 error:&error];
 	
-	[apiClient makeRequest:request
-				completion:^(NSError *error, id remoteResponse) {
+	request.completionBlock = ^(NSError *error, id remoteResponse) {
 		NSArray *wrappedResponse = [remoteResponse valueForKey:@"disciples"];
 		XCTAssertEqualObjects(disciplesResponse, wrappedResponse, @"");
-	}];
+	};
+	[apiClient makeRequest:request];
 	apiClient.mockSession.lastCompletionHandler(responseData, [self OKResponse], nil);
 }
 

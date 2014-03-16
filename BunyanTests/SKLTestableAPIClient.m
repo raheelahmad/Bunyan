@@ -12,10 +12,20 @@
 @interface SKLAPIClient ()
 
 - (id)session;
+- (NSArray *)pendingRequests;
+- (SKLAPIRequest *)currentRequest;
 
 @end
 
 @implementation SKLTestableAPIClient
+
+- (SKLAPIRequest *)currentRequest {
+	return [super currentRequest];
+}
+
+- (NSArray *)pendingRequests {
+	return [super pendingRequests];
+}
 
 - (id)session {
 	return self.mockSession ? : [super session];

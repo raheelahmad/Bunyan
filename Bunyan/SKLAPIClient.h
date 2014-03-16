@@ -31,6 +31,6 @@ extern NSString *const SKLOriginalNetworkingResponseStringKey;
 
 - (NSString *)paramsAsQueryString:(NSDictionary *)params;
 
-- (void)makeRequest:(SKLAPIRequest *)request completion:(SKLAPIResponseBlock)completion;
+- (void)makeRequest:(SKLAPIRequest *)request;
 
 @end

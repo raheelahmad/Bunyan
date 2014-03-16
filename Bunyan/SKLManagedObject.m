@@ -20,13 +20,15 @@
 	SKLAPIClient *apiClient = [self apiClient];
     SKLAPIRequest *request = [self remoteFetchInfo];
     request.responseParsing = SKLJSONResponseParsing;
-	[apiClient makeRequest:request completion:^(NSError *error, id responseObject) {
+	request.completionBlock = ^(NSError *error, id responseObject) {
 		if (error) {
 			NSLog(@"Error fetching %@: %@", NSStringFromClass(self), error);
 		} else {
 			[self updateWithRemoteFetchResponse:responseObject];
 		}
-	}];
+	};
+	
+	[apiClient makeRequest:request];
 }
 
 + (SKLAPIRequest *)remoteFetchInfo {
@@ -49,14 +51,14 @@
 	if (!request) {
 		return;
 	}
-	[apiClient makeRequest:request
-				completion:^(NSError *error, id responseObject) {
+	request.completionBlock = ^(NSError *error, id responseObject) {
 					if (error) {
 						NSLog(@"Error refreshing %@: %@", self, error);
 					} else {
 						[self refreshWithRemoteResponse:responseObject];
 					}
-				}];
+				};
+	[apiClient makeRequest:request];
 }
 
 - (SKLAPIRequest *)remoteRefreshInfo {
