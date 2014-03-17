@@ -8,6 +8,7 @@
 
 #import "SKLAPIClient.h"
 #import "SKLAPIRequest.h"
+#import <UIKit/UIImage.h>
 
 @interface SKLAPIClient ()
 
@@ -15,6 +16,8 @@
 @property (nonatomic) NSURLSession *session;
 @property (nonatomic) NSMutableArray *pendingRequests;
 @property (nonatomic) SKLAPIRequest *currentRequest;
+
+@property (nonatomic) NSMutableDictionary *imageDictionary;
 
 @end
 
@@ -50,6 +53,7 @@ NSString *const SKLOriginalNetworkingResponseStringKey = @"SKLOriginalNetworking
 		NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
 		self.session = [NSURLSession sessionWithConfiguration:configuration];
 		self.pendingRequests = [NSMutableArray array];
+		self.imageDictionary = [NSMutableDictionary dictionary];
 	}
 	return self;
 }
@@ -79,6 +83,46 @@ NSString *const SKLOriginalNetworkingResponseStringKey = @"SKLOriginalNetworking
     }];
     NSString *paramsString = [paramsArray componentsJoinedByString:@"&"];
     return [paramsString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+}
+
+#pragma mark Other requests
+
+- (void)fetchImageAtURL:(NSString *)url completion:(SKLImageFetchResponseBlock)completion {
+	if (!url) {
+		completion(nil, nil);
+		return;
+	}
+	
+	UIImage *image = self.imageDictionary[url];
+	if (image) {
+		completion(nil, image);
+		return;
+	}
+	
+	SKLAPIRequest *request = [SKLAPIRequest with:url
+										  method:@"GET"
+										  params:nil
+											body:nil ];
+	request.responseParsing = SKLNoResponseParsing;
+	request.completionBlock = ^(NSError *error, id responseObject) {
+		UIImage *image;
+		if (!error) {
+			image = [UIImage imageWithData:responseObject];
+			if (!image) {
+				error = [NSError errorWithDomain:SKLAPIErrorDomain
+											code:ImageParsingErrorCode
+										userInfo:nil];
+			}
+			dispatch_async(dispatch_get_main_queue(), ^{
+				self.imageDictionary[url] = image;
+			});
+		}
+		if (completion) {
+			completion(error, image);
+		}
+	};
+	[[SKLAPIClient defaultClient] makeRequest:request];
+	
 }
 
 #pragma mark Making requests
@@ -204,7 +248,7 @@ NSString *const SKLOriginalNetworkingResponseStringKey = @"SKLOriginalNetworking
                                                      
                                                      if (error) {
 														 NSLog(@"\t\t\t%@", error);
-                                                         completion(error, nil);
+														 responseObject = nil;
                                                      } else {
 														 
 														 NSString *wrappingKey = request.responseWrappingKey;
@@ -212,10 +256,11 @@ NSString *const SKLOriginalNetworkingResponseStringKey = @"SKLOriginalNetworking
 															 responseObject = [NSDictionary dictionaryWithObject:responseObject
 																										  forKey:wrappingKey];
 														 }
-														 completion(nil, responseObject);
 													 }
 													 
+													 
 													 dispatch_async(dispatch_get_main_queue(), ^{
+														 completion(error, responseObject);
 														 [self cleanupCurrentRequest];
 													 });
                                                  }];

@@ -10,6 +10,8 @@
 		59284BEF18CD664E00C39393 /* SKLAPIRequestTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 59284BEE18CD664E00C39393 /* SKLAPIRequestTests.m */; };
 		592C93C318C0468400198C5D /* SKLMockURLSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 592C93C218C0468400198C5D /* SKLMockURLSession.m */; };
 		592C93C618C0469500198C5D /* SKLTestableAPIClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 592C93C518C0469500198C5D /* SKLTestableAPIClient.m */; };
+		592EEBC918D6C18F001F0127 /* UIImageView+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 592EEBC818D6C18F001F0127 /* UIImageView+Additions.m */; };
+		592EEBCB18D6C2B4001F0127 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 592EEBCA18D6C2B4001F0127 /* UIKit.framework */; };
 		59500FFF18BD92FB003BDD13 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59500FFE18BD92FB003BDD13 /* Foundation.framework */; };
 		5950100418BD92FB003BDD13 /* Bunyan.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5950100318BD92FB003BDD13 /* Bunyan.h */; };
 		5950100D18BD92FB003BDD13 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5950100C18BD92FB003BDD13 /* XCTest.framework */; };
@@ -65,6 +67,9 @@
 		592C93C218C0468400198C5D /* SKLMockURLSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKLMockURLSession.m; sourceTree = "<group>"; };
 		592C93C418C0469500198C5D /* SKLTestableAPIClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKLTestableAPIClient.h; sourceTree = "<group>"; };
 		592C93C518C0469500198C5D /* SKLTestableAPIClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKLTestableAPIClient.m; sourceTree = "<group>"; };
+		592EEBC718D6C18F001F0127 /* UIImageView+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+Additions.h"; sourceTree = "<group>"; };
+		592EEBC818D6C18F001F0127 /* UIImageView+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+Additions.m"; sourceTree = "<group>"; };
+		592EEBCA18D6C2B4001F0127 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		59500FFB18BD92FB003BDD13 /* libBunyan.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libBunyan.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		59500FFE18BD92FB003BDD13 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		5950100218BD92FB003BDD13 /* Bunyan-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Bunyan-Prefix.pch"; sourceTree = "<group>"; };
@@ -110,6 +115,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				592EEBCB18D6C2B4001F0127 /* UIKit.framework in Frameworks */,
 				5950102518BD943C003BDD13 /* CoreData.framework in Frameworks */,
 				59500FFF18BD92FB003BDD13 /* Foundation.framework in Frameworks */,
 			);
@@ -164,6 +170,7 @@
 		59500FFD18BD92FB003BDD13 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				592EEBCA18D6C2B4001F0127 /* UIKit.framework */,
 				5950102418BD943C003BDD13 /* CoreData.framework */,
 				59500FFE18BD92FB003BDD13 /* Foundation.framework */,
 				5950100C18BD92FB003BDD13 /* XCTest.framework */,
@@ -218,6 +225,8 @@
 		59BAEDEA18D172FD0064DE23 /* Categories */ = {
 			isa = PBXGroup;
 			children = (
+				592EEBC718D6C18F001F0127 /* UIImageView+Additions.h */,
+				592EEBC818D6C18F001F0127 /* UIImageView+Additions.m */,
 				59BAEDF118D173AD0064DE23 /* NSString+Additions.h */,
 				59BAEDF218D173AD0064DE23 /* NSString+Additions.m */,
 			);
@@ -387,6 +396,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				592EEBC918D6C18F001F0127 /* UIImageView+Additions.m in Sources */,
 				59ECBC4418BEF9BC006800B4 /* SKLAPIClient.m in Sources */,
 				59BAEDF318D173AD0064DE23 /* NSString+Additions.m in Sources */,
 				59559A1918C4373A0043EAF0 /* NSManagedObjectContext+Additions.m in Sources */,

@@ -6,12 +6,16 @@
 //  Copyright (c) 2014 Sakun Labs. All rights reserved.
 //
 
+@class UIImage;
+
 typedef void (^ SKLAPIResponseBlock)(NSError *error, id responseObject);
+typedef void (^ SKLImageFetchResponseBlock)(NSError *error, UIImage *image);
 
 typedef NS_ENUM(NSInteger, ResponseErrorCode) {
     BadRequestCode,
     ServerErrorCode,
     NonJSONErrorCode,
+    ImageParsingErrorCode,
 	NotFoundCode,
     NSURLSessionErrorCode,
 };
@@ -32,5 +36,7 @@ extern NSString *const SKLOriginalNetworkingResponseStringKey;
 - (NSString *)paramsAsQueryString:(NSDictionary *)params;
 
 - (void)makeRequest:(SKLAPIRequest *)request;
+
+- (void)fetchImageAtURL:(NSString *)url completion:(SKLImageFetchResponseBlock)completion;
 
 @end
