@@ -198,7 +198,9 @@ NSString *const SKLOriginalNetworkingResponseStringKey = @"SKLOriginalNetworking
                                                          } else {
                                                              responseObject = parsedObject;
                                                          }
-                                                     }
+                                                     } else if (request.responseParsing == SKLNoResponseParsing) {
+														 responseObject = data;
+													 }
                                                      
                                                      if (error) {
 														 NSLog(@"\t\t\t%@", error);

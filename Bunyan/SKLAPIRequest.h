@@ -15,6 +15,7 @@ typedef NS_ENUM(NSInteger, SKLBodyEncoding) {
 };
 
 typedef NS_ENUM(NSInteger, SKLResponseParsing) {
+	SKLNoResponseParsing,
 	SKLStringResponseParsing,
 	SKLJSONResponseParsing,
 };

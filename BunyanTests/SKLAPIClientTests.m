@@ -238,6 +238,29 @@
 	XCTAssertEqualObjects(receivedError.userInfo[SKLOriginalNetworkingResponseStringKey], someHTMLString, @"Should receive original response string for non-JSON response");
 }
 
+- (void)testResponseIsTreatedAsData {
+	SKLAPIRequest *request = [SKLAPIRequest with:@"/some/where" method:@"GET" params:nil body:nil];
+	request.responseParsing = SKLNoResponseParsing;
+	
+	__block id received = nil;
+	__block id receivedError = nil;
+	request.completionBlock = ^(NSError *error, id receivedData) {
+		received = receivedData;
+		receivedError = error;
+	};
+ 	[self.apiClient makeRequest:request];
+	
+	NSData *someData = [@"These are dreams, Phaedrus." dataUsingEncoding:NSUTF8StringEncoding];
+	NSHTTPURLResponse *urlResponse = [[NSHTTPURLResponse alloc] initWithURL:[NSURL URLWithString:@"/some/where"]
+																 statusCode:200
+																HTTPVersion:@"1.1"
+															   headerFields:nil];
+	self.mockSession.lastCompletionHandler(someData, urlResponse, nil);
+	
+	XCTAssertTrue([received isKindOfClass:[NSData class]], @"Can receive the raw data in response");
+}
+
+
 - (void)setUp {
     self.apiClient = [[SKLTestableAPIClient alloc] initWithBaseURL:@"http://www.sakunlabs.com/api"];
 	self.mockSession = [[SKLMockURLSession alloc] init];
