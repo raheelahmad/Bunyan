@@ -109,7 +109,7 @@
 - (void)updateWithRemoteObject:(NSDictionary *)remoteObject {
 	NSDictionary *mapping = [[self class] localToRemoteKeyMapping];
 	[mapping enumerateKeysAndObjectsUsingBlock:^(id localKey, id remoteKey, BOOL *stop) {
-		id remoteValue = remoteObject[remoteKey];
+		id remoteValue = [remoteObject valueForKeyPath:remoteKey];
 		if (remoteValue) {
 			[self updateValueForLocalKey:localKey remoteValue:remoteValue];
 		}
@@ -249,8 +249,9 @@
     return [result firstObject];
 }
 
-+ (NSFetchedResultsController *)controllerInContext:(NSManagedObjectContext *)context {
++ (NSFetchedResultsController *)controllerWithPredicate:(NSPredicate *)predicate context:(NSManagedObjectContext *)context {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([self class])];
+	request.predicate = predicate;
 	NSArray *sortDescriptors = [self sortDescriptors];
 	NSAssert([sortDescriptors count], @"%@ should implement sortDescriptors if it needs to implement controller methods", NSStringFromClass(self));
     request.sortDescriptors = sortDescriptors;
@@ -259,6 +260,10 @@
 																				   sectionNameKeyPath:nil
 																							cacheName:nil];
 	return controller;
+}
+
++ (NSFetchedResultsController *)controllerInContext:(NSManagedObjectContext *)context {
+	return [self controllerWithPredicate:nil context:context];
 }
 
 @end

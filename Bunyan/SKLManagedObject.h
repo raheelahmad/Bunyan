@@ -18,6 +18,8 @@
 + (instancetype)anyInContext:(NSManagedObjectContext *)context;
 + (instancetype)oneWith:(id)value for:(NSString *)key inContext:(NSManagedObjectContext *)context;
 + (NSFetchedResultsController *)controllerInContext:(NSManagedObjectContext *)context;
++ (NSFetchedResultsController *)controllerWithPredicate:(NSPredicate *)predicate
+												context:(NSManagedObjectContext *)context;
 
 + (NSManagedObjectContext *)mainContext;
 + (NSManagedObjectContext *)importContext;
@@ -27,6 +29,7 @@
 + (void)fetchFromRemote;
 + (SKLAPIClient *)apiClient;
 + (void)updateWithRemoteFetchResponse:(NSArray *)response;
+- (void)updateWithRemoteObject:(NSDictionary *)remoteObject;
 - (id)localValueForKey:(NSString *)localKey RemoteValue:(id)remoteValue;
 
 + (SKLAPIRequest *)remoteFetchInfo;
