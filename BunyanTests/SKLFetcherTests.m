@@ -195,6 +195,17 @@ NSError *error;
 	XCTAssertNotNil(responseObject, @"Fetch response should call the model");
 }
 
+- (void)testFetchCompletionIsCalled {
+    shouldMockUpdateWithRemoteResponse = YES;
+    __block BOOL completionCalled = NO;
+    [SKLFakePerson fetchFromRemoteWithCompletion:^(NSError *error) {
+        completionCalled = YES;
+    }];
+    NSData *fakeData = [NSJSONSerialization dataWithJSONObject:@{ } options:0 error:nil];
+    self.apiClient.mockSession.lastCompletionHandler(fakeData, nil, nil);
+    XCTAssertTrue(completionCalled, @"Fetch should call the completion handler");
+}
+
 /**
  * A separate test from the rest:
  * Given that the APIRequest includes a wrappingKey then the whole remote response object

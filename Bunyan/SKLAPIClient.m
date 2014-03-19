@@ -259,8 +259,8 @@ NSString *const SKLOriginalNetworkingResponseStringKey = @"SKLOriginalNetworking
 													 }
 													 
 													 
+                                                     completion(error, responseObject);
 													 dispatch_async(dispatch_get_main_queue(), ^{
-														 completion(error, responseObject);
 														 [self cleanupCurrentRequest];
 													 });
                                                  }];

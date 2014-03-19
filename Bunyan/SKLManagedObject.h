@@ -8,6 +8,8 @@
 
 #import <CoreData/CoreData.h>
 
+typedef void (^ SKLFetchResponseBlock)(NSError *error);
+
 @class SKLAPIRequest, SKLAPIClient;
 
 @interface SKLManagedObject : NSManagedObject
@@ -27,6 +29,7 @@
 // -- Remote fetch
 
 + (void)fetchFromRemote;
++ (void)fetchFromRemoteWithCompletion:(SKLFetchResponseBlock)completion;
 + (SKLAPIClient *)apiClient;
 + (void)updateWithRemoteFetchResponse:(NSArray *)response;
 - (void)updateWithRemoteObject:(NSDictionary *)remoteObject;

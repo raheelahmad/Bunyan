@@ -17,6 +17,10 @@
 #pragma mark Remote Fetch
 
 + (void)fetchFromRemote {
+    [self fetchFromRemoteWithCompletion:nil];
+}
+
++ (void)fetchFromRemoteWithCompletion:(SKLFetchResponseBlock)completion {
 	SKLAPIClient *apiClient = [self apiClient];
     SKLAPIRequest *request = [self remoteFetchInfo];
     request.responseParsing = SKLJSONResponseParsing;
@@ -26,6 +30,9 @@
 		} else {
 			[self updateWithRemoteFetchResponse:responseObject];
 		}
+        if (completion) {
+            completion(error);
+        }
 	};
 	
 	[apiClient makeRequest:request];
