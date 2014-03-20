@@ -187,7 +187,6 @@
 	XCTAssertEqual([self.apiClient.pendingRequests count], (NSUInteger)2, @"Pending requests count should be correct");
 }
 
-
 - (void)testResponseHandling {
     SKLAPIRequest *request = [SKLAPIRequest with:@"/go/here/please" method:@"GET" params:nil body:nil];
     request.responseParsing = SKLJSONResponseParsing;

@@ -58,13 +58,18 @@
 	if (!request) {
 		return;
 	}
-	request.completionBlock = ^(NSError *error, id responseObject) {
-					if (error) {
-						NSLog(@"Error refreshing %@: %@", self, error);
-					} else {
-						[self refreshWithRemoteResponse:responseObject];
-					}
-				};
+	
+	// only set completion for refreshing local object, if no completion has been set yet
+	if (!request.completionBlock) {
+		request.completionBlock = ^(NSError *error, id responseObject) {
+			if (error) {
+				NSLog(@"Error refreshing %@: %@", self, error);
+			} else {
+				[self refreshWithRemoteResponse:responseObject];
+			}
+		};
+	}
+	
 	[apiClient makeRequest:request];
 }
 

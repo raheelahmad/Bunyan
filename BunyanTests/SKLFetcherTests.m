@@ -206,6 +206,23 @@ NSError *error;
     XCTAssertTrue(completionCalled, @"Fetch should call the completion handler");
 }
 
+- (void)testFetchCustomCompletionIsCalled {
+    SKLFakePerson *person = [SKLFakePerson insertInContext:self.context];
+	SKLAPIRequest *request = [person remoteRefreshInfo];
+	
+	__block NSDictionary *receivedResponse;
+	request.completionBlock = ^(NSError *error, NSDictionary *response) {
+		receivedResponse = response;
+	};
+	NSDictionary *response = @{ @"name" : @"Thales" };
+	
+	[person refreshFromRemoteWithInfo:request];
+	NSData *responseData = [NSJSONSerialization dataWithJSONObject:response options:0 error:nil];
+	apiClient.mockSession.lastCompletionHandler(responseData, [self OKResponse], nil);
+	
+	XCTAssertEqualObjects(receivedResponse, response, @"Should call the custom completion block");
+}
+
 /**
  * A separate test from the rest:
  * Given that the APIRequest includes a wrappingKey then the whole remote response object
