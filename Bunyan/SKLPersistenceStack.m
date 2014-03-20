@@ -89,6 +89,7 @@
     
     self.importContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
     self.importContext.persistentStoreCoordinator = storeCoordinator;
+	self.importContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(mainContextDidSave:)
