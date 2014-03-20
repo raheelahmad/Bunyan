@@ -158,6 +158,19 @@
 	XCTAssertEqualObjects(paramSent, @"token=my_t0k3n&id=102&traits[]=12&traits[]=2&traits[]=23", @"Should POST params correctly");
 }
 
+- (void)testAPIRequestHeadersAreAttached {
+	SKLAPIRequest *request = [SKLAPIRequest with:@"/go/here/please" method:@"GET"
+										  params:nil
+											body:nil];
+	request.headers = @{ @"Accept" : @"crazy/encoding", @"Deny" : @"nothing/ever" };
+	[self.apiClient makeRequest:request];
+	
+	NSURLRequest *madeRequest = self.mockSession.lastRequest;
+	XCTAssertEqualObjects(madeRequest.allHTTPHeaderFields[@"Accept"], @"crazy/encoding", @"Should accept API request");
+	XCTAssertEqualObjects(madeRequest.allHTTPHeaderFields[@"Deny"], @"nothing/ever", @"Should accept API request");
+}
+
+
 - (void)testRequestsAreSentSerially {
 	SKLAPIRequest *request1 = [SKLAPIRequest with:@"/go/here/please" method:@"GET" params:nil body:nil];
 	SKLAPIRequest *request2 = [SKLAPIRequest with:@"/go/there/please" method:@"GET" params:nil body:nil];

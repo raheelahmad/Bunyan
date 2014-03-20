@@ -171,6 +171,10 @@ NSString *const SKLOriginalNetworkingResponseStringKey = @"SKLOriginalNetworking
 	
 	NSMutableURLRequest *urlRequest = [NSMutableURLRequest requestWithURL:url];
 	
+	// Attach all other headers
+	urlRequest.allHTTPHeaderFields = request.headers;
+	
+	// Attach contentType header (should overwrite one if provided in request.headers above)
 	NSDictionary *body = request.body;
 	if (isPOSTRequest && [body count]) {
 		if (request.bodyEncoding == SKLJSONBodyEncoding) {
@@ -193,6 +197,7 @@ NSString *const SKLOriginalNetworkingResponseStringKey = @"SKLOriginalNetworking
 	if (request.contentType) {
 		[urlRequest setValue:request.contentType forHTTPHeaderField:@"Content-Type"];
 	}
+	
 	
 	urlRequest.HTTPMethod = method;
 	
