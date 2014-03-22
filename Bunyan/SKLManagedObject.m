@@ -122,7 +122,7 @@
 	NSDictionary *mapping = [[self class] localToRemoteKeyMapping];
 	[mapping enumerateKeysAndObjectsUsingBlock:^(id localKey, id remoteKey, BOOL *stop) {
 		id remoteValue = [remoteObject valueForKeyPath:remoteKey];
-		if (remoteValue) {
+		if (remoteValue && remoteValue != [NSNull null]) {
 			[self updateValueForLocalKey:localKey remoteValue:remoteValue];
 		}
 	}];
