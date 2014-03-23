@@ -240,10 +240,14 @@ NSString *const SKLOriginalNetworkingResponseStringKey = @"SKLOriginalNetworking
                                                      NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
 													 SKLAPIResponseBlock completion = request.completionBlock;
 													 NSLog(@"<<< %ld %@", (long) httpResponse.statusCode, httpResponse.URL);
+													 
+													 // Handle NSURLSession errors
                                                      if (error) {
                                                          error = [NSError errorWithDomain:SKLAPIErrorDomain code:NSURLSessionErrorCode userInfo:@{ SKLOriginalNetworkingErrorKey : error }];
 														 NSLog(@"\t\t\t<<< %@", error);
                                                      }
+													 
+													 // Handle HTTP errors
                                                      if (httpResponse.statusCode == 400) {
                                                          error = [NSError errorWithDomain:SKLAPIErrorDomain code:BadRequestCode userInfo:nil];
                                                      }
@@ -251,12 +255,14 @@ NSString *const SKLOriginalNetworkingResponseStringKey = @"SKLOriginalNetworking
                                                          error = [NSError errorWithDomain:SKLAPIErrorDomain code:NotFoundCode userInfo:nil];
                                                      }
 													 
+													 // Track cached requests
 													 NSString *statusHeaderString = httpResponse.allHeaderFields[@"Status"];
 													 if ([[statusHeaderString lowercaseString] isEqualToString:@"304 not modified"]) {
 														 self.requestsCached++;
 														 NSLog(@"\t\t\t<<< Cached %ld [out of %ld]", (long)self.requestsCached, (long)self.requestsCompleted + 1);
 													 }
 													 
+													 // Parse response
 													 id responseObject;
 													 NSString *responseString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 													 responseObject = responseString;
@@ -277,11 +283,11 @@ NSString *const SKLOriginalNetworkingResponseStringKey = @"SKLOriginalNetworking
 														 responseObject = data;
 													 }
                                                      
+													 // Handle errors and final response processing
                                                      if (error) {
 														 NSLog(@"\t\t\t%@", error);
 														 responseObject = nil;
                                                      } else {
-														 
 														 NSString *wrappingKey = request.responseWrappingKey;
 														 if (responseObject && wrappingKey) {
 															 responseObject = [NSDictionary dictionaryWithObject:responseObject
@@ -289,8 +295,10 @@ NSString *const SKLOriginalNetworkingResponseStringKey = @"SKLOriginalNetworking
 														 }
 													 }
 													 
-													 
+													 // Call the completion
                                                      completion(error, responseObject);
+													 
+													 // Wrap up this request (will also start next request if any)
 													 dispatch_async(dispatch_get_main_queue(), ^{
 														 [self cleanupCurrentRequest];
 													 });
