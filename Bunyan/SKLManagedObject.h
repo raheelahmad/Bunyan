@@ -29,6 +29,7 @@ typedef void (^ SKLFetchResponseBlock)(NSError *error);
 // -- Remote fetch
 
 + (void)fetchFromRemote;
++ (void)fetchFromRemoteWithInfo:(SKLAPIRequest *)request completion:(SKLFetchResponseBlock)completion;
 + (void)fetchFromRemoteWithCompletion:(SKLFetchResponseBlock)completion;
 + (SKLAPIClient *)apiClient;
 + (void)updateWithRemoteFetchResponse:(NSArray *)response;

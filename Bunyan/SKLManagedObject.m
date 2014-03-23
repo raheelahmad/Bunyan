@@ -21,8 +21,12 @@
 }
 
 + (void)fetchFromRemoteWithCompletion:(SKLFetchResponseBlock)completion {
+	[self fetchFromRemoteWithInfo:[self remoteFetchInfo]
+					   completion:completion];
+}
+
++ (void)fetchFromRemoteWithInfo:(SKLAPIRequest *)request completion:(SKLFetchResponseBlock)completion {
 	SKLAPIClient *apiClient = [self apiClient];
-    SKLAPIRequest *request = [self remoteFetchInfo];
     request.responseParsing = SKLJSONResponseParsing;
 	request.completionBlock = ^(NSError *error, id responseObject) {
 		if (error) {
@@ -101,7 +105,7 @@
 		return;
 	}
 	NSManagedObjectContext *context = [self importContext];
-	[context performBlock:^{
+	[context performBlockAndWait:^{
 		for (NSDictionary *remoteObject in response) {
 			id localObject = [self localObjectForRemoteObject:remoteObject];
 			if (!localObject) {
@@ -220,8 +224,12 @@
 }
 
 + (instancetype)insertInContext:(NSManagedObjectContext *)context {
-    id item =  [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([self class])
+    __block id item;
+    [context performBlockAndWait:^{
+        item = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([self class])
                                              inManagedObjectContext:context];
+        
+    }];
     return item;
 }
 
@@ -230,14 +238,17 @@
 }
 
 + (NSArray *)allInContext:(NSManagedObjectContext *)context predicate:(NSPredicate *)predicate {
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([self class])];
-    request.predicate = predicate;
-    NSError *error;
-    NSArray *result = [context executeFetchRequest:request
-                                             error:&error];
-    if (!result) {
-        NSLog(@"Error when fetching %@: %@", NSStringFromClass(self), error);
-    }
+    __block NSArray *result;
+    [context performBlockAndWait:^{
+        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([self class])];
+        request.predicate = predicate;
+        NSError *error;
+        result = [context executeFetchRequest:request
+                                        error:&error];
+        if (!result) {
+            NSLog(@"Error when fetching %@: %@", NSStringFromClass(self), error);
+        }
+    }];
 
     return result;
     
@@ -249,16 +260,20 @@
 }
 
 + (instancetype)anyInContext:(NSManagedObjectContext *)context {
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([self class])];
-    request.fetchLimit = 1;
-    NSError *error;
-    NSArray *result = [context executeFetchRequest:request
-                                             error:&error];
-    if (!result) {
-        NSLog(@"Error fetching %@: %@", NSStringFromClass(self), error);
-    }
-    
-    return [result firstObject];
+    __block id item;
+    [context performBlockAndWait:^{
+        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([self class])];
+        request.fetchLimit = 1;
+        NSError *error;
+        NSArray *result = [context executeFetchRequest:request
+                                                 error:&error];
+        if (!result) {
+            NSLog(@"Error fetching %@: %@", NSStringFromClass(self), error);
+        }
+        
+        item = [result firstObject];
+    }];
+    return item;
 }
 
 + (NSFetchedResultsController *)controllerWithPredicate:(NSPredicate *)predicate context:(NSManagedObjectContext *)context {
