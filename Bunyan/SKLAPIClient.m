@@ -9,6 +9,7 @@
 #import "SKLAPIClient.h"
 #import "SKLAPIRequest.h"
 #import <UIKit/UIImage.h>
+#import <UIKit/UIApplication.h>
 
 @interface SKLAPIClient ()
 
@@ -129,6 +130,8 @@ NSString *const SKLOriginalNetworkingResponseStringKey = @"SKLOriginalNetworking
 
 - (void)makeRequest:(SKLAPIRequest *)request {
 	[self.pendingRequests addObject:request];
+    
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	
 	if ([self.pendingRequests count] == 1) {
 		// only 1 request left, let's make it now
@@ -138,6 +141,7 @@ NSString *const SKLOriginalNetworkingResponseStringKey = @"SKLOriginalNetworking
 
 - (void)makeNextRequest {
 	if ([self.pendingRequests count] == 0) {
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 		return;
 	}
 	
@@ -211,7 +215,7 @@ NSString *const SKLOriginalNetworkingResponseStringKey = @"SKLOriginalNetworking
 	
 	NSLog(@">>> %@ %@", urlRequest.HTTPMethod, urlRequest.URL);
 	if (urlRequest.HTTPBody) {
-		NSLog(@"\t\t\t>>>body size %ld bytes", [urlRequest.HTTPBody length]);
+		NSLog(@"\t\t\t>>>body size %ld bytes", (long) [urlRequest.HTTPBody length]);
 	}
 	
 	NSURLSessionDataTask *task = [self.session dataTaskWithRequest:urlRequest
@@ -219,7 +223,7 @@ NSString *const SKLOriginalNetworkingResponseStringKey = @"SKLOriginalNetworking
 													 
                                                      NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
 													 SKLAPIResponseBlock completion = request.completionBlock;
-													 NSLog(@"<<< %ld %@", httpResponse.statusCode, httpResponse.URL);
+													 NSLog(@"<<< %ld %@", (long) httpResponse.statusCode, httpResponse.URL);
                                                      if (error) {
                                                          error = [NSError errorWithDomain:SKLAPIErrorDomain code:NSURLSessionErrorCode userInfo:@{ SKLOriginalNetworkingErrorKey : error }];
 														 NSLog(@"\t\t\t<<< %@", error);
