@@ -255,13 +255,6 @@ NSString *const SKLOriginalNetworkingResponseStringKey = @"SKLOriginalNetworking
                                                          error = [NSError errorWithDomain:SKLAPIErrorDomain code:NotFoundCode userInfo:nil];
                                                      }
 													 
-													 // Track cached requests
-													 NSString *statusHeaderString = httpResponse.allHeaderFields[@"Status"];
-													 if ([[statusHeaderString lowercaseString] isEqualToString:@"304 not modified"]) {
-														 self.requestsCached++;
-														 NSLog(@"\t\t\t<<< Cached %ld [out of %ld]", (long)self.requestsCached, (long)self.requestsCompleted + 1);
-													 }
-													 
 													 // Parse response
 													 id responseObject;
 													 NSString *responseString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
@@ -300,6 +293,13 @@ NSString *const SKLOriginalNetworkingResponseStringKey = @"SKLOriginalNetworking
 													 
 													 // Wrap up this request (will also start next request if any)
 													 dispatch_async(dispatch_get_main_queue(), ^{
+														 // Track cached requests
+														 NSString *statusHeaderString = httpResponse.allHeaderFields[@"Status"];
+														 if ([[statusHeaderString lowercaseString] isEqualToString:@"304 not modified"]) {
+															 self.requestsCached++;
+															 NSLog(@"\t\t\t<<< Cached %ld [out of %ld]", (long)self.requestsCached, (long)self.requestsCompleted + 1);
+														 }
+														 
 														 [self cleanupCurrentRequest];
 													 });
                                                  }];
