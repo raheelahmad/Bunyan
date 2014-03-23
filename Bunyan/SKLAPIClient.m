@@ -20,6 +20,10 @@
 
 @property (nonatomic) NSMutableDictionary *imageDictionary;
 
+@property (nonatomic) NSInteger requestsMade;
+@property (nonatomic) NSInteger requestsCompleted;
+@property (nonatomic) NSInteger requestsCached;
+
 @end
 
 static NSString *const SKLAPIErrorDomain = @"SKLAPIErrorDomain";
@@ -52,9 +56,16 @@ NSString *const SKLOriginalNetworkingResponseStringKey = @"SKLOriginalNetworking
 	if (self) {
 		self.baseAPIURL = baseURL;
 		NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
+		configuration.URLCache = [[NSURLCache alloc] initWithMemoryCapacity:15 * 1024 * 1024
+															   diskCapacity:100 * 1024 * 1024
+																   diskPath:nil];
 		self.session = [NSURLSession sessionWithConfiguration:configuration];
 		self.pendingRequests = [NSMutableArray array];
 		self.imageDictionary = [NSMutableDictionary dictionary];
+		
+		self.requestsMade = 0;
+		self.requestsCompleted = 0;
+		self.requestsCached = 0;
 	}
 	return self;
 }
@@ -145,6 +156,8 @@ NSString *const SKLOriginalNetworkingResponseStringKey = @"SKLOriginalNetworking
 		return;
 	}
 	
+	self.requestsMade++;
+	
 	SKLAPIRequest *firstRequest = self.pendingRequests[0];
 	[self _makeRequest:firstRequest];
 }
@@ -154,6 +167,9 @@ NSString *const SKLOriginalNetworkingResponseStringKey = @"SKLOriginalNetworking
 		[self.pendingRequests removeObject:self.currentRequest];
 		self.currentRequest = nil;
 	}
+	
+	self.requestsCompleted++;
+	
 	[self makeNextRequest];
 }
 
@@ -234,6 +250,12 @@ NSString *const SKLOriginalNetworkingResponseStringKey = @"SKLOriginalNetworking
                                                      if (httpResponse.statusCode == 404) {
                                                          error = [NSError errorWithDomain:SKLAPIErrorDomain code:NotFoundCode userInfo:nil];
                                                      }
+													 
+													 NSString *statusHeaderString = httpResponse.allHeaderFields[@"Status"];
+													 if ([[statusHeaderString lowercaseString] isEqualToString:@"304 not modified"]) {
+														 self.requestsCached++;
+														 NSLog(@"\t\t\t<<< Cached %ld [out of %ld]", (long)self.requestsCached, (long)self.requestsCompleted + 1);
+													 }
 													 
 													 id responseObject;
 													 NSString *responseString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
