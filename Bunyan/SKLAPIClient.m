@@ -8,6 +8,7 @@
 
 #import "SKLAPIClient.h"
 #import "SKLAPIRequest.h"
+#import "SKLAPIResponse.h"
 #import <UIKit/UIImage.h>
 #import <UIKit/UIApplication.h>
 
@@ -289,7 +290,10 @@ NSString *const SKLOriginalNetworkingResponseStringKey = @"SKLOriginalNetworking
 													 }
 													 
 													 // Call the completion
-                                                     completion(error, responseObject);
+													 SKLAPIResponse *apiResponse = [[SKLAPIResponse alloc] init];
+													 apiResponse.responseObject = responseObject;
+													 apiResponse.httpResponse = httpResponse;
+                                                     completion(error, apiResponse);
 													 
 													 // Wrap up this request (will also start next request if any)
 													 dispatch_async(dispatch_get_main_queue(), ^{

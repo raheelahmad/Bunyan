@@ -6,9 +6,9 @@
 //  Copyright (c) 2014 Sakun Labs. All rights reserved.
 //
 
-@class UIImage;
+@class UIImage, SKLAPIResponse;
 
-typedef void (^ SKLAPIResponseBlock)(NSError *error, id responseObject);
+typedef void (^ SKLAPIResponseBlock)(NSError *error, SKLAPIResponse *apiResponse);
 typedef void (^ SKLImageFetchResponseBlock)(NSError *error, UIImage *image);
 
 typedef NS_ENUM(NSInteger, ResponseErrorCode) {

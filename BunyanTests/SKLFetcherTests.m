@@ -11,6 +11,7 @@
 #import "SKLManagedObject.h"
 #import "SKLTestableManagedObjectContext.h"
 #import "SKLAPIRequest.h"
+#import "SKLAPIResponse.h"
 #import "SKLMockURLSession.h"
 
 // Dependency injected objects
@@ -222,8 +223,8 @@ NSError *error;
 	SKLAPIRequest *request = [person remoteRefreshInfo];
 	
 	__block NSDictionary *receivedResponse;
-	request.completionBlock = ^(NSError *error, NSDictionary *response) {
-		receivedResponse = response;
+	request.completionBlock = ^(NSError *error, SKLAPIResponse *apiResponse) {
+		receivedResponse = apiResponse.responseObject;
 	};
 	NSDictionary *response = @{ @"name" : @"Thales" };
 	
@@ -252,8 +253,8 @@ NSError *error;
 	NSData *responseData = [NSJSONSerialization dataWithJSONObject:disciplesResponse
 														   options:0 error:&error];
 	
-	request.completionBlock = ^(NSError *error, id remoteResponse) {
-		NSArray *wrappedResponse = [remoteResponse valueForKey:@"disciples"];
+	request.completionBlock = ^(NSError *error, SKLAPIResponse *apiResponse) {
+		NSArray *wrappedResponse = [apiResponse.responseObject valueForKey:@"disciples"];
 		XCTAssertEqualObjects(disciplesResponse, wrappedResponse, @"");
 	};
 	[apiClient makeRequest:request];

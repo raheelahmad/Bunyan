@@ -9,6 +9,7 @@
 #import <XCTest/XCTest.h>
 #import "SKLTestableAPIClient.h"
 #import "SKLAPIRequest.h"
+#import "SKLAPIResponse.h"
 #import "SKLMockURLSession.h"
 
 @interface SKLAPIClientTests : XCTestCase
@@ -192,8 +193,8 @@
     request.responseParsing = SKLJSONResponseParsing;
 	__block id received;
     __block NSError *receivedError;
-	request.completionBlock = ^(NSError *error, id responseObject) {
-						 received = responseObject;
+	request.completionBlock = ^(NSError *error, SKLAPIResponse *apiResponse) {
+						 received = apiResponse.responseObject;
                          receivedError = error;
 					 };
 	[self.apiClient makeRequest:request];
@@ -256,8 +257,8 @@
 	
 	__block id received = nil;
 	__block id receivedError = nil;
-	request.completionBlock = ^(NSError *error, id receivedData) {
-		received = receivedData;
+	request.completionBlock = ^(NSError *error, SKLAPIResponse *apiResponse) {
+		received = apiResponse.responseObject;
 		receivedError = error;
 	};
  	[self.apiClient makeRequest:request];

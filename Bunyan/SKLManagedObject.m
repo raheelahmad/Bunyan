@@ -7,8 +7,9 @@
 //
 
 #import "SKLManagedObject.h"
-#import "SKLAPIRequest.h"
 #import "SKLAPIClient.h"
+#import "SKLAPIRequest.h"
+#import "SKLAPIResponse.h"
 #import "SKLPersistenceStack.h"
 #import "NSManagedObjectContext+Additions.h"
 
@@ -28,11 +29,11 @@
 + (void)fetchFromRemoteWithInfo:(SKLAPIRequest *)request completion:(SKLFetchResponseBlock)completion {
 	SKLAPIClient *apiClient = [self apiClient];
     request.responseParsing = SKLJSONResponseParsing;
-	request.completionBlock = ^(NSError *error, id responseObject) {
+	request.completionBlock = ^(NSError *error, SKLAPIResponse *apiResponse) {
 		if (error) {
 			NSLog(@"Error fetching %@: %@", NSStringFromClass(self), error);
 		} else {
-			[self updateWithRemoteFetchResponse:responseObject];
+			[self updateWithRemoteFetchResponse:apiResponse.responseObject];
 		}
         if (completion) {
             completion(error);
@@ -65,11 +66,11 @@
 	
 	// only set completion for refreshing local object, if no completion has been set yet
 	if (!request.completionBlock) {
-		request.completionBlock = ^(NSError *error, id responseObject) {
+		request.completionBlock = ^(NSError *error, SKLAPIResponse *apiResponse) {
 			if (error) {
 				NSLog(@"Error refreshing %@: %@", self, error);
 			} else {
-				[self refreshWithRemoteResponse:responseObject];
+				[self refreshWithRemoteResponse:apiResponse.responseObject];
 			}
 		};
 	}
