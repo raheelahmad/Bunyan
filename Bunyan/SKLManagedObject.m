@@ -85,7 +85,7 @@
 	// We should update in the background
 	NSManagedObjectID *objectId = self.objectID;
 	NSManagedObjectContext *context = [[self class] importContext];
-	[context performBlock:^{
+	[context performBlockAndWait:^{
 		SKLManagedObject *importCtxObject = (SKLManagedObject *)[context objectWithID:objectId];
 		[importCtxObject updateWithRemoteObject:response];
 		if ([context hasChanges]) {
@@ -166,7 +166,14 @@
 		if (relationship.isToMany) {
 			NSAssert([formattedRemoteValue isKindOfClass:[NSArray class]], @"Relationship %@ in %@ is to-many and should be remote updated with an array", localKey, NSStringFromClass(self.class));
 			
-			NSMutableSet *destinationLocalObjects = [NSMutableSet set];
+			NSMutableSet *destinationLocalObjects;
+			if ([self shouldReplaceWhenUpdatingToManyRelationship:localKey]) {
+				destinationLocalObjects = [NSMutableSet set];
+			} else {
+				// include the current local objects for this to-many relationship
+				destinationLocalObjects = [NSMutableSet setWithSet:[self valueForKeyPath:localKey]];
+			}
+			
 			for (NSDictionary *remoteObject in formattedRemoteValue) {
 				[destinationLocalObjects addObject:DestinationObjectForRemote(remoteObject)];
 			}
@@ -184,6 +191,10 @@
 
 - (id)localValueForKey:(NSString *)localKey RemoteValue:(id)remoteValue {
 	return remoteValue;
+}
+
+- (BOOL)shouldReplaceWhenUpdatingToManyRelationship:(NSString *)relationship {
+	return YES;
 }
 
 #pragma mark Fetch Helpers

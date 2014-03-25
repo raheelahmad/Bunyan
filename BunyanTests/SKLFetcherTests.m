@@ -33,11 +33,12 @@ NSError *error;
 @property (nonatomic) NSNumber *remoteId;
 @property (nonatomic) SKLFakeOpus *magnumOpus;
 @property (nonatomic) NSSet *opuses;
+@property (nonatomic) NSSet *favoriteOpuses;
 @end
 
 @implementation SKLFakePerson
 
-@dynamic name, location, birthdate, remoteId, magnumOpus, opuses;
+@dynamic name, location, birthdate, remoteId, magnumOpus, opuses, favoriteOpuses;
 
 + (SKLAPIRequest *)remoteFetchInfo {
     return [SKLAPIRequest with:@"/get/persons" method:@"GET" params:nil body:nil];
@@ -76,6 +77,7 @@ NSError *error;
 			 @"birthdate" : @"date",
 			 @"magnumOpus" : @"magnum",
 			 @"opuses" : @"otherOpuses",
+			 @"favoriteOpuses" : @"favorites",
 			 };
 }
 
@@ -102,6 +104,14 @@ NSError *error;
 	return @"remoteId";
 }
 
+- (BOOL)shouldReplaceWhenUpdatingToManyRelationship:(NSString *)relationship {
+	if ([relationship isEqualToString:@"favoriteOpuses"]) {
+		return NO; // i.e., keep existing to-many destination objects when setting
+	} else {
+		return YES;
+	}
+}
+
 @end
 
 @interface SKLFakeOpus : SKLManagedObject
@@ -110,13 +120,14 @@ NSError *error;
 @property (nonatomic) NSString *name;
 @property (nonatomic) NSNumber *pageCount;
 @property (nonatomic) SKLFakePerson *magnumOwner;
+@property (nonatomic) SKLFakePerson *favoriteOwner;
 @property (nonatomic) SKLFakePerson *owner;
 
 @end
 
 @implementation SKLFakeOpus
 
-@dynamic name, pageCount, remoteId, magnumOwner, owner;
+@dynamic name, pageCount, remoteId, magnumOwner, favoriteOwner, owner;
 
 + (NSDictionary *)localToRemoteKeyMapping {
 	return @{
@@ -298,6 +309,46 @@ NSError *error;
 	XCTAssertEqual([otherOpuses count], (NSUInteger)2, @"Update should update a to-many relationship");
 }
 
+- (void)testUpdateRespectsToManyRelationshipReplacement {
+	SKLFakePerson *farabi = [SKLFakePerson insertInContext:self.context];
+	
+	SKLFakeOpus *opusOne = [SKLFakeOpus insertInContext:farabi.managedObjectContext];
+	SKLFakeOpus *opusTwo = [SKLFakeOpus insertInContext:farabi.managedObjectContext];
+	SKLFakeOpus *favOpusOne = [SKLFakeOpus insertInContext:farabi.managedObjectContext];
+	SKLFakeOpus *favOpusTwo = [SKLFakeOpus insertInContext:farabi.managedObjectContext];
+	// start with:
+	//		two regular
+	farabi.opuses = [NSSet setWithArray:@[ opusOne, opusTwo ]];
+	//		two favorites
+	farabi.favoriteOpuses = [NSSet setWithArray:@[ favOpusOne, favOpusTwo ]];
+	
+	NSArray *opuses = @[
+						@{
+							@"id" : @259, @"name" : @"Twilight Musings", @"pages" : @914
+							},
+						@{
+							@"id" : @291, @"name" : @"Deen Aur Dua", @"pages" : @103
+							}
+						];
+	NSArray *remoteFavoriteOpuses = @[
+									  @{
+										  @"id" : @219, @"name" : @"Errant Poetry", @"pages" : @914
+										  },
+									  @{
+										  @"id" : @203, @"name" : @"Discussed Metaphors", @"pages" : @103
+										  }
+									  ];
+	[farabi updateValueForLocalKey:@"opuses" remoteValue:opuses];
+	[farabi updateValueForLocalKey:@"favoriteOpuses" remoteValue:remoteFavoriteOpuses];
+	
+	XCTAssertEqual([farabi.opuses count], (NSInteger)2, @"Should not retain previous to-many destination object if told so");
+	XCTAssertFalse([farabi.opuses containsObject:opusOne], @"Should not retain previous to-many destination object if told so");
+	XCTAssertFalse([farabi.opuses containsObject:opusTwo], @"Should not retain previous to-many destination object if told so");
+	XCTAssertEqual([farabi.favoriteOpuses count], (NSInteger)4, @"Should retain previous to-many destination object if told so");
+	XCTAssertTrue([farabi.favoriteOpuses containsObject:favOpusOne], @"Should retain previous to-many destination object if told so");
+	XCTAssertTrue([farabi.favoriteOpuses containsObject:favOpusTwo], @"Should retain previous to-many destination object if told so");
+}
+
 #pragma mark - Helpers
 
 - (void)checkForPersonWithId:(NSNumber *)remoteId
@@ -390,6 +441,7 @@ NSError *error;
 															 ]
 									   ];
 	addRelationships(personEntity, opusEntity, @"magnumOpus", @"magnumOwner", NO, NO);
+	addRelationships(personEntity, opusEntity, @"favoriteOpuses", @"favoriteOwner", YES, NO);
 	addRelationships(personEntity, opusEntity, @"opuses", @"owner", YES, NO);
 	
     NSManagedObjectModel *model = [[NSManagedObjectModel alloc] init];
