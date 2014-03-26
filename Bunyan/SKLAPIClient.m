@@ -117,10 +117,11 @@ NSString *const SKLOriginalNetworkingResponseStringKey = @"SKLOriginalNetworking
 										  params:nil
 											body:nil ];
 	request.responseParsing = SKLNoResponseParsing;
-	request.completionBlock = ^(NSError *error, id responseObject) {
+	request.completionBlock = ^(NSError *error, SKLAPIResponse *apiResponse) {
+		NSData *imageData = apiResponse.responseObject;
 		UIImage *image;
 		if (!error) {
-			image = [UIImage imageWithData:responseObject];
+			image = [UIImage imageWithData:imageData];
 			if (!image) {
 				error = [NSError errorWithDomain:SKLAPIErrorDomain
 											code:ImageParsingErrorCode
