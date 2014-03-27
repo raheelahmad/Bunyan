@@ -12,6 +12,8 @@
 #import <UIKit/UIImage.h>
 #import <UIKit/UIApplication.h>
 
+//#define LOG_NETWORKING
+
 @interface SKLAPIClient ()
 
 @property (nonatomic) NSString *baseAPIURL;
@@ -231,17 +233,21 @@ NSString *const SKLOriginalNetworkingResponseStringKey = @"SKLOriginalNetworking
 		return;
 	}
 	
+#ifdef LOG_NETWORKING
 	NSLog(@">>> %@ %@", urlRequest.HTTPMethod, urlRequest.URL);
 	if (urlRequest.HTTPBody) {
 		NSLog(@"\t\t\t>>>body size %ld bytes", (long) [urlRequest.HTTPBody length]);
 	}
+#endif
 	
 	NSURLSessionDataTask *task = [self.session dataTaskWithRequest:urlRequest
                                                  completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
 													 
                                                      NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
 													 SKLAPIResponseBlock completion = request.completionBlock;
+#ifdef LOG_NETWORKING
 													 NSLog(@"<<< %ld %@", (long) httpResponse.statusCode, httpResponse.URL);
+#endif
 													 
 													 // Handle NSURLSession errors
                                                      if (error) {
@@ -302,7 +308,9 @@ NSString *const SKLOriginalNetworkingResponseStringKey = @"SKLOriginalNetworking
 														 NSString *statusHeaderString = httpResponse.allHeaderFields[@"Status"];
 														 if ([[statusHeaderString lowercaseString] isEqualToString:@"304 not modified"]) {
 															 self.requestsCached++;
+#ifdef LOG_NETWORKING
 															 NSLog(@"\t\t\t<<< Cached %ld [out of %ld]", (long)self.requestsCached, (long)self.requestsCompleted + 1);
+#endif
 														 }
 														 
 														 [self cleanupCurrentRequest];

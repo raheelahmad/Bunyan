@@ -29,22 +29,28 @@
 + (void)fetchFromRemoteWithInfo:(SKLAPIRequest *)request completion:(SKLFetchResponseBlock)completion {
 	SKLAPIClient *apiClient = [self apiClient];
     request.responseParsing = SKLJSONResponseParsing;
-	request.completionBlock = ^(NSError *error, SKLAPIResponse *apiResponse) {
-		if (error) {
-			NSLog(@"Error fetching %@: %@", NSStringFromClass(self), error);
-		} else {
-			[self updateWithRemoteFetchResponse:apiResponse.responseObject];
-		}
-        if (completion) {
-            completion(error);
-        }
-	};
-	
+	if (!request.completionBlock) {
+		request.completionBlock = ^(NSError *error, SKLAPIResponse *apiResponse) {
+			if (error) {
+				NSLog(@"Error fetching %@: %@", NSStringFromClass(self), error);
+			} else {
+				[self updateWithRemoteFetchResponse:apiResponse.responseObject];
+			}
+			if (completion) {
+				completion(error);
+			}
+		};
+		
+	}
 	[apiClient makeRequest:request];
 }
 
 + (SKLAPIRequest *)remoteFetchInfo {
 	return nil;
+}
+
++ (BOOL)shouldDelteStaleLocalObjects {
+	return NO;
 }
 
 + (SKLAPIClient *)apiClient {
@@ -107,12 +113,20 @@
 	}
 	NSManagedObjectContext *context = [self importContext];
 	[context performBlockAndWait:^{
+		NSMutableArray *all = [[self allInContext:context] mutableCopy];
 		for (NSDictionary *remoteObject in response) {
 			id localObject = [self localObjectForRemoteObject:remoteObject];
 			if (!localObject) {
 				localObject = [self insertInContext:context];
 			}
 			[localObject updateWithRemoteObject:remoteObject];
+			[all removeObject:localObject];
+		}
+		
+		if ([self shouldDelteStaleLocalObjects]) {
+			for (SKLManagedObject *object in all) {
+				[context deleteObject:object];
+			}
 		}
 		
         NSError *error;

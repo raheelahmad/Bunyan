@@ -45,6 +45,10 @@ NSError *error;
     return [SKLAPIRequest with:@"/get/persons" method:@"GET" params:nil body:nil];
 }
 
++ (BOOL)shouldDelteStaleLocalObjects {
+	return YES;
+}
+
 + (SKLAPIClient *)apiClient {
 	return apiClient;
 }
@@ -287,6 +291,20 @@ NSError *error;
     XCTAssertEqualObjects(plato.name, @"Plato", @"");
 }
 
+- (void)testFetchDeletesStaleLocalObjectsIfInstructed {
+	SKLFakePerson *person1 = [SKLFakePerson insertInContext:self.context];
+	person1.name = @"Osho";
+	[self makePersonFetchResponse];
+	
+	NSArray *all = [SKLFakePerson allInContext:self.context];
+	XCTAssertEqual([all count], (NSInteger)2, @"Should delete stale objects");
+	NSPredicate *oshoPredicate = [NSPredicate predicateWithFormat:@"name == %@", @"Osho"];
+	NSInteger oshosLeftAfterUpdate = [[SKLFakePerson allInContext:self.context
+													   predicate:oshoPredicate] count];
+	XCTAssertEqual(0, oshosLeftAfterUpdate, @"Should delete stale objects");
+}
+
+
 - (void)testFetchResponseUpdatesExistingLocalObject {
 	SKLFakePerson *platoEarlier = [SKLFakePerson insertInContext:self.context];
 	platoEarlier.name = @"Plllaatoooo";
@@ -367,24 +385,29 @@ NSError *error;
 	self.context.shouldPerformBlockAsSync = YES;
 	[SKLFakePerson fetchFromRemote];
 	
-	NSArray *personFetchResponse = @[
-									 @{ @"id" : @120, @"name" : @"Al Farabi", @"location" : @"Persia", @"date" : @"2010-02-06T11:36:49Z" },
-									 @{ @"id" : @126, @"name" : @"Plato", @"location" : @"Greece", @"date" : @"2012-08-26T19:06:43Z",
-										@"magnum" : @{
-												@"id" : @211, @"name" : @"The Republic", @"pages" : @443
-												},
-										@"otherOpuses" : @[
-                                                @{
-													@"id" : @214, @"name" : @"Dramas", @"pages" : @204
-													},
-                                                @{
-													@"id" : @204, @"name" : @"Interlooction", @"pages" : @123
-													}
-												]
-                                        },
-									 ];
+	NSArray *personFetchResponse = [self personFetchRemoteObjects];
 	NSData *responseData = [NSJSONSerialization dataWithJSONObject:personFetchResponse options:0 error:nil];
 	apiClient.mockSession.lastCompletionHandler(responseData, [self OKResponse], nil);
+}
+
+- (NSArray *)personFetchRemoteObjects {
+	return @[
+			 @{ @"id" : @120, @"name" : @"Al Farabi", @"location" : @"Persia", @"date" : @"2010-02-06T11:36:49Z" },
+			 @{ @"id" : @126, @"name" : @"Plato", @"location" : @"Greece", @"date" : @"2012-08-26T19:06:43Z",
+				@"magnum" : @{
+						@"id" : @211, @"name" : @"The Republic", @"pages" : @443
+						},
+				@"otherOpuses" : @[
+						@{
+							@"id" : @214, @"name" : @"Dramas", @"pages" : @204
+							},
+						@{
+							@"id" : @204, @"name" : @"Interlooction", @"pages" : @123
+							}
+						]
+				},
+			 ];
+	
 }
 
 - (NSHTTPURLResponse *)OKResponse {
