@@ -161,6 +161,9 @@
 	
 	if (attribute) {
 		BOOL remoteValuePresent = formattedRemoteValue != nil && formattedRemoteValue != [NSNull null];
+		if ([remoteValue respondsToSelector:@selector(length)]) {
+			remoteValuePresent = [remoteValue length] > 0;
+		}
 		BOOL localNotSameAsRemote = ![localValue isEqual:formattedRemoteValue];
 		if (remoteValuePresent && localNotSameAsRemote) {
 			[self setValue:formattedRemoteValue
@@ -196,6 +199,13 @@
 					forKey:localKey];
 		} else {
 			NSAssert([formattedRemoteValue isKindOfClass:[NSDictionary class]], @"Relationship %@ in %@ is to-one and should be remote updated with a dictionary", localKey, NSStringFromClass(self.class));
+			
+			id localObject = [self valueForKey:localKey];
+			if (localObject) {
+				[localObject updateWithRemoteObject:formattedRemoteValue];
+			} else {
+				localObject = DestinationObjectForRemote(formattedRemoteValue);
+			}
 			
 			[self setValue:DestinationObjectForRemote(formattedRemoteValue)
 					forKey:localKey];
