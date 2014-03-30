@@ -26,4 +26,21 @@
 	return request;
 }
 
+- (id)copyWithZone:(NSZone *)zone {
+	typeof(self) request = [[[self class] allocWithZone:zone] init];
+	
+	request.endPoint = [self.endPoint copy];
+	request.method = [self.method copy];
+	request.params = [self.params copy];
+	request.body = [self.body copy];
+	request.headers = [self.headers copy];
+	request.bodyEncoding = self.bodyEncoding;
+	request.responseParsing = self.responseParsing;
+	request.contentType = self.contentType;
+	request.responseWrappingKey = self.responseWrappingKey;
+	request.previousResponse = self.previousResponse;
+	
+	return request;
+}
+
 @end

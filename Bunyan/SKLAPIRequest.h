@@ -20,7 +20,7 @@ typedef NS_ENUM(NSInteger, SKLResponseParsing) {
 	SKLJSONResponseParsing,
 };
 
-@interface SKLAPIRequest : NSObject
+@interface SKLAPIRequest : NSObject<NSCopying>
 
 @property (nonatomic) NSString *endPoint;
 @property (nonatomic) NSString *method;
