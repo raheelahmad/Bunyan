@@ -6,9 +6,14 @@
 //  Copyright (c) 2014 Sakun Labs. All rights reserved.
 //
 
+@class SKLAPIRequest;
+
 @interface SKLAPIResponse : NSObject
 
 @property (nonatomic) id responseObject;
 @property (nonatomic) NSHTTPURLResponse *httpResponse;
+/// This is set after the request finishes and before the completion for this response is called
+@property (nonatomic) SKLAPIRequest *request;
+
 
 @end

@@ -300,6 +300,7 @@ NSString *const SKLOriginalNetworkingResponseStringKey = @"SKLOriginalNetworking
 													 SKLAPIResponse *apiResponse = [[SKLAPIResponse alloc] init];
 													 apiResponse.responseObject = responseObject;
 													 apiResponse.httpResponse = httpResponse;
+													 apiResponse.request = request;
                                                      completion(error, apiResponse);
 													 
 													 // Wrap up this request (will also start next request if any)
