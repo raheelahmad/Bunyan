@@ -7,7 +7,23 @@
 //
 
 #import "SKLAPIResponse.h"
+#import "SKLAPIRequest.h"
 
 @implementation SKLAPIResponse
+
+- (NSArray *)allResponseObjects {
+	NSMutableArray *allResponseObjects = [NSMutableArray array];
+	
+	[allResponseObjects addObjectsFromArray:self.responseObject];
+	
+	SKLAPIRequest *request = self.request;
+	while (request) {
+		SKLAPIResponse *previousResponse = request.previousResponse;
+		[allResponseObjects addObjectsFromArray:previousResponse.responseObject];
+		request = previousResponse.request;
+	}
+	
+	return allResponseObjects;
+}
 
 @end

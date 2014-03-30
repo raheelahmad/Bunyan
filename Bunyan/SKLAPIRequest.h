@@ -40,6 +40,9 @@ typedef NS_ENUM(NSInteger, SKLResponseParsing) {
 
 @property (nonatomic, copy) SKLAPIResponseBlock completionBlock;
 
+/// Useful for keeping track of chained requests (APIResponse holds its APIRequest)
+@property (nonatomic) SKLAPIResponse *previousResponse;
+
 // Constructors
 
 // DEFAULTS:
