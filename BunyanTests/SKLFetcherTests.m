@@ -58,7 +58,7 @@ NSError *error;
 	return [SKLAPIRequest with:endpoint method:@"GET" params:nil body:nil];
 }
 
-+ (void)updateWithRemoteFetchResponse:(NSArray *)response {
++ (void)updateWithRemoteFetchResponse:(SKLAPIResponse *)response {
 	if (shouldMockUpdateWithRemoteResponse) {
 		responseObject = response;
 	} else {

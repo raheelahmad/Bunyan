@@ -10,7 +10,7 @@
 
 typedef void (^ SKLFetchResponseBlock)(NSError *error);
 
-@class SKLAPIRequest, SKLAPIClient;
+@class SKLAPIRequest, SKLAPIResponse, SKLAPIClient;
 
 @interface SKLManagedObject : NSManagedObject
 
@@ -32,7 +32,7 @@ typedef void (^ SKLFetchResponseBlock)(NSError *error);
 + (void)fetchFromRemoteWithInfo:(SKLAPIRequest *)request completion:(SKLFetchResponseBlock)completion;
 + (void)fetchFromRemoteWithCompletion:(SKLFetchResponseBlock)completion;
 + (SKLAPIClient *)apiClient;
-+ (void)updateWithRemoteFetchResponse:(NSArray *)response;
++ (void)updateWithRemoteFetchResponse:(SKLAPIResponse *)response;
 - (void)updateWithRemoteObject:(NSDictionary *)remoteObject;
 + (BOOL)shouldDelteStaleLocalObjects;
 - (BOOL)shouldReplaceWhenUpdatingToManyRelationship:(NSString *)relationship;

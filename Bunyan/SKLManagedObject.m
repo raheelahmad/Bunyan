@@ -34,7 +34,7 @@
 			if (error) {
 				NSLog(@"Error fetching %@: %@", NSStringFromClass(self), error);
 			} else {
-				[self updateWithRemoteFetchResponse:apiResponse.responseObject];
+				[self updateWithRemoteFetchResponse:apiResponse];
 			}
 			if (completion) {
 				completion(error);
@@ -107,14 +107,15 @@
 
 #pragma mark Fetch Response Update
 
-+ (void)updateWithRemoteFetchResponse:(NSArray *)response {
-	if (!response) {
++ (void)updateWithRemoteFetchResponse:(SKLAPIResponse *)response {
+	NSArray *remoteObjects = response.responseObject;
+	if (!remoteObjects) {
 		return;
 	}
 	NSManagedObjectContext *context = [self importContext];
 	[context performBlockAndWait:^{
 		NSMutableArray *all = [[self allInContext:context] mutableCopy];
-		for (NSDictionary *remoteObject in response) {
+		for (NSDictionary *remoteObject in remoteObjects) {
 			id localObject = [self localObjectForRemoteObject:remoteObject];
 			if (!localObject) {
 				localObject = [self insertInContext:context];
