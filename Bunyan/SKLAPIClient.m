@@ -12,7 +12,7 @@
 #import <UIKit/UIImage.h>
 #import <UIKit/UIApplication.h>
 
-//#define LOG_NETWORKING
+#define LOG_NETWORKING
 
 @interface SKLAPIClient ()
 

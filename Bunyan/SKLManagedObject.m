@@ -207,7 +207,7 @@
 				localObject = DestinationObjectForRemote(formattedRemoteValue);
 			}
 			
-			[self setValue:DestinationObjectForRemote(formattedRemoteValue)
+			[self setValue:localObject
 					forKey:localKey];
 		}
 	}
