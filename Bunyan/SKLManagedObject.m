@@ -250,6 +250,10 @@
     return nil;
 }
 
++ (NSString *)defaultSectionKeyPath {
+	return nil;
+}
+
 #pragma mark Core Data helpers
 
 + (NSManagedObjectContext *)mainContext {
@@ -321,7 +325,7 @@
     request.sortDescriptors = sortDescriptors;
 	NSFetchedResultsController *controller = [[NSFetchedResultsController alloc] initWithFetchRequest:request
 																				 managedObjectContext:context
-																				   sectionNameKeyPath:nil
+																				   sectionNameKeyPath:[self defaultSectionKeyPath]
 																							cacheName:nil];
 	return controller;
 }

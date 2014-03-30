@@ -45,6 +45,7 @@ typedef void (^ SKLFetchResponseBlock)(NSError *error);
 + (id)uniquingKey;
 + (instancetype)localObjectForRemoteObject:(NSDictionary *)remoteObject;
 + (NSArray *)sortDescriptors;
++ (NSString *)defaultSectionKeyPath;
 
 // -- Remote refresh
 
