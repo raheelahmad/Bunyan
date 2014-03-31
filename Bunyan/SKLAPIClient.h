@@ -14,6 +14,7 @@ typedef void (^ SKLImageFetchResponseBlock)(NSError *error, UIImage *image);
 typedef NS_ENUM(NSInteger, ResponseErrorCode) {
     BadRequestCode,
     ServerErrorCode,
+    NotHereCode,
     NonJSONErrorCode,
     ImageParsingErrorCode,
 	NotFoundCode,

@@ -258,9 +258,10 @@ NSString *const SKLOriginalNetworkingResponseStringKey = @"SKLOriginalNetworking
 													 // Handle HTTP errors
                                                      if (httpResponse.statusCode == 400) {
                                                          error = [NSError errorWithDomain:SKLAPIErrorDomain code:BadRequestCode userInfo:nil];
-                                                     }
-                                                     if (httpResponse.statusCode == 404) {
+                                                     } else if (httpResponse.statusCode == 404) {
                                                          error = [NSError errorWithDomain:SKLAPIErrorDomain code:NotFoundCode userInfo:nil];
+                                                     } else if (httpResponse.statusCode == 410) {
+                                                         error = [NSError errorWithDomain:SKLAPIErrorDomain code:NotHereCode userInfo:nil];
                                                      }
 													 
 													 // Parse response
