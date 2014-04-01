@@ -291,9 +291,13 @@ NSString *const SKLOriginalNetworkingResponseStringKey = @"SKLOriginalNetworking
 														 responseObject = nil;
                                                      } else {
 														 NSString *wrappingKey = request.responseWrappingKey;
+														 NSString *unwrappingKeypath = request.responseUnwrappingKeypath;
 														 if (responseObject && wrappingKey) {
 															 responseObject = [NSDictionary dictionaryWithObject:responseObject
 																										  forKey:wrappingKey];
+														 }
+														 if (responseObject && unwrappingKeypath) {
+															 responseObject = [responseObject valueForKeyPath:unwrappingKeypath];
 														 }
 													 }
 													 

@@ -37,6 +37,8 @@ typedef NS_ENUM(NSInteger, SKLResponseParsing) {
 
 // The response should be wrapped in this key before passing it to the model
 @property (nonatomic) NSString *responseWrappingKey;
+// The response should be unwrapped in this key before passing it to the model
+@property (nonatomic) NSString *responseUnwrappingKeypath;
 
 @property (nonatomic, copy) SKLAPIResponseBlock completionBlock;
 

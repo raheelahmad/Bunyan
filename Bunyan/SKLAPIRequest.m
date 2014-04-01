@@ -38,6 +38,7 @@
 	request.responseParsing = self.responseParsing;
 	request.contentType = self.contentType;
 	request.responseWrappingKey = self.responseWrappingKey;
+	request.responseUnwrappingKeypath = self.responseUnwrappingKeypath;
 	request.previousResponse = self.previousResponse;
 	
 	return request;

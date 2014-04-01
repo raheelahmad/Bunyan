@@ -265,6 +265,33 @@ NSError *error;
 	apiClient.mockSession.lastCompletionHandler(responseData, [self OKResponse], nil);
 }
 
+/**
+ * Given that the APIRequest includes a unwrappingKey then the remote response object
+ * is unwrapped with that keypath
+ */
+- (void)testFetchResponseIsUnwrappedWithProvidedKeypath {
+	SKLAPIRequest *request = [SKLAPIRequest with:@"/please/go/here" method:@"GET" params:nil body:nil];
+	request.responseUnwrappingKeypath = @"disciples.name";
+	
+	NSDictionary *disciplesResponse = @{ @"disciples" :
+  									@[
+									   @{ @"name" : @"Tutoles" },
+									   @{ @"name" : @"Boramius" },
+									   ]
+									};
+	NSError *error;
+	NSData *responseData = [NSJSONSerialization dataWithJSONObject:disciplesResponse
+														   options:0 error:&error];
+	
+	request.completionBlock = ^(NSError *error, SKLAPIResponse *apiResponse) {
+		NSArray *names = apiResponse.responseObject;
+		XCTAssertEqual([names count], (NSInteger)2, @"Response should be unwrapped with given keypath");
+		XCTAssertTrue([names containsObject:@"Tutoles"], @"Response should be unwrapped with given keypath");
+		XCTAssertTrue([names containsObject:@"Boramius"], @"Response should be unwrapped with given keypath");
+	};
+	[apiClient makeRequest:request];
+	apiClient.mockSession.lastCompletionHandler(responseData, [self OKResponse], nil);
+}
 
 - (void)testFetchResponseCreatesLocalObjects {
 	[self makePersonFetchResponse];
