@@ -116,7 +116,7 @@
 	[context performBlockAndWait:^{
 		NSMutableArray *all = [[self allInContext:context] mutableCopy];
 		for (NSDictionary *remoteObject in remoteObjects) {
-			id localObject = [self localObjectForRemoteObject:remoteObject];
+			id localObject = [self localObjectForRemoteObject:remoteObject inContext:context];
 			if (!localObject) {
 				localObject = [self insertInContext:context];
 			}
@@ -174,7 +174,7 @@
 		Class destinationClass = NSClassFromString(relationship.destinationEntity.managedObjectClassName);
 		// common block to insert/update a destination class object
 		SKLManagedObject *(^DestinationObjectForRemote)(NSDictionary *) = ^(NSDictionary *remoteObject) {
-			SKLManagedObject *destinationObject = [destinationClass localObjectForRemoteObject:remoteObject];
+			SKLManagedObject *destinationObject = [destinationClass localObjectForRemoteObject:remoteObject inContext:self.managedObjectContext];
 			if (!destinationObject) {
 				destinationObject = [destinationClass insertInContext:self.managedObjectContext];
 			}
@@ -229,7 +229,7 @@
 	return nil;
 }
 
-+ (instancetype)localObjectForRemoteObject:(NSDictionary *)remoteObject {
++ (instancetype)localObjectForRemoteObject:(NSDictionary *)remoteObject inContext:(NSManagedObjectContext *)context {
 	NSString *uniquingKey = [self uniquingKey];
 	if (!uniquingKey) {
 		[NSException raise:@"UniquingKeyAbsent" format:@"Uniquing key must be set for %@", NSStringFromClass(self)];
@@ -237,7 +237,7 @@
 	NSString *remoteUniquingKey = [self localToRemoteKeyMapping][uniquingKey];
 	NSString *remoteUniqueValue = remoteObject[remoteUniquingKey];
 	NSPredicate *uniquingPredicate = [NSPredicate predicateWithFormat:@"%K == %@", uniquingKey, remoteUniqueValue];
-	NSArray *matches = [self allInContext:[self importContext] predicate:uniquingPredicate];
+	NSArray *matches = [self allInContext:context predicate:uniquingPredicate];
 	
 	return [matches firstObject];
 }

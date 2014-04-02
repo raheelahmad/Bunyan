@@ -43,7 +43,7 @@ typedef void (^ SKLFetchResponseBlock)(NSError *error);
 + (SKLAPIRequest *)remoteFetchInfo;
 + (NSDictionary *)localToRemoteKeyMapping;
 + (id)uniquingKey;
-+ (instancetype)localObjectForRemoteObject:(NSDictionary *)remoteObject;
++ (instancetype)localObjectForRemoteObject:(NSDictionary *)remoteObject inContext:(NSManagedObjectContext *)context;
 + (NSArray *)sortDescriptors;
 + (NSString *)defaultSectionKeyPath;
 
