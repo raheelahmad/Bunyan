@@ -6,10 +6,10 @@
 //  Copyright (c) 2014 Sakun Labs. All rights reserved.
 //
 
-#import "SKLManagedDataSource.h"
+#import "SKLTableDataSource.h"
 #import "SKLManagedObject.h"
 
-@interface SKLManagedDataSource ()<NSFetchedResultsControllerDelegate>
+@interface SKLTableDataSource ()<NSFetchedResultsControllerDelegate>
 
 @property (nonatomic) NSFetchedResultsController *controller;
 @property (nonatomic) UITableView *tableView;
@@ -18,7 +18,7 @@
 
 @end
 
-@implementation SKLManagedDataSource
+@implementation SKLTableDataSource
 
 #pragma mark Public Helpers
 

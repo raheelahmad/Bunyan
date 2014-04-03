@@ -12,6 +12,7 @@
 		592C93C618C0469500198C5D /* SKLTestableAPIClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 592C93C518C0469500198C5D /* SKLTestableAPIClient.m */; };
 		592EEBC918D6C18F001F0127 /* UIImageView+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 592EEBC818D6C18F001F0127 /* UIImageView+Additions.m */; };
 		592EEBCB18D6C2B4001F0127 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 592EEBCA18D6C2B4001F0127 /* UIKit.framework */; };
+		593192D118ECFA0B0016CB91 /* SKLCollectionDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 593192D018ECFA0B0016CB91 /* SKLCollectionDataSource.m */; };
 		59500FFF18BD92FB003BDD13 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59500FFE18BD92FB003BDD13 /* Foundation.framework */; };
 		5950100418BD92FB003BDD13 /* Bunyan.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5950100318BD92FB003BDD13 /* Bunyan.h */; };
 		5950100D18BD92FB003BDD13 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5950100C18BD92FB003BDD13 /* XCTest.framework */; };
@@ -33,7 +34,7 @@
 		5992168A18E210CF00F03C14 /* SKLAPIResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 5992168918E210CF00F03C14 /* SKLAPIResponse.m */; };
 		59BAEDF318D173AD0064DE23 /* NSString+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 59BAEDF218D173AD0064DE23 /* NSString+Additions.m */; };
 		59BAEDF618D174030064DE23 /* SKLStringCategoryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 59BAEDF518D174030064DE23 /* SKLStringCategoryTests.m */; };
-		59D1D14518C78BC900189BAC /* SKLManagedDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 59D1D14418C78BC900189BAC /* SKLManagedDataSource.m */; };
+		59D1D14518C78BC900189BAC /* SKLTableDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 59D1D14418C78BC900189BAC /* SKLTableDataSource.m */; };
 		59D1D14818C83FAD00189BAC /* SKLManagedDataSourceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 59D1D14718C83FAD00189BAC /* SKLManagedDataSourceTests.m */; };
 		59ECBC4418BEF9BC006800B4 /* SKLAPIClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 59ECBC4318BEF9BC006800B4 /* SKLAPIClient.m */; };
 		59ECBC4918BEFB1B006800B4 /* SKLAPIClientTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 59ECBC4818BEFB1B006800B4 /* SKLAPIClientTests.m */; };
@@ -71,6 +72,8 @@
 		592EEBC718D6C18F001F0127 /* UIImageView+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+Additions.h"; sourceTree = "<group>"; };
 		592EEBC818D6C18F001F0127 /* UIImageView+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+Additions.m"; sourceTree = "<group>"; };
 		592EEBCA18D6C2B4001F0127 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		593192CF18ECFA0B0016CB91 /* SKLCollectionDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKLCollectionDataSource.h; sourceTree = "<group>"; };
+		593192D018ECFA0B0016CB91 /* SKLCollectionDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKLCollectionDataSource.m; sourceTree = "<group>"; };
 		59500FFB18BD92FB003BDD13 /* libBunyan.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libBunyan.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		59500FFE18BD92FB003BDD13 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		5950100218BD92FB003BDD13 /* Bunyan-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Bunyan-Prefix.pch"; sourceTree = "<group>"; };
@@ -105,8 +108,8 @@
 		59BAEDF118D173AD0064DE23 /* NSString+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Additions.h"; sourceTree = "<group>"; };
 		59BAEDF218D173AD0064DE23 /* NSString+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Additions.m"; sourceTree = "<group>"; };
 		59BAEDF518D174030064DE23 /* SKLStringCategoryTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKLStringCategoryTests.m; sourceTree = "<group>"; };
-		59D1D14318C78BC900189BAC /* SKLManagedDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKLManagedDataSource.h; sourceTree = "<group>"; };
-		59D1D14418C78BC900189BAC /* SKLManagedDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKLManagedDataSource.m; sourceTree = "<group>"; };
+		59D1D14318C78BC900189BAC /* SKLTableDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKLTableDataSource.h; sourceTree = "<group>"; };
+		59D1D14418C78BC900189BAC /* SKLTableDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKLTableDataSource.m; sourceTree = "<group>"; };
 		59D1D14718C83FAD00189BAC /* SKLManagedDataSourceTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKLManagedDataSourceTests.m; sourceTree = "<group>"; };
 		59ECBC4218BEF9BC006800B4 /* SKLAPIClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKLAPIClient.h; sourceTree = "<group>"; };
 		59ECBC4318BEF9BC006800B4 /* SKLAPIClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKLAPIClient.m; sourceTree = "<group>"; };
@@ -247,8 +250,10 @@
 		59D1D14218C78B9100189BAC /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				59D1D14318C78BC900189BAC /* SKLManagedDataSource.h */,
-				59D1D14418C78BC900189BAC /* SKLManagedDataSource.m */,
+				593192CF18ECFA0B0016CB91 /* SKLCollectionDataSource.h */,
+				593192D018ECFA0B0016CB91 /* SKLCollectionDataSource.m */,
+				59D1D14318C78BC900189BAC /* SKLTableDataSource.h */,
+				59D1D14418C78BC900189BAC /* SKLTableDataSource.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -404,12 +409,13 @@
 				592EEBC918D6C18F001F0127 /* UIImageView+Additions.m in Sources */,
 				59ECBC4418BEF9BC006800B4 /* SKLAPIClient.m in Sources */,
 				59BAEDF318D173AD0064DE23 /* NSString+Additions.m in Sources */,
+				593192D118ECFA0B0016CB91 /* SKLCollectionDataSource.m in Sources */,
 				59559A1918C4373A0043EAF0 /* NSManagedObjectContext+Additions.m in Sources */,
 				5992168A18E210CF00F03C14 /* SKLAPIResponse.m in Sources */,
 				59559A1618C4076E0043EAF0 /* SKLPersistenceStack.m in Sources */,
 				595F462A18CD5BAA00C93E1A /* SKLAPIRequest.m in Sources */,
 				5950102818BD9459003BDD13 /* SKLManagedObject.m in Sources */,
-				59D1D14518C78BC900189BAC /* SKLManagedDataSource.m in Sources */,
+				59D1D14518C78BC900189BAC /* SKLTableDataSource.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

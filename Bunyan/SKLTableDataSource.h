@@ -11,7 +11,7 @@
 @protocol SKLDataSourceDelegate;
 @class SKLManagedObject;
 
-@interface SKLManagedDataSource : NSObject<UITableViewDataSource>
+@interface SKLTableDataSource : NSObject<UITableViewDataSource>
 
 @property (nonatomic) id<SKLDataSourceDelegate> delegate;
 
