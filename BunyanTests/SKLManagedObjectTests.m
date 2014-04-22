@@ -7,55 +7,55 @@
 
 #import "SKLManagedObjectTests.h"
 #import "SKLTestableManagedObjectContext.h"
-#import "SKLTestPerson.h"
+#import "SKLFakePerson.h"
 
 @implementation SKLManagedObjectTests
 
 #pragma mark Helper tests
 
 - (void)testInsertInContext {
-    SKLTestPerson *person = [SKLTestPerson insertInContext:self.context];
+    SKLFakePerson *person = [SKLFakePerson insertInContext:self.context];
     XCTAssertNotNil(person, @"Should insert a new person");
-    XCTAssertTrue([person isKindOfClass:[SKLTestPerson class]], @"Should insert entity of correct type");
+    XCTAssertTrue([person isKindOfClass:[SKLFakePerson class]], @"Should insert entity of correct type");
 }
 
 - (void)testAllInContext {
-    [SKLTestPerson insertInContext:self.context];
-    [SKLTestPerson insertInContext:self.context];
-    NSArray *all = [SKLTestPerson allInContext:self.context];
+    [SKLFakePerson insertInContext:self.context];
+    [SKLFakePerson insertInContext:self.context];
+    NSArray *all = [SKLFakePerson allInContext:self.context];
     XCTAssertEqual([all count], (NSUInteger)2, @"Should fetch same # of inserted objects");
 }
 
 - (void)testAllInContextWithPredicate {
-    SKLTestPerson *personWithName = [SKLTestPerson insertInContext:self.context];
+    SKLFakePerson *personWithName = [SKLFakePerson insertInContext:self.context];
     personWithName.name = @"Aristotle";
-    [SKLTestPerson insertInContext:self.context];
+    [SKLFakePerson insertInContext:self.context];
     NSPredicate *onlyNamePredicate = [NSPredicate predicateWithFormat:@"name != nil"];
-    NSArray *onlyWithName = [SKLTestPerson allInContext:self.context
+    NSArray *onlyWithName = [SKLFakePerson allInContext:self.context
                                               predicate:onlyNamePredicate];
     XCTAssertEqualObjects([onlyWithName firstObject], personWithName, @"all fetches with predicate");
     XCTAssertEqual([onlyWithName count], (NSUInteger)1, @"all fetches with predicate");
 }
 
 - (void)testAny {
-    [SKLTestPerson insertInContext:self.context];
-    SKLTestPerson *anyPerson = [SKLTestPerson anyInContext:self.context];
+    [SKLFakePerson insertInContext:self.context];
+    SKLFakePerson *anyPerson = [SKLFakePerson anyInContext:self.context];
     XCTAssertNotNil(anyPerson, @"Can fetch any object");
 }
 
 - (void)testOneWith {
-	SKLTestPerson *person = [SKLTestPerson insertInContext:self.context];
+	SKLFakePerson *person = [SKLFakePerson insertInContext:self.context];
 	person.name = @"Maimonedes";
-	[SKLTestPerson insertInContext:self.context];
-	SKLTestPerson *oneWithName = [SKLTestPerson oneWith:@"Maimonedes" for:@"name" inContext:self.context];
+	[SKLFakePerson insertInContext:self.context];
+	SKLFakePerson *oneWithName = [SKLFakePerson oneWith:@"Maimonedes" for:@"name" inContext:self.context];
 	XCTAssertEqualObjects(oneWithName.name, @"Maimonedes", @"Should fetch oneWith:key:");
 }
 
 - (void)testController {
-	NSFetchedResultsController *controller = [SKLTestPerson controllerInContext:self.context];
+	NSFetchedResultsController *controller = [SKLFakePerson controllerInContext:self.context];
 	NSFetchRequest *request = controller.fetchRequest;
 	XCTAssertNotNil(request, @"Controller should have a request");
-	XCTAssertEqualObjects(request.entityName, @"SKLTestPerson", @"Controller should have MO's entity");
+	XCTAssertEqualObjects(request.entityName, @"SKLFakePerson", @"Controller should have MO's entity");
 	XCTAssertNil(request.predicate, @"Controller should not have a predicate");
 	XCTAssertNotNil(request.sortDescriptors, @"Controller should have sort descriptors");
 	XCTAssertEqualObjects(controller.managedObjectContext, self.context, @"Controller should not have the supplied context");
@@ -66,12 +66,12 @@
 #pragma mark Basic tests
 
 - (void)testPersonIsLoaded {
-    SKLTestPerson *person = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([SKLTestPerson class])
+    SKLFakePerson *person = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([SKLFakePerson class])
                                                           inManagedObjectContext:self.context];
     XCTAssertNotNil(person, @"Should insert entity from custom model");
     [self.context save:NULL];
     
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([SKLTestPerson class])];
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([SKLFakePerson class])];
     NSArray *result = [self.context executeFetchRequest:request error:NULL];
     XCTAssertEqual([result count], (NSUInteger)1, @"Should fetch inserted entity");
 }
@@ -79,12 +79,8 @@
 #pragma mark Setup
 
 - (NSManagedObjectModel *)loadCustomModel {
-	NSEntityDescription *personEntity = [self entityWithName:NSStringFromClass([SKLTestPerson class])
-									   attributes:@[
-													@{ SKLAttrNameKey : @"name", SKLAttrTypeKey : @"string" },
-													@{ SKLAttrNameKey : @"age", SKLAttrTypeKey : @"int" },
-													@{ SKLAttrNameKey : @"remoteId", SKLAttrTypeKey : @"string" }
-													]
+	NSEntityDescription *personEntity = [self entityWithName:NSStringFromClass([SKLFakePerson class])
+									   attributes:[SKLFakePerson attributesForEntity]
 									];
     NSManagedObjectModel *model = [[NSManagedObjectModel alloc] init];
     model.entities = @[ personEntity ];

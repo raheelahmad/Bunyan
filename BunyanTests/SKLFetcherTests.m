@@ -14,6 +14,8 @@
 #import "SKLAPIResponse.h"
 #import "SKLMockURLSession.h"
 
+/**
+
 // Dependency injected objects
 SKLTestableAPIClient *apiClient;
 SKLTestableManagedObjectContext *context;
@@ -239,12 +241,10 @@ NSError *error;
 	XCTAssertEqualObjects(receivedResponse, response, @"Should call the custom completion block");
 }
 
-/**
  * A separate test from the rest:
  * Given that the APIRequest includes a wrappingKey then the whole remote response object
  * is wrapped in a dictionary with that key
  * E.g., the array below will be wrapped up in the key "disciples" before being passed to the completion
- */
 - (void)testFetchResponseIsWrappedInProvidedKey {
 	SKLAPIRequest *request = [SKLAPIRequest with:@"/please/go/here" method:@"GET" params:nil body:nil];
 	request.responseWrappingKey = @"disciples";
@@ -265,10 +265,8 @@ NSError *error;
 	apiClient.mockSession.lastCompletionHandler(responseData, [self OKResponse], nil);
 }
 
-/**
  * Given that the APIRequest includes a unwrappingKey then the remote response object
  * is unwrapped with that keypath
- */
 - (void)testFetchResponseIsUnwrappedWithProvidedKeypath {
 	SKLAPIRequest *request = [SKLAPIRequest with:@"/please/go/here" method:@"GET" params:nil body:nil];
 	request.responseUnwrappingKeypath = @"disciples.name";
@@ -520,3 +518,4 @@ NSError *error;
 }
 
 @end
+**/

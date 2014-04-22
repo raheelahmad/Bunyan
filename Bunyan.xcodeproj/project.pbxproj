@@ -24,18 +24,21 @@
 		5950102818BD9459003BDD13 /* SKLManagedObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 5950102718BD9459003BDD13 /* SKLManagedObject.m */; };
 		5950102D18BD9465003BDD13 /* SKLCoreDataTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5950102918BD9465003BDD13 /* SKLCoreDataTests.m */; };
 		5950102E18BD9465003BDD13 /* SKLManagedObjectTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5950102C18BD9465003BDD13 /* SKLManagedObjectTests.m */; };
-		5950103118BD946D003BDD13 /* SKLTestPerson.m in Sources */ = {isa = PBXBuildFile; fileRef = 5950103018BD946D003BDD13 /* SKLTestPerson.m */; };
 		59559A0C18C306060043EAF0 /* SKLFetcherTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 59559A0B18C306060043EAF0 /* SKLFetcherTests.m */; };
 		59559A1618C4076E0043EAF0 /* SKLPersistenceStack.m in Sources */ = {isa = PBXBuildFile; fileRef = 59559A1518C4076E0043EAF0 /* SKLPersistenceStack.m */; };
 		59559A1918C4373A0043EAF0 /* NSManagedObjectContext+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 59559A1818C4373A0043EAF0 /* NSManagedObjectContext+Additions.m */; };
 		59559A1C18C438FE0043EAF0 /* SKLTestableManagedObjectContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 59559A1B18C438FE0043EAF0 /* SKLTestableManagedObjectContext.m */; };
-		59585CA718C984AA002D4C92 /* SKLTestableManagedDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 59585CA618C984AA002D4C92 /* SKLTestableManagedDataSource.m */; };
 		595F462A18CD5BAA00C93E1A /* SKLAPIRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 595F462918CD5BAA00C93E1A /* SKLAPIRequest.m */; };
 		5992168A18E210CF00F03C14 /* SKLAPIResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 5992168918E210CF00F03C14 /* SKLAPIResponse.m */; };
+		59B50B211905E7A3008C481B /* SKLOpusFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 59B50B201905E7A3008C481B /* SKLOpusFetcher.m */; };
 		59BAEDF318D173AD0064DE23 /* NSString+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 59BAEDF218D173AD0064DE23 /* NSString+Additions.m */; };
 		59BAEDF618D174030064DE23 /* SKLStringCategoryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 59BAEDF518D174030064DE23 /* SKLStringCategoryTests.m */; };
 		59D1D14518C78BC900189BAC /* SKLTableDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 59D1D14418C78BC900189BAC /* SKLTableDataSource.m */; };
-		59D1D14818C83FAD00189BAC /* SKLManagedDataSourceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 59D1D14718C83FAD00189BAC /* SKLManagedDataSourceTests.m */; };
+		59DB961D1904CB4A0060F2D1 /* SKLModelFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 59DB961C1904CB4A0060F2D1 /* SKLModelFetcher.m */; };
+		59DB96211904CBD00060F2D1 /* SKLModelFetcherTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 59DB96201904CBD00060F2D1 /* SKLModelFetcherTests.m */; };
+		59DB96241904CD070060F2D1 /* SKLPersonFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 59DB96231904CD070060F2D1 /* SKLPersonFetcher.m */; };
+		59DB96271904E1980060F2D1 /* SKLFakePerson.m in Sources */ = {isa = PBXBuildFile; fileRef = 59DB96261904E1980060F2D1 /* SKLFakePerson.m */; };
+		59DB962A1904E2060060F2D1 /* SKLFakeOpus.m in Sources */ = {isa = PBXBuildFile; fileRef = 59DB96291904E2060060F2D1 /* SKLFakeOpus.m */; };
 		59ECBC4418BEF9BC006800B4 /* SKLAPIClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 59ECBC4318BEF9BC006800B4 /* SKLAPIClient.m */; };
 		59ECBC4918BEFB1B006800B4 /* SKLAPIClientTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 59ECBC4818BEFB1B006800B4 /* SKLAPIClientTests.m */; };
 /* End PBXBuildFile section */
@@ -90,8 +93,6 @@
 		5950102A18BD9465003BDD13 /* SKLCoreDataTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKLCoreDataTests.h; sourceTree = "<group>"; };
 		5950102B18BD9465003BDD13 /* SKLManagedObjectTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKLManagedObjectTests.h; sourceTree = "<group>"; };
 		5950102C18BD9465003BDD13 /* SKLManagedObjectTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKLManagedObjectTests.m; sourceTree = "<group>"; };
-		5950102F18BD946D003BDD13 /* SKLTestPerson.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKLTestPerson.h; sourceTree = "<group>"; };
-		5950103018BD946D003BDD13 /* SKLTestPerson.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKLTestPerson.m; sourceTree = "<group>"; };
 		59559A0B18C306060043EAF0 /* SKLFetcherTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKLFetcherTests.m; sourceTree = "<group>"; };
 		59559A1418C4076E0043EAF0 /* SKLPersistenceStack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKLPersistenceStack.h; sourceTree = "<group>"; };
 		59559A1518C4076E0043EAF0 /* SKLPersistenceStack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKLPersistenceStack.m; sourceTree = "<group>"; };
@@ -99,18 +100,26 @@
 		59559A1818C4373A0043EAF0 /* NSManagedObjectContext+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObjectContext+Additions.m"; sourceTree = "<group>"; };
 		59559A1A18C438FE0043EAF0 /* SKLTestableManagedObjectContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKLTestableManagedObjectContext.h; sourceTree = "<group>"; };
 		59559A1B18C438FE0043EAF0 /* SKLTestableManagedObjectContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKLTestableManagedObjectContext.m; sourceTree = "<group>"; };
-		59585CA518C984AA002D4C92 /* SKLTestableManagedDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKLTestableManagedDataSource.h; sourceTree = "<group>"; };
-		59585CA618C984AA002D4C92 /* SKLTestableManagedDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKLTestableManagedDataSource.m; sourceTree = "<group>"; };
 		595F462818CD5BAA00C93E1A /* SKLAPIRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKLAPIRequest.h; sourceTree = "<group>"; };
 		595F462918CD5BAA00C93E1A /* SKLAPIRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKLAPIRequest.m; sourceTree = "<group>"; };
 		5992168818E210CF00F03C14 /* SKLAPIResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKLAPIResponse.h; sourceTree = "<group>"; };
 		5992168918E210CF00F03C14 /* SKLAPIResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKLAPIResponse.m; sourceTree = "<group>"; };
+		59B50B1F1905E7A3008C481B /* SKLOpusFetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKLOpusFetcher.h; sourceTree = "<group>"; };
+		59B50B201905E7A3008C481B /* SKLOpusFetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKLOpusFetcher.m; sourceTree = "<group>"; };
 		59BAEDF118D173AD0064DE23 /* NSString+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Additions.h"; sourceTree = "<group>"; };
 		59BAEDF218D173AD0064DE23 /* NSString+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Additions.m"; sourceTree = "<group>"; };
 		59BAEDF518D174030064DE23 /* SKLStringCategoryTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKLStringCategoryTests.m; sourceTree = "<group>"; };
 		59D1D14318C78BC900189BAC /* SKLTableDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKLTableDataSource.h; sourceTree = "<group>"; };
 		59D1D14418C78BC900189BAC /* SKLTableDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKLTableDataSource.m; sourceTree = "<group>"; };
-		59D1D14718C83FAD00189BAC /* SKLManagedDataSourceTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKLManagedDataSourceTests.m; sourceTree = "<group>"; };
+		59DB961B1904CB4A0060F2D1 /* SKLModelFetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKLModelFetcher.h; sourceTree = "<group>"; };
+		59DB961C1904CB4A0060F2D1 /* SKLModelFetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKLModelFetcher.m; sourceTree = "<group>"; };
+		59DB96201904CBD00060F2D1 /* SKLModelFetcherTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKLModelFetcherTests.m; sourceTree = "<group>"; };
+		59DB96221904CD070060F2D1 /* SKLPersonFetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKLPersonFetcher.h; sourceTree = "<group>"; };
+		59DB96231904CD070060F2D1 /* SKLPersonFetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKLPersonFetcher.m; sourceTree = "<group>"; };
+		59DB96251904E1980060F2D1 /* SKLFakePerson.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKLFakePerson.h; sourceTree = "<group>"; };
+		59DB96261904E1980060F2D1 /* SKLFakePerson.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKLFakePerson.m; sourceTree = "<group>"; };
+		59DB96281904E2060060F2D1 /* SKLFakeOpus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKLFakeOpus.h; sourceTree = "<group>"; };
+		59DB96291904E2060060F2D1 /* SKLFakeOpus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKLFakeOpus.m; sourceTree = "<group>"; };
 		59ECBC4218BEF9BC006800B4 /* SKLAPIClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKLAPIClient.h; sourceTree = "<group>"; };
 		59ECBC4318BEF9BC006800B4 /* SKLAPIClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKLAPIClient.m; sourceTree = "<group>"; };
 		59ECBC4818BEFB1B006800B4 /* SKLAPIClientTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKLAPIClientTests.m; sourceTree = "<group>"; };
@@ -148,8 +157,6 @@
 				592C93C218C0468400198C5D /* SKLMockURLSession.m */,
 				592C93C418C0469500198C5D /* SKLTestableAPIClient.h */,
 				592C93C518C0469500198C5D /* SKLTestableAPIClient.m */,
-				59585CA518C984AA002D4C92 /* SKLTestableManagedDataSource.h */,
-				59585CA618C984AA002D4C92 /* SKLTestableManagedDataSource.m */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -261,7 +268,6 @@
 		59D1D14618C83F9800189BAC /* Controller Tests */ = {
 			isa = PBXGroup;
 			children = (
-				59D1D14718C83FAD00189BAC /* SKLManagedDataSourceTests.m */,
 			);
 			name = "Controller Tests";
 			sourceTree = "<group>";
@@ -288,6 +294,8 @@
 				595F462918CD5BAA00C93E1A /* SKLAPIRequest.m */,
 				5992168818E210CF00F03C14 /* SKLAPIResponse.h */,
 				5992168918E210CF00F03C14 /* SKLAPIResponse.m */,
+				59DB961B1904CB4A0060F2D1 /* SKLModelFetcher.h */,
+				59DB961C1904CB4A0060F2D1 /* SKLModelFetcher.m */,
 			);
 			name = Network;
 			sourceTree = "<group>";
@@ -308,10 +316,16 @@
 		59ECBC4618BEFAFC006800B4 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
-				5950102F18BD946D003BDD13 /* SKLTestPerson.h */,
-				5950103018BD946D003BDD13 /* SKLTestPerson.m */,
 				59559A1A18C438FE0043EAF0 /* SKLTestableManagedObjectContext.h */,
 				59559A1B18C438FE0043EAF0 /* SKLTestableManagedObjectContext.m */,
+				59DB96221904CD070060F2D1 /* SKLPersonFetcher.h */,
+				59DB96231904CD070060F2D1 /* SKLPersonFetcher.m */,
+				59DB96251904E1980060F2D1 /* SKLFakePerson.h */,
+				59DB96261904E1980060F2D1 /* SKLFakePerson.m */,
+				59DB96281904E2060060F2D1 /* SKLFakeOpus.h */,
+				59DB96291904E2060060F2D1 /* SKLFakeOpus.m */,
+				59B50B1F1905E7A3008C481B /* SKLOpusFetcher.h */,
+				59B50B201905E7A3008C481B /* SKLOpusFetcher.m */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -321,6 +335,7 @@
 			children = (
 				59ECBC4818BEFB1B006800B4 /* SKLAPIClientTests.m */,
 				59284BEE18CD664E00C39393 /* SKLAPIRequestTests.m */,
+				59DB96201904CBD00060F2D1 /* SKLModelFetcherTests.m */,
 			);
 			name = "Networking Tests";
 			sourceTree = "<group>";
@@ -416,6 +431,7 @@
 				595F462A18CD5BAA00C93E1A /* SKLAPIRequest.m in Sources */,
 				5950102818BD9459003BDD13 /* SKLManagedObject.m in Sources */,
 				59D1D14518C78BC900189BAC /* SKLTableDataSource.m in Sources */,
+				59DB961D1904CB4A0060F2D1 /* SKLModelFetcher.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -427,14 +443,16 @@
 				59559A1C18C438FE0043EAF0 /* SKLTestableManagedObjectContext.m in Sources */,
 				592C93C318C0468400198C5D /* SKLMockURLSession.m in Sources */,
 				59ECBC4918BEFB1B006800B4 /* SKLAPIClientTests.m in Sources */,
+				59DB96211904CBD00060F2D1 /* SKLModelFetcherTests.m in Sources */,
 				5950102D18BD9465003BDD13 /* SKLCoreDataTests.m in Sources */,
-				59585CA718C984AA002D4C92 /* SKLTestableManagedDataSource.m in Sources */,
+				59DB962A1904E2060060F2D1 /* SKLFakeOpus.m in Sources */,
+				59DB96271904E1980060F2D1 /* SKLFakePerson.m in Sources */,
 				59284BEF18CD664E00C39393 /* SKLAPIRequestTests.m in Sources */,
-				59D1D14818C83FAD00189BAC /* SKLManagedDataSourceTests.m in Sources */,
+				59B50B211905E7A3008C481B /* SKLOpusFetcher.m in Sources */,
+				59DB96241904CD070060F2D1 /* SKLPersonFetcher.m in Sources */,
 				5950102E18BD9465003BDD13 /* SKLManagedObjectTests.m in Sources */,
 				59BAEDF618D174030064DE23 /* SKLStringCategoryTests.m in Sources */,
 				592C93C618C0469500198C5D /* SKLTestableAPIClient.m in Sources */,
-				5950103118BD946D003BDD13 /* SKLTestPerson.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
