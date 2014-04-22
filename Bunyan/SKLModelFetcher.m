@@ -52,6 +52,59 @@ NSString *const SKLFetcherRequiresSubclassImplementation = @"SKLFetcherRequiresS
 	[apiClient makeRequest:request];
 }
 
+#pragma mark Refresh
+
+- (void)refreshObjectFromRemote:(SKLManagedObject *)object {
+	SKLAPIRequest *info = [self remoteRefreshInfoForObject:object];
+	[self refreshObjectFromRemote:object withInfo:info];
+}
+
+- (void)refreshObjectFromRemote:(SKLManagedObject *)object withInfo:(SKLAPIRequest *)request {
+	[self refreshObjectFromRemote:object
+						 withInfo:request
+					   completion:nil];
+}
+
+- (void)refreshObjectFromRemote:(SKLManagedObject *)object withInfo:(SKLAPIRequest *)request completion:(SKLFetchResponseBlock)completion {
+	SKLAPIClient *apiClient = [self apiClient];
+	if (!request) {
+		return;
+	}
+	
+	// only set completion for refreshing local object, if no completion has been set yet
+	if (!request.completionBlock) {
+		request.completionBlock = ^(NSError *error, SKLAPIResponse *apiResponse) {
+			if (error) {
+				NSLog(@"Error refreshing %@: %@", self, error);
+			} else {
+				[self refreshObject:object withRemoteResponse:apiResponse.responseObject];
+			}
+			if (completion) {
+				completion(error);
+			}
+		};
+	}
+	
+	[apiClient makeRequest:request];
+}
+
+- (void)refreshObject:(SKLManagedObject *)object withRemoteResponse:(NSDictionary *)responseObject {
+	// We should update in the background
+	NSManagedObjectID *objectId = object.objectID;
+	NSManagedObjectContext *context = [self importContext];
+	[context performBlockAndWait:^{
+		SKLManagedObject *importCtxObject = (SKLManagedObject *)[context objectWithID:objectId];
+		[self updateLocalObject:importCtxObject withRemoteObject:responseObject];
+		if ([context hasChanges]) {
+			NSError *error;
+			BOOL saved = [context save:&error];
+			if (!saved) {
+				NSLog(@"Error saving: %@", error);
+			}
+		}
+	}];
+}
+
 #pragma mark Update with remote response
 
 - (void)updateWithRemoteFetchResponse:(SKLAPIResponse *)response {
@@ -185,6 +238,13 @@ NSString *const SKLFetcherRequiresSubclassImplementation = @"SKLFetcherRequiresS
 - (NSManagedObjectContext *)importContext {
 	return [[SKLPersistenceStack defaultStack] importContext];
 }
+
+#pragma mark Refresh information
+
+- (SKLAPIRequest *)remoteRefreshInfoForObject:(SKLManagedObject *)object {
+	return nil;
+}
+
 
 #pragma mark Fetch information
 

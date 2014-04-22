@@ -30,6 +30,13 @@
     return self.mockImportContext ? : [super importContext];
 }
 
+#pragma mark Refresh info
+
+- (SKLAPIRequest *)remoteRefreshInfoForObject:(SKLFakePerson *)object {
+    NSString *endpoint = [NSString stringWithFormat:@"/get/persons/%@", object.remoteId];
+	return [SKLAPIRequest with:endpoint method:@"GET" params:nil body:nil];
+}
+
 #pragma mark Fetch info
 
 - (Class)managedObjectClass {

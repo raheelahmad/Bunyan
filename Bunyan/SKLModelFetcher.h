@@ -47,4 +47,12 @@ typedef void (^ SKLFetchResponseBlock)(NSError *error);
 - (SKLAPIRequest *)remoteFetchInfo;
 - (BOOL)shouldDeleteStaleLocalObjects;
 
+#pragma mark Refresh
+
+- (void)refreshObjectFromRemote:(SKLManagedObject *)object;
+- (void)refreshObjectFromRemote:(SKLManagedObject *)object withInfo:(SKLAPIRequest *)request;
+- (void)refreshObjectFromRemote:(SKLManagedObject *)object withInfo:(SKLAPIRequest *)request completion:(SKLFetchResponseBlock)completion;
+
+- (SKLAPIRequest *)remoteRefreshInfoForObject:(SKLManagedObject *)object;
+
 @end

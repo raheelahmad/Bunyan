@@ -25,6 +25,37 @@
 
 @implementation SKLModelFetcherTests
 
+#pragma mark Refresh tests
+
+- (void)testRefreshMakesCorrectEndpointAPIRequest {
+	SKLFakePerson *socrates = [SKLFakePerson insertInContext:self.context];
+	socrates.remoteId = @212;
+	
+	[self makePersonRefreshResponse:socrates];
+	
+	XCTAssertEqualObjects(self.personFetcher.mockApiClient.lastRequestPath, @"/get/persons/212", @"Refresh should be made with object's request info path");
+}
+
+- (void)testRefreshResponseUpdatesLocalObjects {
+	SKLFakePerson *socrates = [SKLFakePerson insertInContext:self.context];
+	socrates.remoteId = @210;
+	
+	[self makePersonRefreshResponse:socrates];
+	
+	NSDateComponents *dc = [[NSDateComponents alloc] init];
+	dc.year = 2012; dc.month = 8; dc.day = 26; dc.hour = 19; dc.minute = 6; dc.second = 43;
+	NSDate *socratesBirthDate = [[NSCalendar currentCalendar] dateFromComponents:dc];
+	
+	[self checkForPersonWithId:@210 hasName:@"Socrates" location:@"Greece" birthdate:socratesBirthDate];
+	
+	SKLFakeOpus *magnum = socrates.magnumOpus;
+	XCTAssertEqualObjects(magnum.name, @"The Republic", @"Refresh should update local object");
+	XCTAssertEqualObjects(magnum.pageCount, @443, @"Refresh should update local object");
+}
+
+
+#pragma mark Fetch tests
+
 - (void)testFetchMakesCorrectEndpointAPIRequest {
 	[self.personFetcher fetchFromRemote];
 	XCTAssertEqualObjects(self.personFetcher.mockApiClient.lastRequestPath, @"/get/persons", @"Fetch should be made with model request info path");
@@ -141,6 +172,33 @@
 	NSData *responseData = [NSJSONSerialization dataWithJSONObject:personFetchResponse options:0 error:nil];
 	self.personFetcher.mockApiClient.mockSession.lastCompletionHandler(responseData, [self OKResponse], nil);
 }
+
+- (void)makePersonRefreshResponse:(SKLFakePerson *)person {
+	self.context.shouldPerformBlockAsSync = YES;
+	[self.personFetcher refreshObjectFromRemote:person];
+	
+    NSDictionary *jsonResponseHeaderDict = @{ @"Content-Type" : @"application/json" };
+	NSDictionary *personRefreshResponse = @{ @"id" : person.remoteId, @"name" : @"Socrates", @"location" : @"Greece", @"date" : @"2012-08-26T19:06:43Z",
+										@"magnum" : @{
+												@"id" : @211, @"name" : @"The Republic", @"pages" : @443
+												},
+										@"otherOpuses" : @[
+                                                @{
+													@"id" : @214, @"name" : @"Dramas", @"pages" : @204
+													},
+                                                @{
+													@"id" : @204, @"name" : @"Interlooction", @"pages" : @123
+													}
+												]
+                                        };
+	NSData *responseData = [NSJSONSerialization dataWithJSONObject:personRefreshResponse options:0 error:nil];
+	NSHTTPURLResponse *response = [[NSHTTPURLResponse alloc] initWithURL:[NSURL URLWithString:@""]
+															  statusCode:200
+															 HTTPVersion:@"1.1"
+															headerFields:jsonResponseHeaderDict];
+	self.personFetcher.mockApiClient.mockSession.lastCompletionHandler(responseData, response, nil);
+}
+
 
 - (void)checkForPersonWithId:(NSNumber *)remoteId
 					 hasName:(NSString *)name
