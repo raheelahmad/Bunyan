@@ -45,7 +45,7 @@ NSError *error;
     return [SKLAPIRequest with:@"/get/persons" method:@"GET" params:nil body:nil];
 }
 
-+ (BOOL)shouldDelteStaleLocalObjects {
++ (BOOL)shouldDeleteStaleLocalObjects {
 	return YES;
 }
 

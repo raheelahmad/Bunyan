@@ -49,7 +49,7 @@
 	return nil;
 }
 
-+ (BOOL)shouldDelteStaleLocalObjects {
++ (BOOL)shouldDeleteStaleLocalObjects {
 	return NO;
 }
 
@@ -124,7 +124,7 @@
 			[all removeObject:localObject];
 		}
 		
-		if ([self shouldDelteStaleLocalObjects]) {
+		if ([self shouldDeleteStaleLocalObjects]) {
 			for (SKLManagedObject *object in all) {
 				[context deleteObject:object];
 			}

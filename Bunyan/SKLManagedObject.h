@@ -34,7 +34,7 @@ typedef void (^ SKLFetchResponseBlock)(NSError *error);
 + (SKLAPIClient *)apiClient;
 + (void)updateWithRemoteFetchResponse:(SKLAPIResponse *)response;
 - (void)updateWithRemoteObject:(NSDictionary *)remoteObject;
-+ (BOOL)shouldDelteStaleLocalObjects;
++ (BOOL)shouldDeleteStaleLocalObjects;
 - (BOOL)shouldReplaceWhenUpdatingToManyRelationship:(NSString *)relationship;
 - (id)localValueForKey:(NSString *)localKey RemoteValue:(id)remoteValue;
 
