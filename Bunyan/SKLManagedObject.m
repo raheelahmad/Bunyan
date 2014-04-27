@@ -264,6 +264,10 @@
 	return [[SKLPersistenceStack defaultStack] importContext];
 }
 
++ (void)saveMainContext {
+	[[self mainContext] save];
+}
+
 + (instancetype)insertInContext:(NSManagedObjectContext *)context {
     __block id item;
     [context performBlockAndWait:^{

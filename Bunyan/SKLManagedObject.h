@@ -25,6 +25,7 @@ typedef void (^ SKLFetchResponseBlock)(NSError *error);
 
 + (NSManagedObjectContext *)mainContext;
 + (NSManagedObjectContext *)importContext;
++ (void)saveMainContext;
 
 // -- Remote fetch
 
