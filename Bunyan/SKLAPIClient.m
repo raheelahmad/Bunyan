@@ -249,23 +249,6 @@ NSString *const SKLOriginalNetworkingResponseStringKey = @"SKLOriginalNetworking
 													 NSLog(@"<<< %ld %@", (long) httpResponse.statusCode, httpResponse.URL);
 #endif
 													 
-													 // Handle NSURLSession errors
-                                                     if (error) {
-                                                         error = [NSError errorWithDomain:SKLAPIErrorDomain code:NSURLSessionErrorCode userInfo:@{ SKLOriginalNetworkingErrorKey : error }];
-														 NSLog(@"\t\t\t<<< %@", error);
-                                                     }
-													 
-													 // Handle HTTP errors
-                                                     if (httpResponse.statusCode == 400) {
-                                                         error = [NSError errorWithDomain:SKLAPIErrorDomain code:BadRequestCode userInfo:nil];
-                                                     } else if (httpResponse.statusCode == 404) {
-                                                         error = [NSError errorWithDomain:SKLAPIErrorDomain code:NotFoundCode userInfo:nil];
-                                                     } else if (httpResponse.statusCode == 405) {
-                                                         error = [NSError errorWithDomain:SKLAPIErrorDomain code:MethodNotAllowedCode userInfo:nil];
-                                                     } else if (httpResponse.statusCode == 410) {
-                                                         error = [NSError errorWithDomain:SKLAPIErrorDomain code:NotHereCode userInfo:nil];
-                                                     }
-													 
 													 // Parse response
 													 id responseObject;
 													 NSString *responseString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
@@ -286,11 +269,31 @@ NSString *const SKLOriginalNetworkingResponseStringKey = @"SKLOriginalNetworking
                                                      } else if (request.responseParsing == SKLNoResponseParsing) {
 														 responseObject = data;
 													 }
+													 
+													 // Handle NSURLSession errors
+                                                     if (error) {
+                                                         error = [NSError errorWithDomain:SKLAPIErrorDomain code:NSURLSessionErrorCode userInfo:@{ SKLOriginalNetworkingErrorKey : error }];
+														 NSLog(@"\t\t\t<<< %@", error);
+                                                     }
+													 
+													 // Handle HTTP errors
+													 NSDictionary *errorUserInfo;
+													 if (responseObject) {
+														 errorUserInfo = @{ SKLOriginalNetworkingResponseStringKey : responseObject };
+													 }
+                                                     if (httpResponse.statusCode == 400) {
+                                                         error = [NSError errorWithDomain:SKLAPIErrorDomain code:BadRequestCode userInfo:errorUserInfo ];
+                                                     } else if (httpResponse.statusCode == 404) {
+                                                         error = [NSError errorWithDomain:SKLAPIErrorDomain code:NotFoundCode userInfo:errorUserInfo];
+                                                     } else if (httpResponse.statusCode == 405) {
+                                                         error = [NSError errorWithDomain:SKLAPIErrorDomain code:MethodNotAllowedCode userInfo:errorUserInfo];
+                                                     } else if (httpResponse.statusCode == 410) {
+                                                         error = [NSError errorWithDomain:SKLAPIErrorDomain code:NotHereCode userInfo:errorUserInfo];
+                                                     }
                                                      
 													 // Handle errors and final response processing
                                                      if (error) {
 														 NSLog(@"\t\t\t%@", error);
-														 responseObject = nil;
                                                      } else {
 														 NSString *wrappingKey = request.responseWrappingKey;
 														 NSString *unwrappingKeypath = request.responseUnwrappingKeypath;
