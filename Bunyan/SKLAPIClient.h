@@ -15,6 +15,7 @@ typedef NS_ENUM(NSInteger, ResponseErrorCode) {
     BadRequestCode,
     ServerErrorCode,
     NotHereCode,
+    MethodNotAllowedCode,
     NonJSONErrorCode,
     ImageParsingErrorCode,
 	NotFoundCode,

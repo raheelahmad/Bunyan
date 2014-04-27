@@ -260,6 +260,8 @@ NSString *const SKLOriginalNetworkingResponseStringKey = @"SKLOriginalNetworking
                                                          error = [NSError errorWithDomain:SKLAPIErrorDomain code:BadRequestCode userInfo:nil];
                                                      } else if (httpResponse.statusCode == 404) {
                                                          error = [NSError errorWithDomain:SKLAPIErrorDomain code:NotFoundCode userInfo:nil];
+                                                     } else if (httpResponse.statusCode == 405) {
+                                                         error = [NSError errorWithDomain:SKLAPIErrorDomain code:MethodNotAllowedCode userInfo:nil];
                                                      } else if (httpResponse.statusCode == 410) {
                                                          error = [NSError errorWithDomain:SKLAPIErrorDomain code:NotHereCode userInfo:nil];
                                                      }
