@@ -11,6 +11,7 @@
 typedef void (^ SKLAPIResponseBlock)(NSError *error, SKLAPIResponse *apiResponse);
 typedef void (^ SKLImageFetchResponseBlock)(NSError *error, UIImage *image);
 
+extern NSString *const SKLAPIErrorDomain;
 typedef NS_ENUM(NSInteger, ResponseErrorCode) {
     BadRequestCode,
     ServerErrorCode,

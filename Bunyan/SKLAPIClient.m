@@ -29,7 +29,7 @@
 
 @end
 
-static NSString *const SKLAPIErrorDomain = @"SKLAPIErrorDomain";
+NSString *const SKLAPIErrorDomain = @"SKLAPIErrorDomain";
 NSString *const SKLOriginalNetworkingErrorKey = @"SKLOriginalNetworkingErrorKey";
 NSString *const SKLOriginalNetworkingResponseStringKey = @"SKLOriginalNetworkingResponseStringKey";
 
