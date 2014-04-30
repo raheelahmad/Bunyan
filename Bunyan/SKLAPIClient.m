@@ -183,7 +183,7 @@ NSString *const SKLOriginalNetworkingResponseStringKey = @"SKLOriginalNetworking
 	NSDictionary *params = request.params;
 	
 	NSString *urlString = [self URLWithEndpoint:endPoint];
-    BOOL isPOSTRequest = [method isEqualToString:@"POST"] || [method isEqualToString:@"PUT"];
+    BOOL isPOSTRequest = [method isEqualToString:@"POST"] || [method isEqualToString:@"PUT"] || [method isEqualToString:@"PATCH"];
     BOOL isGETRequest = [method isEqualToString:@"GET"];
     NSParameterAssert(isGETRequest || isPOSTRequest);
 	
