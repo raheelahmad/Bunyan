@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UICollectionView.h>
+#import <CoreData/CoreData.h>
 
 @protocol SKLCollectionDataSourceDelegate;
 
@@ -18,6 +19,7 @@
 - (id)objectAtIndexPath:(NSIndexPath *)indexPath;
 
 @property (nonatomic, weak) id<SKLCollectionDataSourceDelegate> delegate;
+@property (nonatomic, readonly) NSFetchedResultsController *controller;
 
 @end
 

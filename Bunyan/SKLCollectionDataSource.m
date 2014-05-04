@@ -11,7 +11,7 @@
 
 @interface SKLCollectionDataSource ()<NSFetchedResultsControllerDelegate>
 
-@property (nonatomic) NSFetchedResultsController *controller;
+@property (nonatomic, readwrite) NSFetchedResultsController *controller;
 @property (nonatomic) UICollectionView *collectionView;
 @property (nonatomic) Class modelClass;
 @property (nonatomic) Class cellClass;
