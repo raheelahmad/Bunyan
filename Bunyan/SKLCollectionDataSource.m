@@ -8,6 +8,7 @@
 
 #import "SKLCollectionDataSource.h"
 #import "SKLManagedObject.h"
+#import <UIKit/UICollectionViewLayout.h>
 
 @interface SKLCollectionDataSource ()<NSFetchedResultsControllerDelegate>
 
@@ -131,7 +132,19 @@
 	}];
 }
 
+#pragma mark Helpers for Subclasses
 
+- (NSPredicate *)collectionPredicate {
+    return nil;
+}
+
+- (NSArray *)collectionSortDescriptors {
+	return [self.modelClass sortDescriptors];
+}
+
+- (NSString *)collectionSectionKeyPath {
+	return [self.modelClass defaultSectionKeyPath];
+}
 
 #pragma mark Public Helpers
 
@@ -144,9 +157,22 @@
 - (void)setupCollectionView:(UICollectionView *)collectionView {
     collectionView.dataSource = self;
     self.collectionView = collectionView;
-    
+    [self setupController];
+}
+
+- (void)setupController {
+	self.controller.delegate = nil;
+	self.controller = nil;
+	
     NSManagedObjectContext *context = [self.modelClass mainContext];
-    self.controller = [self.modelClass controllerInContext:context];
+	NSString *sectionKeyPath = [self collectionSectionKeyPath];
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([self modelClass])];
+	request.predicate = [self collectionPredicate];
+    request.sortDescriptors = [self collectionSortDescriptors];
+	self.controller = [[NSFetchedResultsController alloc] initWithFetchRequest:request
+														  managedObjectContext:context
+															sectionNameKeyPath:sectionKeyPath
+																	 cacheName:nil];
     self.controller.delegate = self;
     
     NSError *fetchError;
@@ -156,6 +182,14 @@
     }
 }
 
+- (void)reloadController {
+    [self setupController];
+	dispatch_async(dispatch_get_main_queue(), ^{
+		[self.collectionView addSubview:[UIView new]];
+		[self.collectionView reloadData];
+		[self.collectionView.collectionViewLayout invalidateLayout];
+	});
+}
 
 - (id)initWithModelClass:(Class)modelClass cellCalss:(Class)cellClass {
 	self = [super init];

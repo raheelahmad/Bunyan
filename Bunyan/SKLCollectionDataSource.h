@@ -15,11 +15,16 @@
 
 - (id)initWithModelClass:(Class)modelClass cellCalss:(Class)cellClass;
 - (void)setupCollectionView:(UICollectionView *)collectionView;
+- (void)reloadController;
 
 - (id)objectAtIndexPath:(NSIndexPath *)indexPath;
 
 @property (nonatomic, weak) id<SKLCollectionDataSourceDelegate> delegate;
 @property (nonatomic, readonly) NSFetchedResultsController *controller;
+
+- (NSPredicate *)collectionPredicate;
+- (NSArray *)collectionSortDescriptors;
+- (NSString *)collectionSectionKeyPath;
 
 @end
 
