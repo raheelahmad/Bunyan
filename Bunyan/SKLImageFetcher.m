@@ -28,9 +28,9 @@ NSString *const SKLImageFetcherErrorDomain = @"SKLImageFetcherErrorDomain";
 			completion(nil, inMemoryImage);
 		}
 	} else {
+		// otherwise, fetch from disk
 		[[self diskQueue] addOperationWithBlock:^{
 			NSString *localImagePath = [self diskLCacheLocations][url];
-			NSURL *localImageURL = [NSURL fileURLWithPath:localImagePath];
 			UIImage *image = [UIImage imageWithContentsOfFile:localImagePath];
 			if (image) {
 				[self memoryImageCache][url] = image;
@@ -38,6 +38,7 @@ NSString *const SKLImageFetcherErrorDomain = @"SKLImageFetcherErrorDomain";
 					completion(nil, image);
 				}
 			} else {
+				// if we do not have the image on disk, fetch it from the orignal remote URL
 				[[SKLAPIClient defaultClient] fetchImageAtURL:url
 												   completion:^(NSError *error, UIImage *image) {
 													   if (image && !error) {
@@ -48,6 +49,8 @@ NSString *const SKLImageFetcherErrorDomain = @"SKLImageFetcherErrorDomain";
 															   imageData = UIImageJPEGRepresentation(image, 1.0);
 														   }
 														   if (imageData) {
+															   // if the image was successfully fetched and can be stored faithfully as NSData,
+															   // store it on disk
 															   NSURL *localImageURL = [self localUrlForRemoteImageURL:url];
 															   NSError *error;
 															   BOOL written = [imageData writeToURL:localImageURL
@@ -56,7 +59,9 @@ NSString *const SKLImageFetcherErrorDomain = @"SKLImageFetcherErrorDomain";
 															   if (!written) {
 																   NSLog(@"Error writing to local %@: %@", url, error);
 															   } else {
+																   // if stored on disk successfully, add it in the disk cache, ...
 																   [self addLocalURL:[localImageURL path] forRemoteURL:url];
+																   // and the image in the in-memory cache
 																   [self memoryImageCache][url] = image;
 															   }
 														   }
