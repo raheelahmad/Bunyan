@@ -56,7 +56,7 @@ NSString *const SKLImageFetcherErrorDomain = @"SKLImageFetcherErrorDomain";
 															   if (!written) {
 																   NSLog(@"Error writing to local %@: %@", url, error);
 															   } else {
-																   [self addLocalURL:[localImageURL absoluteString] forRemoteURL:url];
+																   [self addLocalURL:[localImageURL path] forRemoteURL:url];
 																   [self memoryImageCache][url] = image;
 															   }
 														   }
