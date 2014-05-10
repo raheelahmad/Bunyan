@@ -21,8 +21,6 @@
 @property (nonatomic) NSMutableArray *pendingRequests;
 @property (nonatomic) SKLAPIRequest *currentRequest;
 
-@property (nonatomic) NSMutableDictionary *imageDictionary;
-
 @property (nonatomic) NSInteger requestsMade;
 @property (nonatomic) NSInteger requestsCompleted;
 @property (nonatomic) NSInteger requestsCached;
@@ -64,7 +62,6 @@ NSString *const SKLOriginalNetworkingResponseStringKey = @"SKLOriginalNetworking
 																   diskPath:nil];
 		self.session = [NSURLSession sessionWithConfiguration:configuration];
 		self.pendingRequests = [NSMutableArray array];
-		self.imageDictionary = [NSMutableDictionary dictionary];
 		
 		self.requestsMade = 0;
 		self.requestsCompleted = 0;
@@ -108,12 +105,6 @@ NSString *const SKLOriginalNetworkingResponseStringKey = @"SKLOriginalNetworking
 		return;
 	}
 	
-	UIImage *image = self.imageDictionary[url];
-	if (image) {
-		completion(nil, image);
-		return;
-	}
-	
 	SKLAPIRequest *request = [SKLAPIRequest with:url
 										  method:@"GET"
 										  params:nil
@@ -129,9 +120,6 @@ NSString *const SKLOriginalNetworkingResponseStringKey = @"SKLOriginalNetworking
 											code:ImageParsingErrorCode
 										userInfo:nil];
 			}
-			dispatch_async(dispatch_get_main_queue(), ^{
-				self.imageDictionary[url] = image;
-			});
 		}
 		if (completion) {
 			completion(error, image);

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		591A1E7E191DD83A00CA2C39 /* SKLImageFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 591A1E7D191DD83A00CA2C39 /* SKLImageFetcher.m */; };
 		59284BEF18CD664E00C39393 /* SKLAPIRequestTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 59284BEE18CD664E00C39393 /* SKLAPIRequestTests.m */; };
 		592C93C318C0468400198C5D /* SKLMockURLSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 592C93C218C0468400198C5D /* SKLMockURLSession.m */; };
 		592C93C618C0469500198C5D /* SKLTestableAPIClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 592C93C518C0469500198C5D /* SKLTestableAPIClient.m */; };
@@ -64,6 +65,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		591A1E7C191DD83A00CA2C39 /* SKLImageFetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKLImageFetcher.h; sourceTree = "<group>"; };
+		591A1E7D191DD83A00CA2C39 /* SKLImageFetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKLImageFetcher.m; sourceTree = "<group>"; };
 		59284BEE18CD664E00C39393 /* SKLAPIRequestTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKLAPIRequestTests.m; sourceTree = "<group>"; };
 		592C93C118C0468400198C5D /* SKLMockURLSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKLMockURLSession.h; sourceTree = "<group>"; };
 		592C93C218C0468400198C5D /* SKLMockURLSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKLMockURLSession.m; sourceTree = "<group>"; };
@@ -254,6 +257,8 @@
 				593192D018ECFA0B0016CB91 /* SKLCollectionDataSource.m */,
 				59D1D14318C78BC900189BAC /* SKLTableDataSource.h */,
 				59D1D14418C78BC900189BAC /* SKLTableDataSource.m */,
+				591A1E7C191DD83A00CA2C39 /* SKLImageFetcher.h */,
+				591A1E7D191DD83A00CA2C39 /* SKLImageFetcher.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -412,6 +417,7 @@
 				593192D118ECFA0B0016CB91 /* SKLCollectionDataSource.m in Sources */,
 				59559A1918C4373A0043EAF0 /* NSManagedObjectContext+Additions.m in Sources */,
 				5992168A18E210CF00F03C14 /* SKLAPIResponse.m in Sources */,
+				591A1E7E191DD83A00CA2C39 /* SKLImageFetcher.m in Sources */,
 				59559A1618C4076E0043EAF0 /* SKLPersistenceStack.m in Sources */,
 				595F462A18CD5BAA00C93E1A /* SKLAPIRequest.m in Sources */,
 				5950102818BD9459003BDD13 /* SKLManagedObject.m in Sources */,
