@@ -40,6 +40,4 @@ extern NSString *const SKLOriginalNetworkingResponseStringKey;
 
 - (void)makeRequest:(SKLAPIRequest *)request;
 
-- (void)fetchImageAtURL:(NSString *)url completion:(SKLImageFetchResponseBlock)completion;
-
 @end

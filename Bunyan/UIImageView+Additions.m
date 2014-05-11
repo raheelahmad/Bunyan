@@ -7,8 +7,7 @@
 //
 
 #import "UIImageView+Additions.h"
-#import "SKLAPIClient.h"
-#import "SKLAPIRequest.h"
+#import "SKLImageFetcher.h"
 
 @implementation UIImageView (Additions)
 
@@ -17,12 +16,12 @@
 		return;
 	}
 	
-	[[SKLAPIClient defaultClient] fetchImageAtURL:url
-									   completion:^(NSError *error, UIImage *image) {
-										   dispatch_async(dispatch_get_main_queue(), ^{
-											   self.image = image;
-										   });
-									   }];
+	[SKLImageFetcher fetchImageAtURL:url
+						  completion:^(NSError *error, UIImage *image) {
+							  dispatch_async(dispatch_get_main_queue(), ^{
+								  self.image = image;
+							  });
+						  }];
 }
 
 @end
