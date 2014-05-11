@@ -7,6 +7,8 @@
 //
 
 #import "SKLImageFetcher.h"
+#import "SKLAPIRequest.h"
+#import "SKLAPIResponse.h"
 #import "SKLAPIClient.h"
 
 @implementation SKLImageFetcher
@@ -18,6 +20,7 @@ NSString *const SKLImageFetcherErrorDomain = @"SKLImageFetcherErrorDomain";
 		if (completion) {
 			NSError *error = [NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorBadURL userInfo:nil];
 			completion(error, nil);
+			return;
 		}
 	}
 	
@@ -27,6 +30,7 @@ NSString *const SKLImageFetcherErrorDomain = @"SKLImageFetcherErrorDomain";
 		if (completion) {
 			completion(nil, inMemoryImage);
 		}
+		return;
 	} else {
 		// otherwise, fetch from disk
 		[[self diskQueue] addOperationWithBlock:^{
@@ -37,42 +41,38 @@ NSString *const SKLImageFetcherErrorDomain = @"SKLImageFetcherErrorDomain";
 				if (completion) {
 					completion(nil, image);
 				}
+				return;
 			} else {
 				// if we do not have the image on disk, fetch it from the orignal remote URL
-				[[SKLAPIClient defaultClient] fetchImageAtURL:url
-												   completion:^(NSError *error, UIImage *image) {
-													   if (image && !error) {
-														   NSData *imageData;
-														   if (isPNGImageURL(url)) {
-															   imageData = UIImagePNGRepresentation(image);
-														   } else if (isJPGImageURL(url)) {
-															   imageData = UIImageJPEGRepresentation(image, 1.0);
-														   }
-														   if (imageData) {
-															   // if the image was successfully fetched and can be stored faithfully as NSData,
-															   // store it on disk
-															   NSURL *localImageURL = [self localUrlForRemoteImageURL:url];
-															   NSError *error;
-															   BOOL written = [imageData writeToURL:localImageURL
-																							options:0
-																							  error:&error];
-															   if (!written) {
-																   NSLog(@"Error writing to local %@: %@", url, error);
-															   } else {
-																   // if stored on disk successfully, add it in the disk cache, ...
-																   [self addLocalURL:[localImageURL path] forRemoteURL:url];
-																   // and the image in the in-memory cache
-																   [self memoryImageCache][url] = image;
-															   }
-														   }
-													   }
-													   
-													   if (completion) {
-														   completion(error, image);
-													   }
-												   }];
+				SKLAPIRequest *imageRequest = [SKLAPIRequest with:url method:@"GET" params:nil body:nil];
+				imageRequest.responseParsing = SKLNoResponseParsing;
+				imageRequest.completionBlock = ^(NSError *error, SKLAPIResponse *response) {
+					NSData *imageData = response.responseObject;
+					UIImage *image = [UIImage imageWithData:imageData];
+					if (imageData) {
+						// if the image was successfully fetched and can be stored faithfully as NSData,
+						// store it on disk
+						NSURL *localImageURL = [self localUrlForRemoteImageURL:url];
+						NSError *error;
+						BOOL written = [imageData writeToURL:localImageURL
+													 options:0
+													   error:&error];
+						if (!written) {
+							NSLog(@"Error writing to local %@: %@", url, error);
+						} else {
+							// if stored on disk successfully, add it in the disk cache, ...
+							[self addLocalURL:[localImageURL path] forRemoteURL:url];
+							// and the image in the in-memory cache
+							[self memoryImageCache][url] = image;
+						}
+					}
+					if (completion) {
+						completion(error, image);
+					}
+				};
+				[[SKLAPIClient defaultClient] makeRequest:imageRequest];
 			}
-		}];
+		 }];
 	}
 }
 
@@ -120,7 +120,9 @@ BOOL isJPGImageURL(NSString *imageURL) {
 + (void)addLocalURL:(NSString *)localURL forRemoteURL:(NSString *)remoteURL {
 	[[self diskQueue] addOperationWithBlock:^{
 		[self diskLCacheLocations][remoteURL] = localURL;
-		[[self diskLCacheLocations] writeToURL:[self diskCacheFileURL] atomically:YES];
+		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+			[[self diskLCacheLocations] writeToURL:[self diskCacheFileURL] atomically:YES];
+		});
 	}];
 }
 
