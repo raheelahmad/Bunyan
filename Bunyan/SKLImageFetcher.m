@@ -89,7 +89,7 @@ BOOL isJPGImageURL(NSString *imageURL) {
 	for (NSString *remove in @[ @"/", @":", @"https", @"http" ]) {
 		url = [url stringByReplacingOccurrencesOfString:remove withString:@""];
 	}
-	NSURL *cachesDirURL = [[[self fileManager] URLsForDirectory:(NSCachesDirectory) inDomains:(NSUserDomainMask)] firstObject];
+	NSURL *cachesDirURL = [self cacheDirURL];
 	return [cachesDirURL URLByAppendingPathComponent:url];
 }
 		 
@@ -131,7 +131,17 @@ BOOL isJPGImageURL(NSString *imageURL) {
 }
 
 + (NSURL *)cacheDirURL {
-	return [[[self fileManager] URLsForDirectory:(NSCachesDirectory) inDomains:(NSUserDomainMask)] firstObject];
+	NSURL *cacheURL = [[[self fileManager] URLsForDirectory:(NSCachesDirectory) inDomains:(NSUserDomainMask)] firstObject];
+	NSURL *cacheDirURL = [cacheURL URLByAppendingPathComponent:@"avatar_cache" isDirectory:YES];
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
+		NSError *error;
+		BOOL created = [[self fileManager] createDirectoryAtURL:cacheDirURL withIntermediateDirectories:YES attributes:nil error:&error];
+		if (!created) {
+			NSLog(@"Error creating image cache directory: %@", error);
+		}
+	});
+	return cacheDirURL;
 }
 
 #pragma mark Disk Cache
