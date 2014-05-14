@@ -75,6 +75,7 @@
     BOOL staleDB = !store;
     if (staleDB) {
         NSLog(@"Error setting up the store: %@", error);
+        NSLog(@"!!!!!!!!! Deleting Store");
         BOOL removed = [[NSFileManager defaultManager] removeItemAtURL:self.storeURL error:&error];
         store = [storeCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil
                                                          URL:self.storeURL options:nil error:&error];
