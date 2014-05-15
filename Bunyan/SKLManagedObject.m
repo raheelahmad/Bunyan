@@ -17,6 +17,29 @@
 
 #pragma mark Remote Fetch
 
+- (void)createOnRemoteWithCompletion:(SKLFetchResponseBlock)completion {
+    SKLAPIRequest *createRequest = [self remoteCreateInfo];
+    createRequest.completionBlock = ^(NSError *error, SKLAPIResponse *apiResponse) {
+        if (error) {
+            if (completion) { completion(error); }
+        } else {
+			dispatch_async(dispatch_get_main_queue(), ^{
+				[self updateWithRemoteObject:apiResponse.responseObject];
+				if (completion) {
+					completion(nil);
+				}
+			});
+        }
+    };
+    [[self.class apiClient] makeRequest:createRequest];
+}
+
+- (SKLAPIRequest *)remoteCreateInfo {
+    return nil;
+}
+
+#pragma mark Remote Fetch
+
 + (void)fetchFromRemote {
     [self fetchFromRemoteWithCompletion:nil];
 }
