@@ -50,6 +50,12 @@
     [self setupManagedObjectContexts];
 }
 
+- (NSManagedObjectContext *)freshEditingContext {
+    NSManagedObjectContext *context = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSConfinementConcurrencyType];
+    context.parentContext = [self mainContext];
+    return context;
+}
+
 - (void)mainContextDidSave:(NSNotification *)notification {
 	[self.importContext performBlock:^{
 		[self.importContext mergeChangesFromContextDidSaveNotification:notification];

@@ -12,6 +12,7 @@
 
 @property (nonatomic, readonly) NSManagedObjectContext *mainContext;
 @property (nonatomic, readonly) NSManagedObjectContext *importContext;
+- (NSManagedObjectContext *)freshEditingContext;
 
 + (SKLPersistenceStack *)defaultStack;
 - (BOOL)setupStack:(NSError **)error;
