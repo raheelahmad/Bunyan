@@ -14,6 +14,14 @@ typedef void (^ SKLFetchResponseBlock)(NSError *error);
 
 @interface SKLManagedObject : NSManagedObject
 
+
+/**
+ * Only + updateWithRemoteResponse, - refreshWithRemoteResponse use the import MOC explicitly
+ * (via performBlockAndWait)
+ * Otherwise the caller has the responsibility of calling any of these methods inside
+ * `performBlock`, `performBlockAndWait`
+ */
+
 + (instancetype)insertInContext:(NSManagedObjectContext *)context;
 + (NSArray *)allInContext:(NSManagedObjectContext *)context;
 + (NSArray *)allInContext:(NSManagedObjectContext *)context predicate:(NSPredicate *)predicate;

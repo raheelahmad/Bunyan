@@ -292,12 +292,9 @@
 }
 
 + (instancetype)insertInContext:(NSManagedObjectContext *)context {
-    __block id item;
-    [context performBlockAndWait:^{
-        item = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([self class])
-                                             inManagedObjectContext:context];
-        
-    }];
+	id item = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([self class])
+											inManagedObjectContext:context];
+	
     return item;
 }
 
@@ -306,20 +303,17 @@
 }
 
 + (NSArray *)allInContext:(NSManagedObjectContext *)context predicate:(NSPredicate *)predicate {
-    __block NSArray *result;
-    [context performBlockAndWait:^{
-        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([self class])];
-        request.predicate = predicate;
-        NSError *error;
-        result = [context executeFetchRequest:request
-                                        error:&error];
-        if (!result) {
-            NSLog(@"Error when fetching %@: %@", NSStringFromClass(self), error);
-        }
-    }];
-
+    NSArray *result;
+	NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([self class])];
+	request.predicate = predicate;
+	NSError *error;
+	result = [context executeFetchRequest:request
+									error:&error];
+	if (!result) {
+		NSLog(@"Error when fetching %@: %@", NSStringFromClass(self), error);
+	}
+	
     return result;
-    
 }
 
 + (instancetype)oneWith:(id)value for:(NSString *)key inContext:(NSManagedObjectContext *)context {
@@ -328,19 +322,17 @@
 }
 
 + (instancetype)anyInContext:(NSManagedObjectContext *)context {
-    __block id item;
-    [context performBlockAndWait:^{
-        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([self class])];
-        request.fetchLimit = 1;
-        NSError *error;
-        NSArray *result = [context executeFetchRequest:request
-                                                 error:&error];
-        if (!result) {
-            NSLog(@"Error fetching %@: %@", NSStringFromClass(self), error);
-        }
-        
-        item = [result firstObject];
-    }];
+    id item;
+	NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([self class])];
+	request.fetchLimit = 1;
+	NSError *error;
+	NSArray *result = [context executeFetchRequest:request
+											 error:&error];
+	if (!result) {
+		NSLog(@"Error fetching %@: %@", NSStringFromClass(self), error);
+	}
+	
+	item = [result firstObject];
     return item;
 }
 
