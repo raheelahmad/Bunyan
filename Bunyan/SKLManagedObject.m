@@ -99,6 +99,9 @@
 			if (error) {
 				NSLog(@"Error refreshing %@: %@", self, error);
 			} else {
+                if (apiResponse.cached) {
+                    return;
+                }
 				[self refreshWithRemoteResponse:apiResponse.responseObject];
 			}
 		};
@@ -111,13 +114,17 @@
 	return nil;
 }
 
-- (void)refreshWithRemoteResponse:(NSDictionary *)response {
+- (void)refreshWithRemoteResponse:(SKLAPIResponse *)response {
+    if (response.cached) {
+        return;
+    }
 	// We should update in the background
 	NSManagedObjectID *objectId = self.objectID;
 	NSManagedObjectContext *context = [[self class] importContext];
 	[context performBlockAndWait:^{
 		SKLManagedObject *importCtxObject = (SKLManagedObject *)[context objectWithID:objectId];
-		[importCtxObject updateWithRemoteObject:response];
+        NSDictionary *responseObject = response.responseObject;
+		[importCtxObject updateWithRemoteObject:responseObject];
 		if ([context hasChanges]) {
 			NSError *error;
 			BOOL saved = [context save:&error];
@@ -131,6 +138,9 @@
 #pragma mark Fetch Response Update
 
 + (void)updateWithRemoteFetchResponse:(SKLAPIResponse *)response {
+    if (response.cached) {
+        return;
+    }
 	NSArray *remoteObjects = response.responseObject;
 	if (!remoteObjects) {
 		return;

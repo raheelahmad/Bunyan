@@ -11,6 +11,22 @@
 
 @implementation SKLAPIResponse
 
+- (BOOL)cached {
+    SKLAPIResponse *response = self;
+    BOOL allCached = YES;
+    while (response) {
+        NSString *statusHeaderString = self.httpResponse.allHeaderFields[@"Status"];
+        allCached = [[statusHeaderString lowercaseString] isEqualToString:@"304 not modified"];
+        if (!allCached) {
+            break;
+        }
+        response = response.request.previousResponse;
+    }
+    
+    return allCached;
+}
+
+
 - (NSArray *)allResponseObjects {
 	NSMutableArray *allResponseObjects = [NSMutableArray array];
 	

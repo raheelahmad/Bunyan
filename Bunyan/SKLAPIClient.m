@@ -12,7 +12,7 @@
 #import <UIKit/UIImage.h>
 #import <UIKit/UIApplication.h>
 
-//#define LOG_NETWORKING
+#define LOG_NETWORKING
 
 @interface SKLAPIClient ()
 
@@ -304,8 +304,7 @@ NSString *const SKLOriginalNetworkingResponseStringKey = @"SKLOriginalNetworking
 													 // Wrap up this request (will also start next request if any)
 													 dispatch_async(dispatch_get_main_queue(), ^{
 														 // Track cached requests
-														 NSString *statusHeaderString = httpResponse.allHeaderFields[@"Status"];
-														 if ([[statusHeaderString lowercaseString] isEqualToString:@"304 not modified"]) {
+														 if (apiResponse.cached) {
 															 self.requestsCached++;
 #ifdef LOG_NETWORKING
 															 NSLog(@"\t\t\t<<< Cached %ld [out of %ld]", (long)self.requestsCached, (long)self.requestsCompleted + 1);

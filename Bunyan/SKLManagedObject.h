@@ -65,7 +65,7 @@ typedef void (^ SKLFetchResponseBlock)(NSError *error);
 
 - (void)refreshFromRemote;
 - (void)refreshFromRemoteWithInfo:(SKLAPIRequest *)request;
-- (void)refreshWithRemoteResponse:(NSDictionary *)response;
+- (void)refreshWithRemoteResponse:(SKLAPIResponse *)response;
 
 - (SKLAPIRequest *)remoteRefreshInfo;
 
