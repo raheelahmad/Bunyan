@@ -218,19 +218,23 @@
 		if (relationship.isToMany) {
 			NSAssert([formattedRemoteValue isKindOfClass:[NSArray class]], @"Relationship %@ in %@ is to-many and should be remote updated with an array", localKey, NSStringFromClass(self.class));
 			
-			NSMutableSet *destinationLocalObjects;
-			if ([self shouldReplaceWhenUpdatingToManyRelationship:localKey]) {
-				destinationLocalObjects = [NSMutableSet set];
-			} else {
-				// include the current local objects for this to-many relationship
-				destinationLocalObjects = [NSMutableSet setWithSet:[self valueForKeyPath:localKey]];
-			}
-			
-			for (NSDictionary *remoteObject in formattedRemoteValue) {
-				[destinationLocalObjects addObject:DestinationObjectForRemote(remoteObject)];
-			}
-			[self setValue:destinationLocalObjects
-					forKey:localKey];
+            NSSet *originalDestinationObjects = [self valueForKeyPath:localKey];
+			NSMutableSet *destinationLocalObjects = [NSMutableSet set];
+            for (NSDictionary *remoteObject in formattedRemoteValue) {
+                [destinationLocalObjects addObject:DestinationObjectForRemote(remoteObject)];
+            }
+            
+            BOOL shouldUpdate = ![originalDestinationObjects isEqualToSet:destinationLocalObjects];
+            if (shouldUpdate) {
+                if (![self shouldReplaceWhenUpdatingToManyRelationship:localKey]) {
+                    // include the current local objects for this to-many relationship
+                    [destinationLocalObjects addObjectsFromArray:[originalDestinationObjects allObjects]];
+                }
+                [self setValue:destinationLocalObjects
+                        forKey:localKey];
+                
+            }
+            
 		} else {
 			NSAssert([formattedRemoteValue isKindOfClass:[NSDictionary class]], @"Relationship %@ in %@ is to-one and should be remote updated with a dictionary", localKey, NSStringFromClass(self.class));
 			
@@ -239,10 +243,10 @@
 				[localObject updateWithRemoteObject:formattedRemoteValue];
 			} else {
 				localObject = DestinationObjectForRemote(formattedRemoteValue);
+                [self setValue:localObject
+                        forKey:localKey];
 			}
-			
-			[self setValue:localObject
-					forKey:localKey];
+            
 		}
 	}
 	
