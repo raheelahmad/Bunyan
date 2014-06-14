@@ -15,7 +15,34 @@
 
 @implementation SKLManagedObject
 
-#pragma mark Remote Fetch
+#pragma mark Remote Update
+
+- (void)updateOnRemoteWithCompletion:(SKLFetchResponseBlock)completion {
+    SKLAPIRequest *updateRequest = [self remoteUpdateInfo];
+    updateRequest.completionBlock = ^(NSError *error, SKLAPIResponse *apiResponse) {
+        if (error) {
+            if (completion) { completion(error); }
+        } else {
+			dispatch_async(dispatch_get_main_queue(), ^{
+                [self updateWithRemoteEditedObject:apiResponse.responseObject];
+				if (completion) {
+					completion(nil);
+				}
+			});
+        }
+    };
+    [[self.class apiClient] makeRequest:updateRequest];
+}
+
+- (SKLAPIRequest *)remoteUpdateInfo {
+    return nil;
+}
+
+- (void)updateWithRemoteEditedObject:(NSDictionary *)remoteObject {
+    [self updateWithRemoteObject:remoteObject];
+}
+
+#pragma mark Remote Create
 
 - (void)createOnRemoteWithCompletion:(SKLFetchResponseBlock)completion {
     SKLAPIRequest *createRequest = [self remoteCreateInfo];
@@ -24,7 +51,7 @@
             if (completion) { completion(error); }
         } else {
 			dispatch_async(dispatch_get_main_queue(), ^{
-				[self updateWithRemoteObject:apiResponse.responseObject];
+                [self updateWithRemoteCreatedObject:apiResponse.responseObject];
 				if (completion) {
 					completion(nil);
 				}
@@ -32,6 +59,10 @@
         }
     };
     [[self.class apiClient] makeRequest:createRequest];
+}
+
+- (void)updateWithRemoteCreatedObject:(NSDictionary *)remoteObject {
+    [self updateWithRemoteObject:remoteObject];
 }
 
 - (SKLAPIRequest *)remoteCreateInfo {

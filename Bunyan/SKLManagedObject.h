@@ -35,10 +35,17 @@ typedef void (^ SKLFetchResponseBlock)(NSError *error);
 + (NSManagedObjectContext *)importContext;
 + (void)saveMainContext;
 
+// -- Remote update
+
+- (void)updateOnRemoteWithCompletion:(SKLFetchResponseBlock)completion;
+- (SKLAPIRequest *)remoteUpdateInfo;
+- (void)updateWithRemoteEditedObject:(NSDictionary *)remoteObject;
+
 // -- Remote create
 
 - (void)createOnRemoteWithCompletion:(SKLFetchResponseBlock)completion;
 - (SKLAPIRequest *)remoteCreateInfo;
+- (void)updateWithRemoteCreatedObject:(NSDictionary *)remoteObject;
 
 // -- Remote fetch
 
