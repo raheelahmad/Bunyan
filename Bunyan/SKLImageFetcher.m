@@ -47,28 +47,37 @@ NSString *const SKLImageFetcherErrorDomain = @"SKLImageFetcherErrorDomain";
 				SKLAPIRequest *imageRequest = [SKLAPIRequest with:url method:@"GET" params:nil body:nil];
 				imageRequest.responseParsing = SKLNoResponseParsing;
 				imageRequest.completionBlock = ^(NSError *error, SKLAPIResponse *response) {
-					NSData *imageData = response.responseObject;
-					UIImage *image = [UIImage imageWithData:imageData];
-					if (imageData) {
-						// if the image was successfully fetched and can be stored faithfully as NSData,
-						// store it on disk
-						NSURL *localImageURL = [self localUrlForRemoteImageURL:url];
-						NSError *error;
-						BOOL written = [imageData writeToURL:localImageURL
-													 options:0
-													   error:&error];
-						if (!written) {
-							NSLog(@"Error writing to local %@: %@", url, error);
-						} else {
-							// if stored on disk successfully, add it in the disk cache, ...
-							[self addLocalURL:[localImageURL path] forRemoteURL:url];
-							// and the image in the in-memory cache
-							[self memoryImageCache][url] = image;
+					dispatch_async(dispatch_get_main_queue(), ^{
+						NSData *imageData = response.responseObject;
+						UIImage *image = [UIImage imageWithData:imageData];
+						if (imageData) {
+							// if the image was successfully fetched and can be stored faithfully as NSData,
+							// store it on disk
+							
+							if (!image) {
+								NSLog(@"Image Data: %ld", (long)imageData.length);
+							}
+							
+							NSURL *localImageURL = [self localUrlForRemoteImageURL:url];
+							NSError *error;
+							BOOL written = [imageData writeToURL:localImageURL
+														 options:0
+														   error:&error];
+							if (!written) {
+								NSLog(@"Error writing to local %@: %@", url, error);
+							} else {
+								// if stored on disk successfully, add it in the disk cache, ...
+								[self addLocalURL:[localImageURL path] forRemoteURL:url];
+								// and the image in the in-memory cache
+								if (image) {
+									[self memoryImageCache][url] = image;
+								}
+							}
 						}
-					}
-					if (completion) {
-						completion(error, image);
-					}
+						if (completion) {
+							completion(error, image);
+						}
+					});
 				};
 				[[SKLAPIClient defaultClient] makeRequest:imageRequest];
 			}
@@ -121,7 +130,8 @@ BOOL isJPGImageURL(NSString *imageURL) {
 	[[self diskQueue] addOperationWithBlock:^{
 		[self diskLCacheLocations][remoteURL] = localURL;
 		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-			[[self diskLCacheLocations] writeToURL:[self diskCacheFileURL] atomically:YES];
+			NSDictionary *diskCacheDictionary = [[self diskLCacheLocations] copy];
+			[diskCacheDictionary writeToURL:[self diskCacheFileURL] atomically:YES];
 		});
 	}];
 }
