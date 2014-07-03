@@ -56,18 +56,28 @@ NSString *const SKLOriginalNetworkingResponseStringKey = @"SKLOriginalNetworking
 	self = [super init];
 	if (self) {
 		self.baseAPIURL = baseURL;
-		NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
-		configuration.URLCache = [[NSURLCache alloc] initWithMemoryCapacity:15 * 1024 * 1024
-															   diskCapacity:100 * 1024 * 1024
-																   diskPath:nil];
-		self.session = [NSURLSession sessionWithConfiguration:configuration];
-		self.pendingRequests = [NSMutableArray array];
-		
-		self.requestsMade = 0;
-		self.requestsCompleted = 0;
-		self.requestsCached = 0;
+        [self setup];
 	}
 	return self;
+}
+
+- (void)setup {
+    NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
+    configuration.URLCache = [[NSURLCache alloc] initWithMemoryCapacity:15 * 1024 * 1024
+                                                           diskCapacity:100 * 1024 * 1024
+                                                               diskPath:nil];
+    self.session = [NSURLSession sessionWithConfiguration:configuration];
+    self.pendingRequests = [NSMutableArray array];
+    
+    self.requestsMade = 0;
+    self.requestsCompleted = 0;
+    self.requestsCached = 0;
+}
+
+- (void)reset {
+    [self deleteAllCookies];
+    self.session = nil;
+    [self setup];
 }
 
 #pragma mark Composing requests
@@ -315,6 +325,16 @@ NSString *const SKLOriginalNetworkingResponseStringKey = @"SKLOriginalNetworking
 													 });
                                                  }];
     [task resume];
+}
+
+#pragma mark Cookies
+
+- (void)deleteAllCookies {
+    NSHTTPCookieStorage *cookieStorage = self.session.configuration.HTTPCookieStorage;
+    NSArray *cookies = cookieStorage.cookies;
+    for (NSHTTPCookie *cookie in cookies) {
+        [cookieStorage deleteCookie:cookie];
+    }
 }
 
 @end

@@ -29,6 +29,21 @@
     return _defaultStack;
 }
 
++ (void)resetDefaultStack {
+    SKLPersistenceStack *stack = [self defaultStack];
+    NSError *error;
+    BOOL deleted = [[NSFileManager defaultManager] removeItemAtPath:stack.storeURL.path error:&error];
+    if (!deleted) {
+        NSLog(@"Error! Could not delete Core Data file when resetting stack: %@", error);
+    }
+    stack.mainContext = nil;
+    stack.importContext = nil;
+    BOOL setup = [stack setupStack:&error];
+    if (!setup) {
+        NSLog(@"Error setting up stack: %@", error);
+    }
+}
+
 - (BOOL)setupStack:(NSError **)error {
 	NSURL* documentsDirectory = [[NSFileManager defaultManager] URLForDirectory:NSDocumentDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:YES error:NULL];
 	NSString *appName = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleDisplayName"] ? : @"Bunyan";

@@ -32,6 +32,7 @@ extern NSString *const SKLOriginalNetworkingResponseStringKey;
 
 
 - (id)initWithBaseURL:(NSString *)baseURL;
+- (void)reset;
 
 + (void)setDefaultClientBaseURL:(NSString *)baseURL;
 + (instancetype)defaultClient;

@@ -15,6 +15,7 @@
 - (NSManagedObjectContext *)freshEditingContext;
 
 + (SKLPersistenceStack *)defaultStack;
++ (void)resetDefaultStack;
 - (BOOL)setupStack:(NSError **)error;
 
 @end
