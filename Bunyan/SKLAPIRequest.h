@@ -27,6 +27,7 @@ typedef NS_ENUM(NSInteger, SKLResponseParsing) {
 @property (nonatomic) NSDictionary *params;
 @property (nonatomic) NSDictionary *body;
 @property (nonatomic) NSDictionary *headers;
+@property (nonatomic) NSURLRequestCachePolicy cachePolicy;
 
 // Options
 @property (nonatomic) SKLBodyEncoding bodyEncoding;

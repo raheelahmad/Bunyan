@@ -193,6 +193,9 @@ NSString *const SKLOriginalNetworkingResponseStringKey = @"SKLOriginalNetworking
 	
 	NSMutableURLRequest *urlRequest = [NSMutableURLRequest requestWithURL:url];
 	
+	// Set Cache Policy
+	urlRequest.cachePolicy = request.cachePolicy;
+	
 	// Attach all other headers
 	urlRequest.allHTTPHeaderFields = request.headers;
 	

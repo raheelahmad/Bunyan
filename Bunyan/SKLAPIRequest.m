@@ -22,6 +22,7 @@
     
     request.bodyEncoding = SKLFormURLBodyEncoding;
     request.responseParsing = SKLJSONResponseParsing;
+	request.cachePolicy = NSURLRequestUseProtocolCachePolicy;
     
 	return request;
 }
