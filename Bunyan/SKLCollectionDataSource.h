@@ -11,7 +11,7 @@
 
 @protocol SKLCollectionDataSourceDelegate;
 
-@interface SKLCollectionDataSource : NSObject<UICollectionViewDataSource>
+@interface SKLCollectionDataSource : NSObject<UICollectionViewDataSource, NSFetchedResultsControllerDelegate>
 
 - (id)initWithModelClass:(Class)modelClass cellCalss:(Class)cellClass;
 - (void)setupCollectionView:(UICollectionView *)collectionView;

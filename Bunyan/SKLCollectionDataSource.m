@@ -10,7 +10,7 @@
 #import "SKLManagedObject.h"
 #import <UIKit/UICollectionViewLayout.h>
 
-@interface SKLCollectionDataSource ()<NSFetchedResultsControllerDelegate>
+@interface SKLCollectionDataSource ()
 
 @property (nonatomic, readwrite) NSFetchedResultsController *controller;
 @property (nonatomic) UICollectionView *collectionView;
