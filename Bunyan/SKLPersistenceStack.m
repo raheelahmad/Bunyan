@@ -15,6 +15,7 @@
 
 @property (nonatomic) NSURL *storeURL;
 @property (nonatomic) NSURL *modelURL;
+@property (nonatomic) BOOL isStackSetup;
 
 @end
 
@@ -31,6 +32,7 @@
 
 + (void)resetDefaultStack {
     SKLPersistenceStack *stack = [self defaultStack];
+	stack.isStackSetup = NO;
     NSError *error;
     BOOL deleted = [[NSFileManager defaultManager] removeItemAtPath:stack.storeURL.path error:&error];
     if (!deleted) {
@@ -45,13 +47,20 @@
 }
 
 - (BOOL)setupStack:(NSError **)error {
+	if (self.isStackSetup) {
+		return YES;
+	}
 	NSURL* documentsDirectory = [[NSFileManager defaultManager] URLForDirectory:NSDocumentDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:YES error:NULL];
 	NSString *appName = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleDisplayName"] ? : @"Bunyan";
 	NSString *dbName = [NSString stringWithFormat:@"%@.sqlite", appName];
 	self.storeURL = [documentsDirectory URLByAppendingPathComponent:dbName];
 	self.modelURL = [[NSBundle mainBundle] URLForResource:appName withExtension:@"momd"];
 	*error = [self setupManagedObjectContexts];
-	return error != nil;
+	BOOL success = error != nil;
+	if (success) {
+		self.isStackSetup = YES;
+	}
+	return success;
 }
 
 - (void)resetStack {
